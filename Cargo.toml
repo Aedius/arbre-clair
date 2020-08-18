@@ -1,0 +1,8 @@
+[package]
+name = "arbre-clair"
+version = "0.1.0"
+authors = ["Aedius"]
+edition = "2018"
+
+[dependencies]
+tiny_http="0.7.0"
