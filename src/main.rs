@@ -51,7 +51,7 @@ fn get_path(prefix: &str, path: String) -> ResourceKind {
     }
 
     if path == "/".to_string() {
-        return ResourceKind::Static(format!("{}/index.html", prefix));
+        return ResourceKind::Static(format!("{}/pages/index.html", prefix));
     }
 
     ResourceKind::Static(format!("{}{}", prefix, path))
