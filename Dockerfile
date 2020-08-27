@@ -6,7 +6,6 @@ FROM clux/muslrust:stable as builder
 RUN groupadd -g 10001 -r dockergrp && useradd -r -g dockergrp -u 10001 dockeruser
 ARG BINARY_NAME_DEFAULT
 ENV BINARY_NAME=$BINARY_NAME_DEFAULT
-
 # Build the project with target x86_64-unknown-linux-musl
 
 # Build dummy main with the project's Cargo lock and toml
@@ -38,7 +37,7 @@ ENV BINARY_NAME=$BINARY_NAME_DEFAULT
 ENV RUST_LOG="error,$BINARY_NAME=info"
 COPY --from=builder /build-out/$BINARY_NAME /
 
-COPY static/ /static
+COPY static/ /static/
 
 # Start with an execution list (there is no sh in a scratch image)
 # No shell => no variable expansion, |, <, >, etc

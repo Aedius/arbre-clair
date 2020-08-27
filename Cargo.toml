@@ -1,5 +1,5 @@
 [package]
-name = "arbre-clair"
+name = "arbre_clair"
 version = "0.1.0"
 authors = ["Aedius"]
 edition = "2018"
