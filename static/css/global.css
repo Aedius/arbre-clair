@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'greennature';
+  src: url('/GREEN_NATURE.ttf');
+}
+
+cac-menu {
+    float: left;
+    width : 20%;
+}
+
+cac-content {
+    float : right;
+    width : 80%
+}
