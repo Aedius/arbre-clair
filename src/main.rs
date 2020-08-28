@@ -3,6 +3,8 @@ use std::path::Path;
 
 use tiny_http::{Method, Request, Response, Server, StatusCode};
 
+mod craft;
+
 const FOLDER_PREFIX : &str = "static";
 
 fn main() {
@@ -23,7 +25,11 @@ fn main() {
                 ResourceKind::Static(path) => {
                     respond_file(path, request)
                 }
-                ResourceKind::Api(_) => {}
+                ResourceKind::Api( path) => {
+
+                    panic!("john")
+
+                }
             };
         } else {
             match request.respond(Response::new_empty(StatusCode(405))) {
