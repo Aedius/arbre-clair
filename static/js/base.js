@@ -1,46 +1,117 @@
 
+var StrongColor = "rgba(241,81,85,1)";
+
+var Base = `h1, h2, h3, h4, h5, p, li, strong, ::slotted(*) {
+    font-family:"Quicksand_Book";
+}`
 
 class Menu extends HTMLElement {
     constructor() {
         super();
         this._pages = [{
                 code : "index",
-                name : "Homepage",
+                name : "Home",
                 link : "/",
             }, {
                 code : 'diplomatie',
                 name : "Diplomatie",
                 link : "/pages/diplomatie.html",
             }, {
-                code : "cuisine",
-                name : "Cuisine",
-                link : "/pages/cuisine.html",
+                code : "metier",
+                name : "Métiers",
+                link : "/pages/metiers.html",
             }
         ]
-
-        this._link = [{
-                name : "Discord",
-                link : "https://discord.gg/zgkXV4W",
-            }, {
-                name : "Guild in game",
-                link : "https://crowfall.com/fr-FR/guilds/search?name=arbre%20clair",
-            }, {
-                name : "Github",
-                link : "https://github.com/Aedius/arbre-clair",
-            }
-        ]
-
 
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.innerHTML = `
-            <nav>
-                <h4>Pages</h4>
-                <ul class="menu">
-                </ul>
-                <h4>Liens</h4>
-                <ul class="link">
-                </ul>
-            </nav>
+        <style>
+            ${Base}
+                @import url(https://fonts.googleapis.com/css?family=Raleway:400,500,800);
+                .menu {
+                  font-family: 'Raleway', Arial, sans-serif;
+                  text-align: center;
+                  text-transform: uppercase;
+                  font-weight: 500;
+                }
+                .menu * {
+                  box-sizing: border-box;
+                }
+                .menu li {
+                  display: inline-block;
+                  list-style: outside none none;
+                  margin: 0 1.5em;
+                  padding: 0;
+                }
+                .menu a {
+                  padding: 0.5em 0;
+                  color: rgba(255, 255, 255, 0.5);
+                  position: relative;
+                  letter-spacing: 1px;
+                  text-decoration: none;
+                }
+                .menu a:before,
+                .menu a:after {
+                  position: absolute;
+                  -webkit-transition: all 0.35s ease;
+                  transition: all 0.35s ease;
+                }
+                .menu a:before {
+                  bottom: 0;
+                  display: block;
+                  height: 3px;
+                  width: 0%;
+                  content: "";
+                  background-color: ${StrongColor};
+                }
+                .menu a:after {
+                  left: 0;
+                  top: 0;
+                  padding: 0.5em 0;
+                  position: absolute;
+                  content: attr(data-hover);
+                  color: #ffffff;
+                  white-space: nowrap;
+                  max-width: 0%;
+                  overflow: hidden;
+                }
+                .menu a:hover:before,
+                .menu .current a:before {
+                  opacity: 1;
+                  width: 100%;
+                }
+                .menu a:hover:after,
+                .menu .current a:after {
+                  max-width: 100%;
+                }
+
+                nav{
+                    position: absolute;
+                    margin-top: 50px;
+                    margin-left: 200px;
+                }
+
+                #logo{
+                    float:left;
+                    width:150px;
+                    height:150px;
+                }
+
+                #header{
+                    height:150px;
+	                border-bottom:10px ridge ${StrongColor};
+                }
+
+            </style>
+            <div id="header">
+                <div id="logo">
+                    <img src="/img/logo.jpg">
+                </div>
+                    <nav>
+                    <ul class="menu">
+                    </ul>
+                </nav>
+            </div>
         `
     }
 
@@ -50,22 +121,14 @@ class Menu extends HTMLElement {
         this._menu = this.shadowRoot.querySelector(".menu");
         const li = this._pages.map( page => {
             if ( page.code == _selected){
-                return `<li>${page.name}</li>`
+                return `<li class="current"><a href="#" data-hover="${page.name}">${page.name}</a></li>`
             }else{
-               return  `<li><a href="${page.link}">${page.name}</a></li>`
+               return  `<li><a href="${page.link}" data-hover="${page.name}">${page.name}</a></li>`
             }
         })
 
         this._menu.innerHTML = li.join('')
 
-        this._menuLink = this.shadowRoot.querySelector(".link");
-
-        const lil = this._link.map( page => {
-               return  `<li><a href="${page.link}">${page.name}</a></li>`
-            }
-        )
-
-        this._menuLink.innerHTML = lil.join('')
     }
 }
 customElements.define('cac-menu', Menu);
@@ -82,18 +145,77 @@ class Content extends HTMLElement {
         var _title = this.getAttribute('title');
 
     this.shadowRoot.innerHTML = `
+    <style>
+        ${Base}
+
+        h1{
+            color: ${StrongColor};
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        
+        main {
+            color:white;
+            background:linear-gradient( #1f203c, #26284e);
+            padding:50px;
+            border-bottom:2px solid ${StrongColor};
+        }
+
+        ::slotted(ul){
+            list-style-type: none;
+        }
+
+        #footer{
+            height:100px;
+            background-color:#1f203c;
+            position:relative;
+            bottom:0;
+            width:100%;
+        }
+
+        #footer>ul{
+            list-style-type: none;
+        }
+
+        #footer a{
+            display:block;
+            text-decoration:none;
+            color:white;
+        }
+
+        #footer li{
+            text-align:center;
+            float:left;
+            width:100px;
+        }
+
+        #footer>p{
+            color:white;
+            float:right;
+            margin-right:50px;
+        }
+
+    </style>
     <main>
         <h1>${_title}</h1>
         <slot></slot>
+
     </main>
+    <div id="footer">
+    		<ul class="snip1135">
+    			<li><a href="https://discord.gg/zgkXV4W">Discord</a></li>
+    			<li><a href="https://crowfall.com/fr-FR/guilds/search?name=arbre%20clair">Guild in game</a></li>
+    			<li><a href="https://github.com/Aedius/arbre-clair">Github</a></li>
+    		</ul>
+    		<p>Tout droits r&eacute;serv&eacute;s à Aedius. Copyright&copy; 2020</p>
+    </div>
     `;
   }
 
 }
 customElements.define('cac-content', Content);
 
-
-class Header extends HTMLElement {
+class Banner extends HTMLElement {
 
     constructor() {
         super();
@@ -102,42 +224,110 @@ class Header extends HTMLElement {
 
   connectedCallback() {
 
+    var _img = this.getAttribute('img');
     var _title = this.getAttribute('title');
-
-    var _width = screen.availWidth / 5
-    var _height = screen.availHeight / 10
+    var _subtitle = this.getAttribute('subtitle');
 
     this.shadowRoot.innerHTML = `
-    <style>
-        img {
-            height: ${_height}px;
-        }
-        header {
-            height: ${_height}px;
-            text-align: center;
-            position: relative;
-        }
-        span {
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            font-size:3em;
-            transform: translate(-50%, -50%);
-            font-family: 'greennature', 'Georgia', serif;
-        }
-        a {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-    </style>
-    <header>
-        <a href="/"><img src="/img/logo.png"></a>
-        <span>[CAC] Communauté de l'Arbre Clair</div>
-    </header>
+        <style>
+            ${Base}
+            .banner {
+                position:relative;
+                background-size: cover;
+                width: 100%;
+                height: 300px;
+                border-bottom:10px ridge ${StrongColor};
+            }
+            .banner img {
+                display: none;
+            }
+
+            .sstitre_banner{
+                color:#fff;
+                font-size:0.6em;
+            }
+
+            #titre_banner{
+                position:absolute;
+                width:35%;
+                padding:5px;
+                margin-left:5%;
+                margin-top:90px;
+                background:rgba(0,0,0,0.35);
+                border-radius: 10px;
+                box-shadow: 1px 3px 3px #000;
+            }
+
+            #titre_banner>p{
+                color:white;
+                margin-left:5%;
+                font-size:1.5em;
+            }
+        </style>
+        <div class="banner" style="background-image:url(${_img})">
+            <img src="${_img}" alt="" />
+            <div id="titre_banner">
+                <p>${_title}</p>
+                <p><span class="sstitre_banner">${_subtitle}</span></p>
+            </div
+        </div>
     `;
   }
 
 }
-customElements.define('cac-header', Header);
+customElements.define('cac-banner', Banner);
+
+
+class Strong extends HTMLElement {
+
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+  connectedCallback() {
+
+    this.shadowRoot.innerHTML = `
+    <style>
+        ${Base}
+        strong{
+            color:${StrongColor};
+            font-size: 1.2em;
+        }
+    </style>
+    <strong>
+        <slot></slot>
+    </strong>
+    `;
+  }
+
+}
+customElements.define('cac-strong', Strong);
+
+class Li extends HTMLElement {
+
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+  connectedCallback() {
+
+    this.shadowRoot.innerHTML = `
+    <style>
+        ${Base}
+
+        li:before{
+            content: "\\2022";
+            margin-right: 10px;
+            color: ${StrongColor};
+        }
+    </style>
+    <li>
+        <slot></slot>
+    </li>
+    `;
+  }
+
+}
+customElements.define('cac-li', Li);
