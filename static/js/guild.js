@@ -14,26 +14,34 @@ class Guild extends HTMLElement {
     this.shadowRoot.innerHTML = `
     <style>
         img {
-            float: left;
-            width:10%
+            max-height:90%
         }
         div {
-            clear: left;
-            padding-top: 20px;
+            width: 100%;
+            display: block;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-top: 2mm ridge rgba(241,81,85,1);
+            border-left: 2mm ridge rgba(241,81,85,1);
+            border-right: 2mm ridge rgba(241,81,85,1);
+            border-radius: 0% 0% 20% 20%;
+            background-color: #fff;
         }
         span {
-            font-weight: bold;
+            font-size: 1.8em;
+            color: ${StrongColor}
         }
         p {
+            color: black;
             margin-left : 15%;
         }
     </style>
     <div>
-        <img src="/img/guild/${_tag}.png" alt="${_name}">
+        <img src="/img/guild/${_tag}.png" alt="${_name}" style="float:left">
+        <img src="/img/guild/${_tag}.png" alt="${_name}" style="float:right">
         <p>
-        <span>${_name}</span>
-        <br/>
-        // ${_tag}
+        <span>${_name}</span> // ${_tag}
         </p>
         <p>
         Relation : <slot></slot>
