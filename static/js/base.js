@@ -66,7 +66,7 @@ class Menu extends HTMLElement {
                 <div id="logo">
                     <img src="/img/logo.jpg">
                 </div>
-                    <nav>
+                <nav>
                     <ul class="menu">
                     </ul>
                 </nav>
@@ -101,7 +101,7 @@ class Content extends HTMLElement {
 
   connectedCallback() {
 
-        var _title = this.getAttribute('title');
+    var _title = this.getAttribute('title');
 
     this.shadowRoot.innerHTML = `
     <style>
