@@ -200,11 +200,9 @@ class Recipe extends HTMLElement {
                     </p>`
                 }).join('')
 
-
-
                 return `
                 <div>
-                   step ${recipeGroup.level}
+                   <h2>step ${recipeGroup.level}</h2>
                    ${group}
                 </div>
                 `
