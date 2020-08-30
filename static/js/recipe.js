@@ -120,10 +120,10 @@ class RecipeList extends HTMLElement {
 
           let li = ["loading"];
           if (this._data != null) {
-           li = this._data.map( recipe => {
-               return  `<li><cac-link href="/pages/metiers.html#${this._kind}/${recipe.key}" >${recipe.name} :</cac-link>
-                    ${recipe.stat}</li>`
-            })
+               li = this._data.map( recipe => {
+                   return  `<li><cac-link href="/pages/metiers.html#${this._kind}/${recipe.key}" >${recipe.name} :</cac-link>
+                        ${recipe.stat}</li>`
+                }).join('')
           }
 
           this.shadowRoot.innerHTML = `
@@ -134,7 +134,7 @@ class RecipeList extends HTMLElement {
             </style>
             <div>
                 <ul>
-                    ${li.join('')}
+                    ${li}
                 </ul>
             </div>
           `
@@ -158,11 +158,68 @@ class Recipe extends HTMLElement {
     connectedCallback() {
         this._kind = this.getAttribute('kind');
 
-        this.shadowRoot.innerHTML = `
-        <div>
-            ${this._kind}
-        </div>
-      `
+        var those = this
+
+        fetch('/api/recipe/detail/' + this._kind).then(function (response) {
+            // The API call was successful!
+            return response.json();
+        }).then(function (data) {
+            // This is the JSON from our response
+            those._data = data
+            those._display()
+        }).catch(function (err) {
+            // There was an error
+            console.warn('Something went wrong.', err);
+        });
+
+    }
+
+    _display(){
+
+            var liBase = this._data.base.map( resource => {
+               return  `<li>${resource.quantity} * <cac-strong>${resource.base}</cac-strong></li>`
+            }).join('')
+
+            var liGroup = this._data.group.map( resource => {
+               return  `<li>${resource.quantity} * <cac-strong>${resource.group}</cac-strong></li>`
+            }).join('')
+
+            var step = this._data.recipe.map( recipeGroup => {
+
+                var group = recipeGroup.recipe_list.map( recipe => {
+
+                console.log(recipe)
+
+                    var total = recipe.quantity * recipe.recipe.output[1]
+
+                    return `<p>
+                        Profession : <cac-strong>${recipe.recipe.profession}</cac-strong><br/>
+                        Menu : <cac-strong>${recipe.recipe.menu}</cac-strong><br/>
+                        Perform <cac-strong>${recipe.quantity}</cac-strong> time the recipe <cac-strong>${recipe.recipe.name}</cac-strong><br/>
+                        To get <cac-strong>${total} * ${recipe.recipe.output[0]}</cac-strong>
+                    </p>`
+                }).join('')
+
+
+
+                return `
+                <div>
+                   step ${recipeGroup.level}
+                   ${group}
+                </div>
+                `
+            }).join('')
+
+            this.shadowRoot.innerHTML = `
+            <div>
+                to craft : <cac-strong>${this._data.summary.name}</cac-strong> you need :
+                <ul>
+                    ${liBase}
+                    ${liGroup}
+                </ul>
+                ${step}
+            </div>
+          `
     }
 }
 customElements.define('cac-recipe', Recipe);

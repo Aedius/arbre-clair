@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use serde::{Serialize};
 
 use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item, RecipeSummary};
-use crate::craft::cooking::get_recipe;
+use crate::craft::cooking::get_recipe as getCookingRecipe;
 
 
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub struct RecipeTree {
     pub base: HashMap<BaseResource, f32>,
     pub group: HashMap<GroupResource, f32>,
@@ -15,14 +15,43 @@ pub struct RecipeTree {
 }
 
 #[derive(Debug, Serialize)]
-pub struct RecipeResponse{
-    pub tree : RecipeTree,
+pub struct BaseResponse {
+    base: BaseResource,
+    quantity: i32,
+}
+
+#[derive(Debug, Serialize)]
+pub struct GroupResponse {
+    group: GroupResource,
+    quantity: i32,
+}
+
+#[derive(Debug, Serialize)]
+pub struct RecipePartialResponse {
+    recipe: Recipe,
+    quantity: i32,
+
+}
+
+#[derive(Debug, Serialize)]
+pub struct RecipGroupResponse {
+    level: i32,
+    recipe_list: Vec<RecipePartialResponse>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct RecipeResponse {
+    pub base: Vec<BaseResponse>,
+    pub group: Vec<GroupResponse>,
+    pub recipe: Vec<RecipGroupResponse>,
     pub summary: Recipe,
     pub lvl: i32,
 }
 
 pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
-    let recipes = get_recipe();
+
+    //TODO add other recipe to the vec
+    let recipes = getCookingRecipe();
 
     let mut recipe_map = HashMap::new();
 
@@ -56,13 +85,48 @@ pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
     // TODO : change qte.
     let max_level = tree.add_resource(120.0, current_recipe.clone().output.0);
 
-    tree.cleanup();
-
-    Some(RecipeResponse{
-        tree,
+    let mut recipe_response = RecipeResponse {
+        base: vec![],
+        group: vec![],
+        recipe: vec![],
         summary: current_recipe,
-        lvl: max_level
-    })
+        lvl: max_level,
+    };
+
+    for ( base, nb) in tree.base {
+        recipe_response.base.push(BaseResponse{
+            base,
+            quantity: nb.round() as i32
+        })
+    }
+
+    for ( group, nb) in tree.group {
+        recipe_response.group.push(GroupResponse{
+            group,
+            quantity: nb.round() as i32
+        })
+    }
+
+    for ( lvl, recipe_group_list) in tree.recipe_list {
+
+        let mut list = vec![];
+
+        for(recipe, nb) in recipe_group_list {
+            list.push(RecipePartialResponse{
+                recipe,
+                quantity: nb.round() as i32
+            })
+        }
+
+        recipe_response.recipe.push(RecipGroupResponse{
+            recipe_list: list,
+            level: lvl
+        });
+
+        recipe_response.recipe.sort_by(|a, b| a.level.cmp(&b.level))
+    }
+
+    Some(recipe_response)
 }
 
 
@@ -104,7 +168,4 @@ impl RecipeTree {
         max_lvl
     }
 
-    fn cleanup(&mut self) {
-        self.recipe_map = HashMap::new();
-    }
 }
