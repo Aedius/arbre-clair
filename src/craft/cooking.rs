@@ -27,7 +27,7 @@ pub fn get_all_recipe() -> Vec<RecipeSummary>{
     ret
 }
 
-fn get_recipe() -> Vec<Recipe> {
+pub fn get_recipe() -> Vec<Recipe> {
     let mut ret = Vec::new();
 
     let component = "Components";

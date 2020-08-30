@@ -1,3 +1,7 @@
+#[macro_use]
+extern crate lazy_static;
+
+use regex::Regex;
 use std::fs::File;
 use std::path::Path;
 use serde_json::json;
@@ -6,8 +10,16 @@ use tiny_http::{Method, Request, Response, Server, StatusCode};
 mod craft;
 
 use crate::craft::cooking::get_all_recipe as get_cooking_recipe;
+use crate::craft::recipe::handle as handle_recipe;
 
 const FOLDER_PREFIX : &str = "static";
+
+
+pub const URL_TOOLS_COOKING: &str = "/api/recipe/cooking";
+
+lazy_static! {
+    pub static ref URL_CRAFT_RECIPE_RE: Regex = Regex::new(r"/api/recipe/detail/([^/]+)$").unwrap();
+}
 
 fn main() {
     let server = Server::http("0.0.0.0:8081").unwrap();
@@ -64,11 +76,10 @@ fn get_path(prefix: &str, path: String) -> ResourceKind {
 }
 
 fn respond_api(path: String, request: Request) {
-    if path == "/api/recipe/cooking" {
+    if path == URL_TOOLS_COOKING {
 
         let recipes = get_cooking_recipe();
 
-        println!("{}", json!(recipes));
         let response = tiny_http::Response::from_string(format!("{}", json!(recipes)));
         match request.respond(response) {
             Ok(_) => {}
@@ -79,6 +90,38 @@ fn respond_api(path: String, request: Request) {
         return
     }
 
+    if URL_CRAFT_RECIPE_RE.is_match(path.as_str()) {
+        let caps = URL_CRAFT_RECIPE_RE.captures(path.as_str()).unwrap();
+
+        let as_text = caps.get(1).map_or("", |m| m.as_str());
+
+        let recipe = handle_recipe(as_text);
+
+
+       return match recipe {
+            None => {
+                return match request.respond(Response::new_empty(StatusCode(404))) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        println!("{}", e)
+                    }
+                };
+            },
+           Some(recipe) => {
+
+               println!("{:?}", recipe);
+
+               let response = tiny_http::Response::from_string(format!("{}", json!(recipe)));
+               match request.respond(response) {
+                   Ok(_) => {}
+                   Err(e) => {
+                       println!("{}", e)
+                   }
+               }
+           }
+        }
+
+    }
 
     return match request.respond(Response::new_empty(StatusCode(404))) {
         Ok(_) => {}
