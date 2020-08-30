@@ -1,7 +1,11 @@
 use std::fs::File;
 use std::path::Path;
-
+use serde_json::json;
 use tiny_http::{Method, Request, Response, Server, StatusCode};
+
+mod craft;
+
+use crate::craft::cooking::get_all_recipe as get_cooking_recipe;
 
 const FOLDER_PREFIX : &str = "static";
 
@@ -23,7 +27,9 @@ fn main() {
                 ResourceKind::Static(path) => {
                     respond_file(path, request)
                 }
-                ResourceKind::Api(_) => {}
+                ResourceKind::Api( path) => {
+                   respond_api(path, request)
+                }
             };
         } else {
             match request.respond(Response::new_empty(StatusCode(405))) {
@@ -57,6 +63,30 @@ fn get_path(prefix: &str, path: String) -> ResourceKind {
     ResourceKind::Static(format!("{}{}", prefix, path))
 }
 
+fn respond_api(path: String, request: Request) {
+    if path == "/api/recipe/cooking" {
+
+        let recipes = get_cooking_recipe();
+
+        println!("{}", json!(recipes));
+        let response = tiny_http::Response::from_string(format!("{}", json!(recipes)));
+        match request.respond(response) {
+            Ok(_) => {}
+            Err(e) => {
+                println!("{}", e)
+            }
+        }
+        return
+    }
+
+
+    return match request.respond(Response::new_empty(StatusCode(404))) {
+        Ok(_) => {}
+        Err(e) => {
+            println!("{}", e)
+        }
+    };
+}
 fn respond_file(path: String, request: Request) {
     let file = match File::open(&Path::new(path.as_str())) {
         Ok(file) => {
