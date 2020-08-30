@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::craft::BaseResource::*;
 
 pub mod cooking;
+pub mod recipe;
 
 #[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub struct RecipeSummary{
