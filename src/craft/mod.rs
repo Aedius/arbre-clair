@@ -1,23 +1,31 @@
 use std::hash::{Hash, Hasher};
+use serde::{Deserialize, Serialize};
 
 use crate::craft::BaseResource::*;
 
 pub mod cooking;
 
+#[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
+pub struct RecipeSummary{
+    pub key: &'static str,
+    pub name: &'static str,
+    pub profession: Profession,
+    pub stat: &'static str,
+}
 
-#[derive(Clone, Eq, PartialEq, Debug)]
+#[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub enum Profession {
     Cooking
 }
 
-#[derive(Clone, Eq, PartialEq, Debug)]
+#[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize )]
 pub enum Item {
     Base(BaseResource),
     Group(GroupResource),
     Crafted(CraftedResource),
 }
 
-#[derive(Clone, Eq, PartialEq, Debug)]
+#[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub struct Recipe {
     pub name: &'static str,
     pub input: Vec<(Item, i32)>,
@@ -25,6 +33,7 @@ pub struct Recipe {
     pub profession: Profession,
     pub menu: &'static str,
 }
+
 
 impl Recipe {
     pub fn crafted_data(&self) -> Option<CraftedData> {
@@ -38,7 +47,7 @@ impl Hash for Recipe{
     }
 }
 
-#[derive(Clone, Eq, PartialEq, Hash, Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
 pub enum BaseResource {
     Apple,
     Beeswax,
@@ -70,7 +79,7 @@ pub enum BaseResource {
     Onion,
 }
 
-#[derive(Clone, Eq, PartialEq, Hash, Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
 pub enum GroupResource {
     AnimalMeat,
     Herb,
@@ -84,7 +93,7 @@ pub enum GroupResource {
     WildRiceOrGnocchi,
 }
 
-#[derive(Clone, Eq, PartialEq, Hash, Debug)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
 pub enum CraftedResource {
     AppleJuice,
     ArtisanCheese,

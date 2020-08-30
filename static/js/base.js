@@ -43,47 +43,6 @@ class Menu extends HTMLElement {
                   margin: 0 1.5em;
                   padding: 0;
                 }
-                .menu a {
-                  padding: 0.5em 0;
-                  color: rgba(255, 255, 255, 0.5);
-                  position: relative;
-                  letter-spacing: 1px;
-                  text-decoration: none;
-                }
-                .menu a:before,
-                .menu a:after {
-                  position: absolute;
-                  -webkit-transition: all 0.35s ease;
-                  transition: all 0.35s ease;
-                }
-                .menu a:before {
-                  bottom: 0;
-                  display: block;
-                  height: 3px;
-                  width: 0%;
-                  content: "";
-                  background-color: ${StrongColor};
-                }
-                .menu a:after {
-                  left: 0;
-                  top: 0;
-                  padding: 0.5em 0;
-                  position: absolute;
-                  content: attr(data-hover);
-                  color: #ffffff;
-                  white-space: nowrap;
-                  max-width: 0%;
-                  overflow: hidden;
-                }
-                .menu a:hover:before,
-                .menu .current a:before {
-                  opacity: 1;
-                  width: 100%;
-                }
-                .menu a:hover:after,
-                .menu .current a:after {
-                  max-width: 100%;
-                }
 
                 nav{
                     position: absolute;
@@ -121,9 +80,9 @@ class Menu extends HTMLElement {
         this._menu = this.shadowRoot.querySelector(".menu");
         const li = this._pages.map( page => {
             if ( page.code == _selected){
-                return `<li class="current"><a href="#" data-hover="${page.name}">${page.name}</a></li>`
+                return `<li><cac-link href="#" current="1" data-hover="${page.name}">${page.name}</cac-link></li>`
             }else{
-               return  `<li><a href="${page.link}" data-hover="${page.name}">${page.name}</a></li>`
+               return  `<li><cac-link href="${page.link}" data-hover="${page.name}">${page.name}</cac-link></li>`
             }
         })
 
@@ -153,7 +112,7 @@ class Content extends HTMLElement {
             margin-bottom: 50px;
             text-align: center;
         }
-        
+
         main {
             color:white;
             background:linear-gradient( #1f203c, #26284e);
@@ -177,12 +136,6 @@ class Content extends HTMLElement {
             list-style-type: none;
         }
 
-        #footer a{
-            display:block;
-            text-decoration:none;
-            color:white;
-        }
-
         #footer li{
             text-align:center;
             float:left;
@@ -203,9 +156,9 @@ class Content extends HTMLElement {
     </main>
     <div id="footer">
     		<ul class="snip1135">
-    			<li><a href="https://discord.gg/zgkXV4W">Discord</a></li>
-    			<li><a href="https://crowfall.com/fr-FR/guilds/search?name=arbre%20clair">Guild in game</a></li>
-    			<li><a href="https://github.com/Aedius/arbre-clair">Github</a></li>
+    			<li><cac-link href="https://discord.gg/zgkXV4W">Discord</cac-link></li>
+    			<li><cac-link href="https://crowfall.com/fr-FR/guilds/search?name=arbre%20clair">Guild in game</cac-link></li>
+    			<li><cac-link href="https://github.com/Aedius/arbre-clair">Github</cac-link></li>
     		</ul>
     		<p>Tout droits r&eacute;serv&eacute;s à Aedius. Copyright&copy; 2020</p>
     </div>
@@ -214,6 +167,76 @@ class Content extends HTMLElement {
 
 }
 customElements.define('cac-content', Content);
+
+class Link extends HTMLElement {
+
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+      connectedCallback() {
+
+        var _href = this.getAttribute('href');
+        var _class = this.getAttribute('current') == 1 ? "current" : "";
+
+        this.shadowRoot.innerHTML = `
+        <style>
+            ${Base}
+            a {
+              padding: 0.5em 0;
+              color: rgba(255, 255, 255, 0.5);
+              position: relative;
+              letter-spacing: 1px;
+              text-decoration: none;
+              line-height:200%
+            }
+            a.current{
+              color: white;
+            }
+
+            a:before,
+            a:after {
+              position: absolute;
+              -webkit-transition: all 0.35s ease;
+              transition: all 0.35s ease;
+            }
+            a:before {
+              bottom: 0;
+              display: block;
+              height: 3px;
+              width: 0%;
+              content: "";
+              background-color: ${StrongColor};
+            }
+            a:after {
+              left: 0;
+              top: 0;
+              padding: 0.5em 0;
+              position: absolute;
+              content: attr(data-hover);
+              color: #ffffff;
+              white-space: nowrap;
+              max-width: 0%;
+              overflow: hidden;
+            }
+            a:hover:before,
+            a.current:before {
+              opacity: 1;
+              width: 100%;
+            }
+            a:hover:after,
+            a.current:after {
+              max-width: 100%;
+            }
+
+        </style>
+        <a href="${_href}" class="${_class}"><slot></slot></a>
+        `
+      }
+
+}
+customElements.define('cac-link', Link);
 
 class Banner extends HTMLElement {
 
