@@ -155,7 +155,7 @@ class Content extends HTMLElement {
 
     </main>
     <div id="footer">
-    		<ul class="snip1135">
+    		<ul>
     			<li><cac-link href="https://discord.gg/zgkXV4W">Discord</cac-link></li>
     			<li><cac-link href="https://crowfall.com/fr-FR/guilds/search?name=arbre%20clair">Guild in game</cac-link></li>
     			<li><cac-link href="https://github.com/Aedius/arbre-clair">Github</cac-link></li>
