@@ -165,6 +165,15 @@ pub struct CraftedData {
     pub stat: &'static str,
 }
 
+impl Item {
+    pub fn get_name(&self) -> &'static str {
+        match self {
+            Item::Base(base) => {base.get_name()},
+            Item::Group(group) => {group.get_name()},
+            Item::Crafted(crafted) => {crafted.get_name()},
+        }
+    }
+}
 
 impl CraftedResource {
     pub fn get_information(&self) -> Option<CraftedData> {
@@ -630,6 +639,72 @@ impl CraftedResource {
                 )
             }
             CraftedResource::Yeast => { None }
+        }
+    }
+
+    pub fn get_name(&self) -> &'static str {
+        match self {
+            CraftedResource::AppleJuice => {"Apple Juice"},
+            CraftedResource::ArtisanCheese => {"Artisan Cheese"},
+            CraftedResource::BakedIceCream => {"Baked Ice Cream"},
+            CraftedResource::BasicRoastedMeat => {"Basic Roasted Meat"},
+            CraftedResource::BloodwormStew => {"Bloodworm Stew"},
+            CraftedResource::BoneBroth => {"Bone Broth"},
+            CraftedResource::Bread => {"Bread"},
+            CraftedResource::BiscuitsAndGravy => {"Biscuits And Gravy"},
+            CraftedResource::BonTippers => {"Bon Tippers"},
+            CraftedResource::Butter => {"Butter"},
+            CraftedResource::Cake => {"Cake"},
+            CraftedResource::CampfireMeatyStew => {"Campfire Meaty Stew"},
+            CraftedResource::CampfireMushroomStew => {"Campfire Mushroom Stew"},
+            CraftedResource::CarrotJuice => {"Carrot Juice"},
+            CraftedResource::ChocolateBar => {"Chocolate Bar"},
+            CraftedResource::ChocolateMilk => {"Chocolate Milk"},
+            CraftedResource::ChocolateMilkSpicy => {"Chocolate Milk Spicy"},
+            CraftedResource::Coffee => {"Coffee"},
+            CraftedResource::Cookie => {"Cookie"},
+            CraftedResource::CookieChocolate => {"Cookie Chocolate"},
+            CraftedResource::CookingFoil => {"Cooking Foil"},
+            CraftedResource::CrushedHerb => {"Crushed Herb"},
+            CraftedResource::EmptyFlask => {"Empty Flask"},
+            CraftedResource::Gnocchi => {"Gnocchi"},
+            CraftedResource::GrilledCheeseSandwich => {"Grilled Cheese Sandwich"},
+            CraftedResource::GrilledSandwichAuroch => {"Grilled Sandwich Auroch"},
+            CraftedResource::GrilledSandwichBoar => {"Grilled Sandwich Boar"},
+            CraftedResource::GrilledSandwichMushroom => {"Grilled Sandwich Mushroom"},
+            CraftedResource::GrilledSandwichBear => {"Grilled Sandwich Bear"},
+            CraftedResource::GrilledSandwichElk => {"Grilled Sandwich Elk"},
+            CraftedResource::GrilledSandwichWolf => {"Grilled Sandwich Wolf"},
+            CraftedResource::GrilledSandwichSpider => {"Grilled Sandwich Spider"},
+            CraftedResource::GrilledSandwichBigCat => {"Grilled Sandwich Big Cat"},
+            CraftedResource::IceCream => {"Ice Cream"},
+            CraftedResource::KebabMushroom => {"Kebab Mushroom"},
+            CraftedResource::KebabAuroch => {"Kebab Auroch"},
+            CraftedResource::KebabBear => {"Kebab Bear"},
+            CraftedResource::KebabBigCat => {"Kebab Big Cat"},
+            CraftedResource::KebabBoar => {"Kebab Boar"},
+            CraftedResource::KebabElk => {"Kebab Elk"},
+            CraftedResource::KebabSpider => {"Kebab Spider"},
+            CraftedResource::KebabWolf => {"Kebab Wolf"},
+            CraftedResource::LargeCookingPot => {"Large Cooking Pot"},
+            CraftedResource::MarsalaStew => {"Marsala Stew"},
+            CraftedResource::MeatBurgundy => {"Meat Burgundy"},
+            CraftedResource::Mead => {"Mead"},
+            CraftedResource::MushroomStew => {"Mushroom Stew"},
+            CraftedResource::Paella => {"Paella"},
+            CraftedResource::PasteurizedMilk => {"Pasteurized Milk"},
+            CraftedResource::PestoGnocchi => {"Pesto Gnocchi"},
+            CraftedResource::PulverizedPotato => {"Pulverized Potato"},
+            CraftedResource::PotatoFlour => {"Potato Flour"},
+            CraftedResource::PotRoast => {"Pot Roast"},
+            CraftedResource::RedWine => {"Red Wine"},
+            CraftedResource::RoastingStick => {"Roasting Stick"},
+            CraftedResource::RoastedPig => {"Roasted Pig"},
+            CraftedResource::RoastedProduce => {"Roasted Produce"},
+            CraftedResource::SeasonedMushroom => {"Seasoned Mushroom"},
+            CraftedResource::SumptuousPotPie => {"Sumptuous Pot Pie"},
+            CraftedResource::TrailMix => {"Trail Mix"},
+            CraftedResource::Yeast => {"Yeast"},
         }
     }
 }

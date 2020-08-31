@@ -195,10 +195,16 @@ class Recipe extends HTMLElement {
 
                     var total = recipe.quantity * recipe.recipe.output[1]
 
+                    console.log();
+
+                    var input = recipe.recipe.input.map( input => {
+                        return `${input[1]} * <cac-strong>${input[0]}</cac-strong>`
+                    }).join(' and ')
+
                     return `<p>
                         Profession : <cac-strong>${recipe.recipe.profession}</cac-strong><br/>
                         Menu : <cac-strong>${recipe.recipe.menu}</cac-strong><br/>
-                        Perform <cac-strong>${recipe.quantity}</cac-strong> time the recipe <cac-strong>${recipe.recipe.name}</cac-strong><br/>
+                        Perform <cac-strong>${recipe.quantity}</cac-strong> time the recipe <cac-strong>${recipe.recipe.name}</cac-strong> (${input})<br/>
                         To get <cac-strong>${total} * ${recipe.recipe.output[0]}</cac-strong>
                     </p>`
                 }).join('')

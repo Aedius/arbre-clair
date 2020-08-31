@@ -15,6 +15,15 @@ pub struct RecipeTree {
 }
 
 #[derive(Debug, Serialize)]
+pub struct DisplayableRecipe {
+    pub name: &'static str,
+    pub input: Vec<(&'static str, i32)>,
+    pub output: (&'static str, i32),
+    pub profession: &'static str,
+    pub menu: &'static str,
+}
+
+#[derive(Debug, Serialize)]
 pub struct BaseResponse {
     base: &'static str,
     quantity: i32,
@@ -29,7 +38,7 @@ pub struct GroupResponse {
 
 #[derive(Debug, Serialize)]
 pub struct RecipePartialResponse {
-    recipe: Recipe,
+    recipe: DisplayableRecipe,
     quantity: i32,
 
 }
@@ -47,6 +56,18 @@ pub struct RecipeResponse {
     pub recipe: Vec<RecipGroupResponse>,
     pub summary: Recipe,
     pub lvl: i32,
+}
+
+//let mut base_list:Vec<&'static str> = group.clone().get_base().into_iter().map(|x| x.get_name()).collect();
+
+fn get_displayable_recipe(recipe: &Recipe) -> DisplayableRecipe{
+    DisplayableRecipe{
+        name: recipe.name,
+        input: recipe.input.clone().into_iter().map(|x| (x.0.get_name(), x.1 )).collect(),
+        output: (recipe.output.0.get_name(), recipe.output.1),
+        profession: recipe.profession.get_name(),
+        menu: recipe.menu,
+    }
 }
 
 pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
@@ -127,7 +148,7 @@ pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
 
         for(recipe, nb) in recipe_group_list {
             list.push(RecipePartialResponse{
-                recipe,
+                recipe: get_displayable_recipe(&recipe),
                 quantity: nb.round() as i32
             })
         }
