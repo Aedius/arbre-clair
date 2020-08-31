@@ -16,13 +16,14 @@ pub struct RecipeTree {
 
 #[derive(Debug, Serialize)]
 pub struct BaseResponse {
-    base: BaseResource,
+    base: &'static str,
     quantity: i32,
 }
 
 #[derive(Debug, Serialize)]
 pub struct GroupResponse {
-    group: GroupResource,
+    group: &'static str,
+    base_list: Vec<&'static str>,
     quantity: i32,
 }
 
@@ -95,17 +96,30 @@ pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
 
     for ( base, nb) in tree.base {
         recipe_response.base.push(BaseResponse{
-            base,
+            base : base.get_name(),
             quantity: nb.round() as i32
         })
     }
 
+    recipe_response.base.sort_by(|a, b| a.base.cmp(&b.base));
+
     for ( group, nb) in tree.group {
+
+
+        let mut base_list:Vec<&'static str> = group.clone().get_base().into_iter().map(|x| x.get_name()).collect();
+
+        base_list.sort_by(|a,b | a.cmp(&b));
+
         recipe_response.group.push(GroupResponse{
-            group,
-            quantity: nb.round() as i32
+            group: group.get_name(),
+            quantity: nb.round() as i32,
+            base_list
         })
     }
+
+
+    recipe_response.group.sort_by(|a, b| a.group.cmp(&b.group));
+
 
     for ( lvl, recipe_group_list) in tree.recipe_list {
 

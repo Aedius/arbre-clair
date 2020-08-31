@@ -710,16 +710,16 @@ impl GroupResource {
     }
     pub fn get_name(&self) -> &'static str {
         match self {
-            GroupResource::AnimalMeat => { "AnimalMeat" }
+            GroupResource::AnimalMeat => { "Animal Meat" }
             GroupResource::Herb => { "Herb" }
             GroupResource::Mushroom => { "Mushroom" }
-            GroupResource::MeatOrMushroom => { "MeatOrMushroom" }
-            GroupResource::NonBasicOre => { "NonBasicOre" }
-            GroupResource::NonBasicWood => { "NonBasicWood" }
+            GroupResource::MeatOrMushroom => { "Meat Or Mushroom" }
+            GroupResource::NonBasicOre => { "Non Basic Ore" }
+            GroupResource::NonBasicWood => { "Non Basic Wood" }
             GroupResource::Produce => { "Produce" }
             GroupResource::Seasoning => { "Seasoning" }
             GroupResource::Ore => { "Ore" }
-            GroupResource::WildRiceOrGnocchi => { "WildRiceOrGnocchi" }
+            GroupResource::WildRiceOrGnocchi => { "Wild Rice Or Gnocchi" }
         }
     }
 }
@@ -733,27 +733,27 @@ impl BaseResource {
             Blood => { "Blood" }
             Bone => { "Bone" }
             Carrot => { "Carrot" }
-            CocoaBean => { "CocoaBean" }
-            CoffeeBean => { "CoffeeBean" }
-            GroundBlackPepper => { "GroundBlackPepper" }
-            HotPepper => { "HotPepper" }
-            HungerShard => { "HungerShard" }
-            MeatAuroch => { "MeatAuroch" }
-            MeatBear => { "MeatBear" }
-            MeatBigCat => { "MeatBigCat" }
-            MeatBoar => { "MeatBoar" }
-            MeatElk => { "MeatElk" }
-            MeatSpider => { "MeatSpider" }
-            MeatWolf => { "MeatWolf" }
-            MildPepper => { "MildPepper" }
-            PineNuts => { "PineNuts" }
+            CocoaBean => { "Cocoa Bean" }
+            CoffeeBean => { "Coffee Bean" }
+            GroundBlackPepper => { "Ground Black Pepper" }
+            HotPepper => { "Hot Pepper" }
+            HungerShard => { "Hunger Shard" }
+            MeatAuroch => { "Meat Auroch" }
+            MeatBear => { "Meat Bear" }
+            MeatBigCat => { "Meat Big Cat" }
+            MeatBoar => { "Meat Boar" }
+            MeatElk => { "Meat Elk" }
+            MeatSpider => { "Meat Spider" }
+            MeatWolf => { "Meat Wolf" }
+            MildPepper => { "Mild Pepper" }
+            PineNuts => { "Pine Nuts" }
             Potato => { "Potato" }
-            RawMilk => { "RawMilk" }
-            SugarCane => { "SugarCane" }
-            SeasoningSalt => { "SeasoningSalt" }
-            SweetPepper => { "SweetPepper" }
-            WaterFlask => { "WaterFlask" }
-            WildRice => { "WildRice" }
+            RawMilk => { "Raw Milk" }
+            SugarCane => { "Sugar Cane" }
+            SeasoningSalt => { "Seasoning Salt" }
+            SweetPepper => { "Sweet Pepper" }
+            WaterFlask => { "Water Flask" }
+            WildRice => { "Wild Rice" }
             Onion => { "Onion" }
         }
     }
