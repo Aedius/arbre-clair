@@ -181,14 +181,17 @@ class Recipe extends HTMLElement {
             }).join('')
 
             var liGroup = this._data.group.map( resource => {
-               return  `<li>${resource.quantity} * <cac-strong>${resource.group}</cac-strong></li>`
+
+                var groupComponent = resource.base_list.map( base => {
+                    return `<cac-strong>${base}</cac-strong>`
+                }).join(' or ')
+
+               return  `<li>${resource.quantity} * <cac-strong>${resource.group}</cac-strong> (${groupComponent})</li>`
             }).join('')
 
             var step = this._data.recipe.map( recipeGroup => {
 
                 var group = recipeGroup.recipe_list.map( recipe => {
-
-                console.log(recipe)
 
                     var total = recipe.quantity * recipe.recipe.output[1]
 
