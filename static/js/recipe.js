@@ -230,3 +230,62 @@ class Recipe extends HTMLElement {
     }
 }
 customElements.define('cac-recipe', Recipe);
+
+class Description extends HTMLElement {
+
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+  connectedCallback() {
+
+
+    var _name = this.getAttribute('name');
+
+    this.shadowRoot.innerHTML = `
+    <style>
+        ${Base}
+
+        span a{
+            text-decoration:none;
+            color:rgba(241,81,85,1);
+        }
+
+        span a:hover,.compo a:focus{
+            color:#09c;
+            box-shadow:0 1px 0 rgba(255,255,255,.4);
+        }
+
+        span a span{
+            position:absolute;
+            margin-top:23px;
+            margin-left:-35px;
+            border:1px solid rgba(241,81,85,1);
+            color:#000;
+            background:linear-gradient(45deg,#e2e4fe,#c4c7ff);
+            padding-left:15px;
+            padding-right:15px;
+            border-radius:5px;
+            box-shadow:0 0 2px rgba(0,0,0,.5);
+            transform:scale(0) rotate(-12deg);
+            transition:all .25s;
+            opacity:0;
+        }
+
+        span a:hover span,.compo a:focus span{
+            transform:scale(1) rotate(0);
+            opacity:1;
+        }
+
+    </style>
+    <span>
+        <a href="#">${_name} *
+        <span><slot></slot></span>
+        </a>
+    </span>
+    `;
+  }
+
+}
+customElements.define('cac-desc', Description);

@@ -159,6 +159,7 @@ class Content extends HTMLElement {
     			<li><cac-link href="https://discord.gg/zgkXV4W">Discord</cac-link></li>
     			<li><cac-link href="https://crowfall.com/fr-FR/guilds/search?name=arbre%20clair">Guild in game</cac-link></li>
     			<li><cac-link href="https://github.com/Aedius/arbre-clair">Github</cac-link></li>
+    			<li><cac-link href="https://royogaming00.wixsite.com/lecrowmalin">Le Crow Malin</cac-link></li>
     		</ul>
     		<p>Tout droits r&eacute;serv&eacute;s à Aedius. Copyright&copy; 2020</p>
     </div>
