@@ -5,7 +5,7 @@ class RecipeContainer extends HTMLElement {
 
         this._craft = [{
                 code : "cooking",
-                name : "Cuisine",
+                name : "Cooking",
             }, {
                 code : 'foo',
                 name : "coming soon",
@@ -72,7 +72,8 @@ class RecipeContainer extends HTMLElement {
                 }
                 li {
                      display: inline-block;
-                     margin: 0 1.5em;
+                     margin: 0 0.5em;
+                     font-size: 1.8em;
                 }
             </style>
             <nav>
@@ -177,17 +178,18 @@ class Recipe extends HTMLElement {
     _display(){
 
             var liBase = this._data.base.map( resource => {
-               return  `<li>${resource.quantity} * <cac-strong>${resource.base}</cac-strong></li>`
+               return  `<li>${resource.quantity} x <cac-strong>${resource.base}</cac-strong></li>`
             }).join('')
 
             var liGroup = this._data.group.map( resource => {
 
                 var groupComponent = resource.base_list.map( base => {
-                    return `<cac-strong>${base}</cac-strong>`
-                }).join(' or ')
+                    return `<p><cac-strong>${base}</cac-strong><p>`
+                }).join('</p>ou<p>')
 
-               return  `<li>${resource.quantity} * <cac-strong>${resource.group}</cac-strong> (${groupComponent})</li>`
-            }).join('')
+               return  `<li>${resource.quantity} x
+                   <cac-desc name="${resource.group}" content="<p>${groupComponent}</p>"></cac-desc></li>`
+                }).join('')
 
             var step = this._data.recipe.map( recipeGroup => {
 
@@ -198,32 +200,110 @@ class Recipe extends HTMLElement {
                     console.log();
 
                     var input = recipe.recipe.input.map( input => {
-                        return `${input[1]} * <cac-strong>${input[0]}</cac-strong>`
-                    }).join(' and ')
+                        return `<p>${input[1]} x <cac-strong>${input[0]}</cac-strong></p>`
+                    }).join('')
 
-                    return `<p>
-                        Profession : <cac-strong>${recipe.recipe.profession}</cac-strong><br/>
-                        Menu : <cac-strong>${recipe.recipe.menu}</cac-strong><br/>
-                        Perform <cac-strong>${recipe.quantity}</cac-strong> time the recipe <cac-strong>${recipe.recipe.name}</cac-strong> (${input})<br/>
-                        To get <cac-strong>${total} * ${recipe.recipe.output[0]}</cac-strong>
-                    </p>`
+                    return `
+                        <p><span class="sous-titre">Profession : </span>${recipe.recipe.profession}</p>
+                        <p><span class="sous-titre">Menu : </span>${recipe.recipe.menu}</p>
+                        <div class="liste_ingredient">
+                            Perform <span class="multiplier">${recipe.quantity}</spang> times :
+                            <cac-desc name="${recipe.recipe.name}" content="${input}"></cac-desc>
+                        </div>
+                        <br/>
+                        <p>
+                        To get <span class="multiplier">${total}</span> x <span class="compo">${recipe.recipe.output[0]}</span>
+                        </p>
+                    `
                 }).join('')
 
                 return `
-                <div>
-                   <h2>step ${recipeGroup.level}</h2>
+
+                <div class="step">
+                    <h3>STEP ${recipeGroup.level}</h3>
                    ${group}
                 </div>
                 `
             }).join('')
 
             this.shadowRoot.innerHTML = `
-            <div>
-                to craft : <cac-strong>${this._data.summary.name}</cac-strong> you need :
+            <style>
+               ${Base}
+
+                h2{
+                    margin-left:40px;
+                    padding-bottom:10px;
+                    text-transform: uppercase;
+                    border-bottom:1mm ridge rgba(241,81,85,1);
+                    border-radius:10px;
+                }
+
+                #recette_cuisine{
+                    background-color:#fff;
+                    width:100%;
+                }
+
+                .nom_recette{
+                    width:25%;
+                    height:100%;
+                    float:left;
+                }
+
+
+                .ingredient{
+                    color:rgba(241,81,85,1);
+                    font-weight:bold;
+                }
+
+                .multiplier, .compo{
+                    color:rgba(241,81,85,1);
+                    font-weight:bold;
+                }
+
+                #step{
+                    background-color:#fff;
+                    color:#000;
+                    padding:20px;
+                    width:60%;
+                    border-left:2mm ridge rgba(241,81,85,1);
+                    border-right:2mm ridge rgba(241,81,85,1);
+                    border-radius:20px;
+                    margin-left:30%;
+                }
+
+                .step{
+                    width:80%;
+                    line-height:0.6em;
+                    border-bottom:1px solid #000;
+                    padding-bottom:10px;
+                    margin-left:10%;
+                    margin-right:10%;
+                }
+
+                .step:last-child{
+                    border-bottom:none;
+                }
+
+                .sous-titre{
+                    font-weight:bold;
+                }
+
+
+                .legende{
+                    margin-left:40px;
+                    font-size:0.8em;
+                }
+            </style>
+            <div class="recette_cuisine">
+                <div class="nom_recette">
+                    <h2>${this._data.summary.name}</h2>
                 <ul>
                     ${liBase}
                     ${liGroup}
                 </ul>
+                <p class="legende">*Passer sur les ingrédients pour connaire la composition.</p>
+            </div>
+            <div id="step">
                 ${step}
             </div>
           `
@@ -242,22 +322,23 @@ class Description extends HTMLElement {
 
 
     var _name = this.getAttribute('name');
+    var _content = this.getAttribute('content');
 
     this.shadowRoot.innerHTML = `
     <style>
         ${Base}
 
-        span a{
+        .compo a{
             text-decoration:none;
             color:rgba(241,81,85,1);
         }
 
-        span a:hover,.compo a:focus{
+        .compo a:hover,.compo a:focus{
             color:#09c;
             box-shadow:0 1px 0 rgba(255,255,255,.4);
         }
 
-        span a span{
+        .compo a span{
             position:absolute;
             margin-top:23px;
             margin-left:-35px;
@@ -273,15 +354,15 @@ class Description extends HTMLElement {
             opacity:0;
         }
 
-        span a:hover span,.compo a:focus span{
+        .compo a:hover span,.compo a:focus span{
             transform:scale(1) rotate(0);
             opacity:1;
         }
 
     </style>
-    <span>
-        <a href="#">${_name} *
-        <span><slot></slot></span>
+    <span class="compo">
+        <a href="#"><cac-strong>${_name} *</cac-strong>
+        <span>${_content}</span>
         </a>
     </span>
     `;

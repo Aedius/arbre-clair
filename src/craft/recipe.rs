@@ -4,6 +4,7 @@ use serde::{Serialize};
 
 use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item, RecipeSummary};
 use crate::craft::cooking::get_recipe as getCookingRecipe;
+use crate::craft::alchemy::get_recipe as getAlchemyRecipe;
 
 
 #[derive(Debug)]
@@ -73,7 +74,11 @@ fn get_displayable_recipe(recipe: &Recipe) -> DisplayableRecipe{
 pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
 
     //TODO add other recipe to the vec
-    let recipes = getCookingRecipe();
+    let cooking = getCookingRecipe();
+    let alchemy = getAlchemyRecipe();
+    let recipes = [&cooking[..], &alchemy[..]].concat();
+
+
 
     let mut recipe_map = HashMap::new();
 

@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::craft::BaseResource::*;
 
+pub mod alchemy;
 pub mod cooking;
 pub mod recipe;
 
@@ -16,7 +17,8 @@ pub struct RecipeSummary{
 
 #[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub enum Profession {
-    Cooking
+    Cooking,
+    Alchemy,
 }
 
 #[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize )]
@@ -50,6 +52,7 @@ impl Hash for Recipe{
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
 pub enum BaseResource {
+    Dust,
     Apple,
     Beeswax,
     Bloodworm,
@@ -78,6 +81,20 @@ pub enum BaseResource {
     WaterFlask,
     WildRice,
     Onion,
+    MushroomButton,
+    MushroomChanterelle,
+    Copper,
+    Iron,
+    Tin,
+    Silver,
+    Aurelium,
+    Slag,
+    Oak,
+    Birch,
+    Spruce,
+    Ash,
+    Yew,
+    Garlic,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
@@ -157,6 +174,7 @@ pub enum CraftedResource {
     SumptuousPotPie,
     TrailMix,
     Yeast,
+    PowderedStone,
 }
 
 pub struct CraftedData {
@@ -639,6 +657,7 @@ impl CraftedResource {
                 )
             }
             CraftedResource::Yeast => { None }
+            CraftedResource::PowderedStone => {None}
         }
     }
 
@@ -705,6 +724,7 @@ impl CraftedResource {
             CraftedResource::SumptuousPotPie => {"Sumptuous Pot Pie"},
             CraftedResource::TrailMix => {"Trail Mix"},
             CraftedResource::Yeast => {"Yeast"},
+            CraftedResource::PowderedStone => {"Powdered Stone"}
         }
     }
 }
@@ -730,7 +750,8 @@ impl GroupResource {
             }
             GroupResource::Mushroom => {
                 vec![
-                    //TODO
+                    MushroomButton,
+                    MushroomChanterelle
                 ]
             }
             GroupResource::MeatOrMushroom => {
@@ -745,12 +766,20 @@ impl GroupResource {
             }
             GroupResource::NonBasicOre => {
                 vec![
-                    //TODO
+                    Copper,
+                    Iron,
+                    Tin,
+                    Silver,
+                    Aurelium,
                 ]
             }
             GroupResource::NonBasicWood => {
                 vec![
-                    //TODO
+                    Oak,
+                    Birch,
+                    Spruce,
+                    Ash,
+                    Yew,
                 ]
             }
             GroupResource::Produce => {
@@ -767,12 +796,18 @@ impl GroupResource {
             }
             GroupResource::Seasoning => {
                 vec![
-                    //TODO
+                    Garlic,
+                    Onion,
                 ]
             }
             GroupResource::Ore => {
                 vec![
-                    //TODO
+                    Copper,
+                    Iron,
+                    Tin,
+                    Silver,
+                    Aurelium,
+                    Slag
                 ]
             }
             GroupResource::WildRiceOrGnocchi => {
@@ -830,12 +865,30 @@ impl BaseResource {
             WaterFlask => { "Water Flask" }
             WildRice => { "Wild Rice" }
             Onion => { "Onion" }
+            MushroomButton => {"Button Mushroom"}
+            MushroomChanterelle => {"Chanterelle Mushroom"}
+            Copper => { "Copper"}
+            Iron => {"Iron"}
+            Tin => {"Tin"}
+            Silver => {"Silver"}
+            Aurelium => {"Aurelium"}
+            Slag => {"Slag"}
+            Oak => {"Oak"}
+            Birch => {"Birch"}
+            Spruce => {"Spruce"}
+            Ash => {"Ash"}
+            Yew => {"Yew"}
+            Garlic => {"Garlic"}
+            Dust => {"Ethereal Dust"}
         }
     }
 }
 
 impl Profession {
     pub fn get_name(&self) -> &'static str {
-        match self { Profession::Cooking => { "Cooking" } }
+        match self {
+            Profession::Cooking => { "Cooking" }
+            Profession::Alchemy => { "Alchemy" }
+        }
     }
 }
