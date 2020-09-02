@@ -14,6 +14,7 @@ pub struct RecipeTree {
     pub group: HashMap<GroupResource, f32>,
     pub recipe_list: HashMap<i32, HashMap<Recipe, f32>>,
     recipe_map: HashMap<CraftedResource, Recipe>,
+    already_crafted: HashMap<CraftedResource, f32>
 }
 
 #[derive(Debug, Serialize)]
@@ -78,7 +79,13 @@ pub struct CraftedQuantity{
     qty: i32,
 }
 
-pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
+pub fn handle(recipe_name: &str, quantity: i32, got : Vec<CraftedQuantity>) -> Option<RecipeResponse> {
+
+    let mut already_crafted = HashMap::new();
+
+    for gotcha in got {
+        already_crafted.insert(gotcha.name, gotcha.qty as f32);
+    }
 
     //TODO add other recipe to the vec
     let cooking = getCookingRecipe();
@@ -110,6 +117,7 @@ pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
         group: HashMap::new(),
         recipe_list: HashMap::new(),
         recipe_map,
+        already_crafted,
     };
 
     let current_recipe = current_recipe.unwrap();
@@ -197,9 +205,28 @@ impl RecipeTree {
                         *current_group += nb * *qty as f32;
                     }
                     Item::Crafted(crafted) => {
-                        let current_lvl = self.add_resource(nb * *qty as f32, crafted.clone());
 
-                        max_lvl = max(max_lvl, current_lvl);
+                        let current_already_crafted = self.already_crafted.entry(crafted.clone()).or_insert(0.0);
+
+                        let mut to_craft = nb * *qty as f32;
+
+                        if *current_already_crafted > 0.0 {
+
+                            if *current_already_crafted as f32 > to_craft{
+                                *current_already_crafted = *current_already_crafted - to_craft ;
+                                to_craft = 0.0;
+                            }else{
+                                *current_already_crafted = 0.0;
+                                to_craft = to_craft - *current_already_crafted;
+                            }
+
+                        }
+
+                        if to_craft > 0.0 {
+                            let current_lvl = self.add_resource(to_craft, crafted.clone());
+
+                            max_lvl = max(max_lvl, current_lvl);
+                        }
                     }
                 }
             }

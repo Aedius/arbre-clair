@@ -118,7 +118,7 @@ fn respond_api(path: String, mut request: Request) {
 
         println!("{:?}",json);
 
-        let recipe = handle_recipe(as_text, as_int);
+        let recipe = handle_recipe(as_text, as_int, json);
 
         return match recipe {
             None => {
