@@ -1,6 +1,6 @@
 use std::cmp::max;
 use std::collections::HashMap;
-use serde::{Serialize};
+use serde::{Serialize, Deserialize};
 
 use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item, RecipeSummary};
 use crate::craft::cooking::get_recipe as getCookingRecipe;
@@ -97,6 +97,12 @@ fn get_displayable_recipe(recipe: &Recipe) -> DisplayableRecipe{
     }
 }
 
+#[derive(Debug, Deserialize)]
+pub struct CraftedQuantity{
+    name: CraftedResource,
+    qty: i32,
+}
+
 pub fn handle_craft(craft_name : &str) -> Option<Vec<RecipeSummary>> {
 
     let cooking = Alchemy;
@@ -129,8 +135,6 @@ pub fn handle_recipe(recipe_name: &str, quantity: i32) -> Option<RecipeResponse>
     let alchemy = getAlchemyRecipe();
     let stone_masonry = getStoneMasonry();
     let recipes = [&cooking[..], &alchemy[..], &jewel_crafting[..], &stone_masonry[..]].concat();
-
-
 
     let mut recipe_map = HashMap::new();
 
