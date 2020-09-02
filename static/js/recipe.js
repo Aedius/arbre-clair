@@ -102,7 +102,7 @@ class RecipeList extends HTMLElement {
 
         var those = this;
 
-        fetch('/api/recipe/' + this._kind).then(function (response) {
+        fetch('/api/recipe-list/' + this._kind).then(function (response) {
             // The API call was successful!
             return response.json();
         }).then(function (data) {
@@ -153,15 +153,38 @@ class Recipe extends HTMLElement {
 
         this._data=null
 
+        var lastNb =  parseInt(localStorage.getItem("recipeQuantity"));
+
+        console.log(lastNb);
+        console.log(Number.isInteger(lastNb));
+
+        if(Number.isInteger(lastNb) && lastNb>1){
+            this._nb=lastNb;
+        }else{
+            this._nb=1;
+        }
         this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
         this._kind = this.getAttribute('kind');
+        this._refresh();
+    }
+
+    _quantity_change(e){
+        var nb = parseInt(e.target.value)
+        if( Number.isInteger(nb)){
+            localStorage.setItem('recipeQuantity', nb);
+            this._nb = nb;
+            this._refresh();
+        }
+    }
+
+    _refresh(){
 
         var those = this
 
-        fetch('/api/recipe/detail/' + this._kind).then(function (response) {
+        fetch('/api/recipe/detail/' + this._kind + '/'+ this._nb).then(function (response) {
             // The API call was successful!
             return response.json();
         }).then(function (data) {
@@ -172,7 +195,6 @@ class Recipe extends HTMLElement {
             // There was an error
             console.warn('Something went wrong.', err);
         });
-
     }
 
     _display(){
@@ -197,8 +219,6 @@ class Recipe extends HTMLElement {
 
                     var total = recipe.quantity * recipe.recipe.output[1]
 
-                    console.log();
-
                     var input = recipe.recipe.input.map( input => {
                         return `<p>${input[1]} x <cac-strong>${input[0]}</cac-strong></p>`
                     }).join('')
@@ -215,7 +235,7 @@ class Recipe extends HTMLElement {
                         To get <span class="multiplier">${total}</span> x <span class="compo">${recipe.recipe.output[0]}</span>
                         </p>
                     `
-                }).join('')
+                }).join('<br/>')
 
                 return `
 
@@ -244,7 +264,7 @@ class Recipe extends HTMLElement {
                 }
 
                 .nom_recette{
-                    width:25%;
+                    width:35%;
                     height:100%;
                     float:left;
                 }
@@ -264,11 +284,11 @@ class Recipe extends HTMLElement {
                     background-color:#fff;
                     color:#000;
                     padding:20px;
-                    width:60%;
+                    width:50%;
                     border-left:2mm ridge rgba(241,81,85,1);
                     border-right:2mm ridge rgba(241,81,85,1);
                     border-radius:20px;
-                    margin-left:30%;
+                    margin-left:40%;
                 }
 
                 .step{
@@ -296,17 +316,20 @@ class Recipe extends HTMLElement {
             </style>
             <div class="recette_cuisine">
                 <div class="nom_recette">
-                    <h2>${this._data.summary.name}</h2>
+                    <h2><input class="recipe-quantity" name="quantity" value=${this._nb} size="2" type="number" min="1" max="999"/>
+                    ${this._data.summary.name}</h2>
                 <ul>
                     ${liBase}
                     ${liGroup}
                 </ul>
-                <p class="legende">*Passer sur les ingrédients pour connaire la composition.</p>
+                <p class="legende">*Passer sur les ingrédients pour connaitre la composition.</p>
             </div>
             <div id="step">
                 ${step}
             </div>
           `
+
+        this.shadowRoot.querySelector(".recipe-quantity").addEventListener('change', this._quantity_change.bind(this));
     }
 }
 customElements.define('cac-recipe', Recipe);

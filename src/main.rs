@@ -14,11 +14,10 @@ use crate::craft::recipe::handle as handle_recipe;
 
 const FOLDER_PREFIX : &str = "static";
 
-
-pub const URL_TOOLS_COOKING: &str = "/api/recipe/cooking";
+pub const URL_TOOLS_COOKING: &str = "/api/recipe-list/cooking";
 
 lazy_static! {
-    pub static ref URL_CRAFT_RECIPE_RE: Regex = Regex::new(r"/api/recipe/detail/([^/]+)$").unwrap();
+    pub static ref URL_CRAFT_RECIPE_RE: Regex = Regex::new(r"/api/recipe/detail/([^/]+)/([0-9]+)$").unwrap();
 }
 
 fn main() {
@@ -94,8 +93,9 @@ fn respond_api(path: String, request: Request) {
         let caps = URL_CRAFT_RECIPE_RE.captures(path.as_str()).unwrap();
 
         let as_text = caps.get(1).map_or("", |m| m.as_str());
+        let as_int = caps.get(2).map_or(1, |m| m.as_str().parse::<i32>().unwrap());
 
-        let recipe = handle_recipe(as_text);
+        let recipe = handle_recipe(as_text, as_int);
 
 
        return match recipe {
