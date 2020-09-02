@@ -71,7 +71,7 @@ fn get_displayable_recipe(recipe: &Recipe) -> DisplayableRecipe{
     }
 }
 
-pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
+pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
 
     //TODO add other recipe to the vec
     let cooking = getCookingRecipe();
@@ -110,7 +110,7 @@ pub fn handle(recipe_name: &str) -> Option<RecipeResponse> {
     let current_recipe = current_recipe.unwrap();
 
     // TODO : change qte.
-    let max_level = tree.add_resource(120.0, current_recipe.clone().output.0);
+    let max_level = tree.add_resource(quantity as f32, current_recipe.clone().output.0);
 
     let mut recipe_response = RecipeResponse {
         base: vec![],
