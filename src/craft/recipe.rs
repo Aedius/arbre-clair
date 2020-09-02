@@ -1,6 +1,6 @@
 use std::cmp::max;
 use std::collections::HashMap;
-use serde::{Serialize};
+use serde::{Serialize, Deserialize};
 
 use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item};
 use crate::craft::cooking::get_recipe as getCookingRecipe;
@@ -72,6 +72,12 @@ fn get_displayable_recipe(recipe: &Recipe) -> DisplayableRecipe{
     }
 }
 
+#[derive(Debug, Deserialize)]
+pub struct CraftedQuantity{
+    name: CraftedResource,
+    qty: i32,
+}
+
 pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
 
     //TODO add other recipe to the vec
@@ -79,8 +85,6 @@ pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
     let jewel_crafting = getJewelCraftingRecipe();
     let alchemy = getAlchemyRecipe();
     let recipes = [&cooking[..], &alchemy[..], &jewel_crafting[..]].concat();
-
-
 
     let mut recipe_map = HashMap::new();
 

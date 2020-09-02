@@ -12,7 +12,7 @@ mod craft;
 use crate::craft::Profession;
 use crate::craft::cooking::get_all_recipe as get_cooking_recipe;
 use crate::craft::jewelry::get_all_recipe as get_jewelry_recipe;
-use crate::craft::recipe::handle as handle_recipe;
+use crate::craft::recipe::{handle as handle_recipe, CraftedQuantity};
 
 const FOLDER_PREFIX: &str = "static";
 
@@ -75,7 +75,7 @@ fn get_path(prefix: &str, path: String) -> ResourceKind {
     ResourceKind::Static(format!("{}{}", prefix, path))
 }
 
-fn respond_api(path: String, request: Request) {
+fn respond_api(path: String, mut request: Request) {
     if URL_CRAFT_RE.is_match(path.as_str()) {
         let caps = URL_CRAFT_RE.captures(path.as_str()).unwrap();
         let as_text = caps.get(1).map_or("", |m| m.as_str());
@@ -108,6 +108,16 @@ fn respond_api(path: String, request: Request) {
         let as_text = caps.get(1).map_or("", |m| m.as_str());
         let as_int = caps.get(2).map_or(1, |m| m.as_str().parse::<i32>().unwrap());
 
+        let mut json :Vec<CraftedQuantity> = vec![];
+
+        if request.body_length().is_some() {
+            let mut content = String::new();
+            request.as_reader().read_to_string(&mut content).unwrap();
+            json = serde_json::from_str(content.as_str()).unwrap();
+        }
+
+        println!("{:?}",json);
+
         let recipe = handle_recipe(as_text, as_int);
 
         return match recipe {
@@ -118,7 +128,7 @@ fn respond_api(path: String, request: Request) {
                         println!("{}", e)
                     }
                 };
-            }
+            },
             Some(recipe) => {
                 println!("{:?}", recipe);
 
