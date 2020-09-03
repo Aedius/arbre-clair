@@ -25,7 +25,7 @@ pub fn get_recipe() -> Vec<Recipe> {
     ret.push(Recipe {
         name: "Grind Resource",
         input: vec![
-            (Item::Group(NonBasicOre), 2),
+            (Item::Group(NonBasicStone), 2),
         ],
         output: (PowderedStone, 1),
         profession: Profession::Alchemy,

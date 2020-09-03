@@ -8,7 +8,7 @@ pub mod cooking;
 pub mod recipe;
 
 #[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
-pub struct RecipeSummary{
+pub struct RecipeSummary {
     pub key: &'static str,
     pub name: &'static str,
     pub profession: Profession,
@@ -21,7 +21,7 @@ pub enum Profession {
     Alchemy,
 }
 
-#[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize )]
+#[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub enum Item {
     Base(BaseResource),
     Group(GroupResource),
@@ -39,12 +39,12 @@ pub struct Recipe {
 
 
 impl Recipe {
-    pub fn crafted_data(&self) -> Option<CraftedData> {
+    pub fn crafted_data(&self) -> CraftedData {
         self.output.0.get_information()
     }
 }
 
-impl Hash for Recipe{
+impl Hash for Recipe {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.name.hash(state);
     }
@@ -95,6 +95,11 @@ pub enum BaseResource {
     Ash,
     Yew,
     Garlic,
+    Granite,
+    Limestone,
+    Marble,
+    Slate,
+    Travertin,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
@@ -105,6 +110,7 @@ pub enum GroupResource {
     MeatOrMushroom,
     NonBasicOre,
     NonBasicWood,
+    NonBasicStone,
     Produce,
     Seasoning,
     Ore,
@@ -116,8 +122,6 @@ pub enum CraftedResource {
     AppleJuice,
     ArtisanCheese,
     BakedIceCream,
-    BasicRoastedMeat,
-    BloodwormStew,
     BoneBroth,
     Bread,
     BiscuitsAndGravy,
@@ -131,13 +135,10 @@ pub enum CraftedResource {
     ChocolateMilk,
     ChocolateMilkSpicy,
     Coffee,
-    Cookie,
-    CookieChocolate,
     CookingFoil,
     CrushedHerb,
     EmptyFlask,
     Gnocchi,
-    GrilledCheeseSandwich,
     GrilledSandwichAuroch,
     GrilledSandwichBoar,
     GrilledSandwichMushroom,
@@ -158,7 +159,6 @@ pub enum CraftedResource {
     LargeCookingPot,
     MarsalaStew,
     MeatBurgundy,
-    Mead,
     MushroomStew,
     Paella,
     PasteurizedMilk,
@@ -168,9 +168,7 @@ pub enum CraftedResource {
     PotRoast,
     RedWine,
     RoastingStick,
-    RoastedPig,
     RoastedProduce,
-    SeasonedMushroom,
     SumptuousPotPie,
     TrailMix,
     Yeast,
@@ -179,552 +177,405 @@ pub enum CraftedResource {
 
 pub struct CraftedData {
     pub key: &'static str,
-    pub name: &'static str,
-    pub stat: &'static str,
+    pub description: &'static str,
 }
 
 impl Item {
     pub fn get_name(&self) -> &'static str {
         match self {
-            Item::Base(base) => {base.get_name()},
-            Item::Group(group) => {group.get_name()},
-            Item::Crafted(crafted) => {crafted.get_name()},
+            Item::Base(base) => { base.get_name() }
+            Item::Group(group) => { group.get_name() }
+            Item::Crafted(crafted) => { crafted.get_name() }
         }
     }
 }
 
 impl CraftedResource {
-    pub fn get_information(&self) -> Option<CraftedData> {
+    pub fn get_information(&self) -> CraftedData {
         match self {
             CraftedResource::AppleJuice => {
-                Some(
-                    CraftedData {
-                        name: "Apple Juice",
-                        stat: "Find Weak Spot +5%",
-                        key: "AppleJuice",
-                    }
-                )
+                CraftedData {
+                    description: "Find Weak Spot +5%",
+                    key: "AppleJuice",
+                }
             }
             CraftedResource::ArtisanCheese => {
-                Some(
-                    CraftedData {
-                        name: "Artisan Cheese",
-                        stat: "Harvest Critical Chance +5%",
-                        key: "ArtisanCheese",
-                    }
-                )
+                CraftedData {
+                    description: "Harvest Critical Chance +5%",
+                    key: "ArtisanCheese",
+                }
             }
             CraftedResource::BakedIceCream => {
-                Some(
-                    CraftedData {
-                        name: "Baked Ice Cream",
-                        stat: "Chance to do Fire damage 5%",
-                        key: "BakedIceCream",
-                    }
-                )
-            }
-            CraftedResource::BasicRoastedMeat => { None }
-            CraftedResource::BloodwormStew => {
-                Some(
-                    CraftedData {
-                        name: "Bloodworm Stew",
-                        stat: "Food Regen +10, grants Trailblazer/master",
-                        key: "BloodwormStew",
-                    }
-                )
+                CraftedData {
+                    description: "Chance to do Fire damage 5%",
+                    key: "BakedIceCream",
+                }
             }
             CraftedResource::BoneBroth => {
-                Some(
-                    CraftedData {
-                        name: "Bone Broth",
-                        stat: "Incoming Healing +3%",
-                        key: "BoneBroth",
-                    }
-                )
+                CraftedData {
+                    description: "Incoming Healing +3%",
+                    key: "BoneBroth",
+                }
             }
             CraftedResource::Bread => {
-                Some(
-                    CraftedData {
-                        name: "Bread",
-                        stat: "Pathfinding +10%",
-                        key: "Bread",
-                    }
-                )
+                CraftedData {
+                    description: "Pathfinding +10%",
+                    key: "Bread",
+                }
             }
             CraftedResource::BiscuitsAndGravy => {
-                Some(
-                    CraftedData {
-                        name: "Biscuits and Gravy",
-                        stat: "Food Regen Rate +20",
-                        key: "BiscuitsAndGravy",
-                    }
-                )
+                CraftedData {
+                    description: "Food Regen Rate +20",
+                    key: "BiscuitsAndGravy",
+                }
             }
             CraftedResource::BonTippers => {
-                Some(
-                    CraftedData {
-                        name: "Bon Tippers",
-                        stat: "Exp Difficulty Mod +15 on next experiment",
-                        key: "BonTippers",
-                    }
-                )
+                CraftedData {
+                    description: "Exp Difficulty Mod +15 on next experiment",
+                    key: "BonTippers",
+                }
             }
             CraftedResource::Butter => {
-                Some(
-                    CraftedData {
-                        name: "Fresh Butter",
-                        stat: "Harvest Chance: Cutting Grit +2%",
-                        key: "Butter",
-                    }
-                )
+                CraftedData {
+                    description: "Harvest Chance: Cutting Grit +2%",
+                    key: "Butter",
+                }
             }
             CraftedResource::Cake => {
-                Some(
-                    CraftedData {
-                        name: "Cake",
-                        stat: "Health +150, Stamina -15",
-                        key: "Cake",
-                    }
-                )
+                CraftedData {
+                    description: "Health +150, Stamina -15",
+                    key: "Cake",
+                }
             }
             CraftedResource::CampfireMeatyStew => {
-                Some(
-                    CraftedData {
-                        name: "Campfire Meaty Stew",
-                        stat: "Mounted Movement Speed +5%",
-                        key: "CampfireMeatyStew",
-                    }
-                )
+                CraftedData {
+                    description: "Mounted Movement Speed +5%",
+                    key: "CampfireMeatyStew",
+                }
             }
             CraftedResource::CampfireMushroomStew => {
-                Some(
-                    CraftedData {
-                        name: "Campfire Mushroom Stew",
-                        stat: "Harvest Critical Chance +5%",
-                        key: "CampfireMushroomStew",
-                    }
-                )
+                CraftedData {
+                    description: "Harvest Critical Chance +5%",
+                    key: "CampfireMushroomStew",
+                }
             }
             CraftedResource::CarrotJuice => {
-                Some(
-                    CraftedData {
-                        name: "Carrot Juice",
-                        stat: "Ranged Distance Bonus +3m",
-                        key: "CarrotJuice",
-                    }
-                )
+                CraftedData {
+                    description: "Ranged Distance Bonus +3m",
+                    key: "CarrotJuice",
+                }
             }
             CraftedResource::ChocolateBar => {
-                Some(
-                    CraftedData {
-                        name: "Chocalate Bar",
-                        stat: "Combat Movement +5% / Health -150",
-                        key: "ChocolateBar",
-                    }
-                )
+                CraftedData {
+                    description: "Combat Movement +5% / Health -150",
+                    key: "ChocolateBar",
+                }
             }
             CraftedResource::ChocolateMilk => {
-                Some(
-                    CraftedData {
-                        name: "Chocolate Milk",
-                        stat: "HP +150, Stam -15",
-                        key: "ChocolateMilk",
-                    }
-                )
+                CraftedData {
+                    description: "HP +150, Stam -15",
+                    key: "ChocolateMilk",
+                }
             }
             CraftedResource::ChocolateMilkSpicy => {
-                Some(
-                    CraftedData {
-                        name: "Spicy Chocolate Milk",
-                        stat: "Elemental Damage +3%",
-                        key: "ChocolateMilkSpicy",
-                    }
-                )
+                CraftedData {
+                    description: "Elemental Damage +3%",
+                    key: "ChocolateMilkSpicy",
+                }
             }
             CraftedResource::Coffee => {
-                Some(
-                    CraftedData {
-                        name: "Coffee",
-                        stat: "Stamina +10",
-                        key: "Coffee",
-                    }
-                )
+                CraftedData {
+                    description: "Stamina +10",
+                    key: "Coffee",
+                }
             }
-            CraftedResource::Cookie => {
-                Some(
-                    CraftedData {
-                        name: "Cookies",
-                        stat: "Combat Movement Speed +5%",
-                        key: "Cookie",
-                    }
-                )
+            CraftedResource::CookingFoil => {
+                CraftedData {
+                    description: "",
+                    key: "CookingFoil",
+                }
             }
-            CraftedResource::CookieChocolate => {
-                Some(
-                    CraftedData {
-                        name: "Chocolate Cookies",
-                        stat: "Combat Movement Speed +5%",
-                        key: "CookieChocolate",
-                    }
-                )
+            CraftedResource::CrushedHerb => {
+                CraftedData {
+                    description: "",
+                    key: "CrushedHerb",
+                }
             }
-            CraftedResource::CookingFoil => { None }
-            CraftedResource::CrushedHerb => { None }
-            CraftedResource::EmptyFlask => { None }
+            CraftedResource::EmptyFlask => {
+                CraftedData {
+                    description: "",
+                    key: "EmptyFlask",
+                }
+            }
             CraftedResource::Gnocchi => {
-                Some(
-                    CraftedData {
-                        name: "Gnocchi",
-                        stat: "Pathfinding Speed +10%",
-                        key: "Gnocchi",
-                    }
-                )
-            }
-            CraftedResource::GrilledCheeseSandwich => {
-                Some(
-                    CraftedData {
-                        name: "Grilled Cheese Sandwich",
-                        stat: "Harvest Critical Amount +1",
-                        key: "GrilledCheeseSandwich",
-                    }
-                )
+                CraftedData {
+                    description: "Pathfinding Speed +10%",
+                    key: "Gnocchi",
+                }
             }
             CraftedResource::GrilledSandwichAuroch => {
-                Some(
-                    CraftedData {
-                        name: "Auroch Meat Sandwich",
-                        stat: "Fire Armor Bonus +3%",
-                        key: "GrilledSandwichAuroch",
-                    }
-                )
+                CraftedData {
+                    description: "Fire Armor Bonus +3%",
+                    key: "GrilledSandwichAuroch",
+                }
             }
             CraftedResource::GrilledSandwichBoar => {
-                Some(
-                    CraftedData {
-                        name: "Boar Meat Sandwich",
-                        stat: "Ice Armor Bonus +3%",
-                        key: "GrilledSandwichBoar",
-                    }
-                )
+                CraftedData {
+                    description: "Ice Armor Bonus +3%",
+                    key: "GrilledSandwichBoar",
+                }
             }
             CraftedResource::GrilledSandwichMushroom => {
-                Some(
-                    CraftedData {
-                        name: "Mushroom Sandwich",
-                        stat: "Harvest Critical Amount +1",
-                        key: "GrilledSandwichMushroom",
-                    }
-                )
+                CraftedData {
+                    description: "Harvest Critical Amount +1",
+                    key: "GrilledSandwichMushroom",
+                }
             }
             CraftedResource::GrilledSandwichBear => {
-                Some(
-                    CraftedData {
-                        name: "Bear Meat Sandwich",
-                        stat: "Disease Armor Bonus +3%",
-                        key: "GrilledSandwichBear",
-                    }
-                )
+                CraftedData {
+                    description: "Disease Armor Bonus +3%",
+                    key: "GrilledSandwichBear",
+                }
             }
             CraftedResource::GrilledSandwichElk => {
-                Some(
-                    CraftedData {
-                        name: "Elk Meat Sandwich",
-                        stat: "Ice Armor Bonus +3%",
-                        key: "GrilledSandwichElk",
-                    }
-                )
+                CraftedData {
+                    description: "Ice Armor Bonus +3%",
+                    key: "GrilledSandwichElk",
+                }
             }
             CraftedResource::GrilledSandwichWolf => {
-                Some(
-                    CraftedData {
-                        name: "Wolf Meat Sandwich",
-                        stat: "Electric Armor Bonus +3%",
-                        key: "GrilledSandwichWolf",
-                    }
-                )
+                CraftedData {
+                    description: "Electric Armor Bonus +3%",
+                    key: "GrilledSandwichWolf",
+                }
             }
             CraftedResource::GrilledSandwichSpider => {
-                Some(
-                    CraftedData {
-                        name: "Spider Meat Sandwich",
-                        stat: "Poison Armor Bonus +3%",
-                        key: "GrilledSandwichSpider",
-                    }
-                )
+                CraftedData {
+                    description: "Poison Armor Bonus +3%",
+                    key: "GrilledSandwichSpider",
+                }
             }
             CraftedResource::GrilledSandwichBigCat => {
-                Some(
-                    CraftedData {
-                        name: "Big Cat Meat Sandwidch",
-                        stat: "Nature Armor Bonus +3%",
-                        key: "GrilledSandwichBigCat",
-                    }
-                )
+                CraftedData {
+                    description: "Nature Armor Bonus +3%",
+                    key: "GrilledSandwichBigCat",
+                }
             }
             CraftedResource::IceCream => {
-                Some(
-                    CraftedData {
-                        name: "Ice Cream",
-                        stat: "Chance to do Ice damage 5%",
-                        key: "IceCream",
-                    }
-                )
+                CraftedData {
+                    description: "Chance to do Ice damage 5%",
+                    key: "IceCream",
+                }
             }
             CraftedResource::KebabMushroom => {
-                Some(
-                    CraftedData {
-                        name: "Mushroom Kebab",
-                        stat: "Plentiful Harvest Wood +1",
-                        key: "KebabMushroom",
-                    }
-                )
+                CraftedData {
+                    description: "Plentiful Harvest Wood +1",
+                    key: "KebabMushroom",
+                }
             }
             CraftedResource::KebabAuroch => {
-                Some(
-                    CraftedData {
-                        name: "Auroch Meat Kebab",
-                        stat: "Plentiful Harvest Ore +1",
-                        key: "KebabAuroch",
-                    }
-                )
+                CraftedData {
+                    description: "Plentiful Harvest Ore +1",
+                    key: "KebabAuroch",
+                }
             }
             CraftedResource::KebabBear => {
-                Some(
-                    CraftedData {
-                        name: "Bear Meat Kebab",
-                        stat: "Plentiful Harvest Wood +1",
-                        key: "KebabBear",
-                    }
-                )
+                CraftedData {
+                    description: "Plentiful Harvest Wood +1",
+                    key: "KebabBear",
+                }
             }
             CraftedResource::KebabBigCat => {
-                Some(
-                    CraftedData {
-                        name: "Big Cat Meat Kebab",
-                        stat: "Plentiful Harvest Ore +1",
-                        key: "KebabBigCat",
-                    }
-                )
+                CraftedData {
+                    description: "Plentiful Harvest Ore +1",
+                    key: "KebabBigCat",
+                }
             }
             CraftedResource::KebabBoar => {
-                Some(
-                    CraftedData {
-                        name: "Boar Meat Kebab",
-                        stat: "Plentiful Harvest Stone +1",
-                        key: "KebabBoar",
-                    }
-                )
+                CraftedData {
+                    description: "Plentiful Harvest Stone +1",
+                    key: "KebabBoar",
+                }
             }
             CraftedResource::KebabElk => {
-                Some(
-                    CraftedData {
-                        name: "Elk Meat Kebab",
-                        stat: "Plentiful Harvest Stone +1",
-                        key: "KebabElk",
-                    }
-                )
+                CraftedData {
+                    description: "Plentiful Harvest Stone +1",
+                    key: "KebabElk",
+                }
             }
             CraftedResource::KebabSpider => {
-                Some(
                     CraftedData {
-                        name: "Spider Meat Kebab",
-                        stat: "Plentiful Harvest Graves +1",
+                        description: "Plentiful Harvest Graves +1",
                         key: "KebabSpider",
                     }
-                )
             }
             CraftedResource::KebabWolf => {
-                Some(
-                    CraftedData {
-                        name: "Wolf Meat Kebab",
-                        stat: "Plentiful Harvest Animal +1",
-                        key: "KebabWolf",
-                    }
-                )
+                CraftedData {
+                    description: "Plentiful Harvest Animal +1",
+                    key: "KebabWolf",
+                }
             }
-            CraftedResource::LargeCookingPot => { None }
+            CraftedResource::LargeCookingPot => {
+                CraftedData {
+                    description: "",
+                    key: "LargeCookingPot",
+                }
+            }
             CraftedResource::MarsalaStew => {
-                Some(
-                    CraftedData {
-                        name: "Marsala Stew",
-                        stat: "Bard Songs +6 seconds",
-                        key: "MarsalaStew",
-                    }
-                )
+                CraftedData {
+                    description: "Bard Songs +6 seconds",
+                    key: "MarsalaStew",
+                }
             }
             CraftedResource::MeatBurgundy => {
-                Some(
-                    CraftedData {
-                        name: "Meat Burgundy",
-                        stat: "Basic Attack Damage +10%",
-                        key: "MeatBurgundy",
-                    }
-                )
+                CraftedData {
+                    description: "Basic Attack Damage +10%",
+                    key: "MeatBurgundy",
+                }
             }
-            CraftedResource::Mead => { None }
             CraftedResource::MushroomStew => {
-                Some(
-                    CraftedData {
-                        name: "Mushroom Stew",
-                        stat: "Harvest Critical Chance: All 5%",
-                        key: "MushroomStew",
-                    }
-                )
+                CraftedData {
+                    description: "Harvest Critical Chance: All 5%",
+                    key: "MushroomStew",
+                }
             }
             CraftedResource::Paella => {
-                Some(
-                    CraftedData {
-                        name: "Paella",
-                        stat: "Ranged Power Damage +5%",
-                        key: "Paella",
-                    }
-                )
+                CraftedData {
+                    description: "Ranged Power Damage +5%",
+                    key: "Paella",
+                }
             }
             CraftedResource::PasteurizedMilk => {
-                Some(
-                    CraftedData {
-                        name: "Pasteurized Milk",
-                        stat: "Incoming Healing +3%",
-                        key: "PasteurizedMilk",
-                    }
-                )
+                CraftedData {
+                    description: "Incoming Healing +3%",
+                    key: "PasteurizedMilk",
+                }
             }
             CraftedResource::PestoGnocchi => {
-                Some(
-                    CraftedData {
-                        name: "Pesto Gnocchi",
-                        stat: "Harvest Pips +0.5",
-                        key: "PestoGnocchi",
-                    }
-                )
+                CraftedData {
+                    description: "Harvest Pips +0.5",
+                    key: "PestoGnocchi",
+                }
             }
-            CraftedResource::PulverizedPotato => { None }
-            CraftedResource::PotatoFlour => { None }
+            CraftedResource::PulverizedPotato => {
+                CraftedData {
+                    description: "",
+                    key: "PulverizedPotato",
+                }
+            }
+            CraftedResource::PotatoFlour => {
+                CraftedData {
+                    description: "",
+                    key: "PotatoFlour",
+                }
+            }
             CraftedResource::PotRoast => {
-                Some(
-                    CraftedData {
-                        name: "Pot Roast",
-                        stat: "Healing Bonus +3%",
-                        key: "PotRoast",
-                    }
-                )
+                CraftedData {
+                    description: "Healing Bonus +3%",
+                    key: "PotRoast",
+                }
             }
             CraftedResource::RedWine => {
-                Some(
-                    CraftedData {
-                        name: "Red Wine",
-                        stat: "Stamina +10, Food Regen -20",
-                        key: "RedWine",
-                    }
-                )
+                CraftedData {
+                    description: "Stamina +10, Food Regen -20",
+                    key: "RedWine",
+                }
             }
-            CraftedResource::RoastingStick => { None }
-            CraftedResource::RoastedPig => {
-                Some(
-                    CraftedData {
-                        name: "Roasted Pig",
-                        stat: "Healing Bonus +3%",
-                        key: "RoastedPig",
-                    }
-                )
+            CraftedResource::RoastingStick => {
+                CraftedData {
+                    description: "",
+                    key: "RoastingStick",
+                }
             }
-            CraftedResource::RoastedProduce => { None }
-            CraftedResource::SeasonedMushroom => {
-                Some(
-                    CraftedData {
-                        name: "Seasoned Mushroom",
-                        stat: "Harvest Chance: Soulgems +2%",
-                        key: "SeasonedMushroom",
-                    }
-                )
+            CraftedResource::RoastedProduce => {
+                CraftedData {
+                    description: "",
+                    key: "RoastedProduce",
+                }
             }
             CraftedResource::SumptuousPotPie => {
-                Some(
-                    CraftedData {
-                        name: "Sumptuous Pot Pie",
-                        stat: "General Crafting Exp. Points +1",
-                        key: "SumptuousPotPie",
-                    }
-                )
+                CraftedData {
+                    description: "General Crafting Exp. Points +1",
+                    key: "SumptuousPotPie",
+                }
             }
             CraftedResource::TrailMix => {
-                Some(
-                    CraftedData {
-                        name: "Trail Mix",
-                        stat: "Harvest Chance: Survivalist +3%",
-                        key: "TrailMix",
-                    }
-                )
+                CraftedData {
+                    description: "Harvest Chance: Survivalist +3%",
+                    key: "TrailMix",
+                }
             }
-            CraftedResource::Yeast => { None }
-            CraftedResource::PowderedStone => {None}
+            CraftedResource::Yeast => {
+                CraftedData {
+                    description: "",
+                    key: "Yeast",
+                }
+            }
+            CraftedResource::PowderedStone => {
+                CraftedData {
+                    description: "",
+                    key: "PowderedStone",
+                }
+            }
         }
     }
 
     pub fn get_name(&self) -> &'static str {
         match self {
-            CraftedResource::AppleJuice => {"Apple Juice"},
-            CraftedResource::ArtisanCheese => {"Artisan Cheese"},
-            CraftedResource::BakedIceCream => {"Baked Ice Cream"},
-            CraftedResource::BasicRoastedMeat => {"Basic Roasted Meat"},
-            CraftedResource::BloodwormStew => {"Bloodworm Stew"},
-            CraftedResource::BoneBroth => {"Bone Broth"},
-            CraftedResource::Bread => {"Bread"},
-            CraftedResource::BiscuitsAndGravy => {"Biscuits And Gravy"},
-            CraftedResource::BonTippers => {"Bon Tippers"},
-            CraftedResource::Butter => {"Butter"},
-            CraftedResource::Cake => {"Cake"},
-            CraftedResource::CampfireMeatyStew => {"Campfire Meaty Stew"},
-            CraftedResource::CampfireMushroomStew => {"Campfire Mushroom Stew"},
-            CraftedResource::CarrotJuice => {"Carrot Juice"},
-            CraftedResource::ChocolateBar => {"Chocolate Bar"},
-            CraftedResource::ChocolateMilk => {"Chocolate Milk"},
-            CraftedResource::ChocolateMilkSpicy => {"Chocolate Milk Spicy"},
-            CraftedResource::Coffee => {"Coffee"},
-            CraftedResource::Cookie => {"Cookie"},
-            CraftedResource::CookieChocolate => {"Cookie Chocolate"},
-            CraftedResource::CookingFoil => {"Cooking Foil"},
-            CraftedResource::CrushedHerb => {"Crushed Herb"},
-            CraftedResource::EmptyFlask => {"Empty Flask"},
-            CraftedResource::Gnocchi => {"Gnocchi"},
-            CraftedResource::GrilledCheeseSandwich => {"Grilled Cheese Sandwich"},
-            CraftedResource::GrilledSandwichAuroch => {"Grilled Sandwich Auroch"},
-            CraftedResource::GrilledSandwichBoar => {"Grilled Sandwich Boar"},
-            CraftedResource::GrilledSandwichMushroom => {"Grilled Sandwich Mushroom"},
-            CraftedResource::GrilledSandwichBear => {"Grilled Sandwich Bear"},
-            CraftedResource::GrilledSandwichElk => {"Grilled Sandwich Elk"},
-            CraftedResource::GrilledSandwichWolf => {"Grilled Sandwich Wolf"},
-            CraftedResource::GrilledSandwichSpider => {"Grilled Sandwich Spider"},
-            CraftedResource::GrilledSandwichBigCat => {"Grilled Sandwich Big Cat"},
-            CraftedResource::IceCream => {"Ice Cream"},
-            CraftedResource::KebabMushroom => {"Kebab Mushroom"},
-            CraftedResource::KebabAuroch => {"Kebab Auroch"},
-            CraftedResource::KebabBear => {"Kebab Bear"},
-            CraftedResource::KebabBigCat => {"Kebab Big Cat"},
-            CraftedResource::KebabBoar => {"Kebab Boar"},
-            CraftedResource::KebabElk => {"Kebab Elk"},
-            CraftedResource::KebabSpider => {"Kebab Spider"},
-            CraftedResource::KebabWolf => {"Kebab Wolf"},
-            CraftedResource::LargeCookingPot => {"Large Cooking Pot"},
-            CraftedResource::MarsalaStew => {"Marsala Stew"},
-            CraftedResource::MeatBurgundy => {"Meat Burgundy"},
-            CraftedResource::Mead => {"Mead"},
-            CraftedResource::MushroomStew => {"Mushroom Stew"},
-            CraftedResource::Paella => {"Paella"},
-            CraftedResource::PasteurizedMilk => {"Pasteurized Milk"},
-            CraftedResource::PestoGnocchi => {"Pesto Gnocchi"},
-            CraftedResource::PulverizedPotato => {"Pulverized Potato"},
-            CraftedResource::PotatoFlour => {"Potato Flour"},
-            CraftedResource::PotRoast => {"Pot Roast"},
-            CraftedResource::RedWine => {"Red Wine"},
-            CraftedResource::RoastingStick => {"Roasting Stick"},
-            CraftedResource::RoastedPig => {"Roasted Pig"},
-            CraftedResource::RoastedProduce => {"Roasted Produce"},
-            CraftedResource::SeasonedMushroom => {"Seasoned Mushroom"},
-            CraftedResource::SumptuousPotPie => {"Sumptuous Pot Pie"},
-            CraftedResource::TrailMix => {"Trail Mix"},
-            CraftedResource::Yeast => {"Yeast"},
-            CraftedResource::PowderedStone => {"Powdered Stone"}
+            CraftedResource::AppleJuice => { "Apple juice" }
+            CraftedResource::ArtisanCheese => { "Artisan cheese" }
+            CraftedResource::BakedIceCream => { "Baked ice cream" }
+            CraftedResource::BoneBroth => { "Bone broth" }
+            CraftedResource::Bread => { "Bread" }
+            CraftedResource::BiscuitsAndGravy => { "Biscuits and gravy" }
+            CraftedResource::BonTippers => { "Bon tippers" }
+            CraftedResource::Butter => { "Butter" }
+            CraftedResource::Cake => { "Cake" }
+            CraftedResource::CampfireMeatyStew => { "Campfire meaty stew" }
+            CraftedResource::CampfireMushroomStew => { "Campfire mushroom stew" }
+            CraftedResource::CarrotJuice => { "Carrot juice" }
+            CraftedResource::ChocolateBar => { "Chocolate bar" }
+            CraftedResource::ChocolateMilk => { "Chocolate milk" }
+            CraftedResource::ChocolateMilkSpicy => { "Chocolate milk spicy" }
+            CraftedResource::Coffee => { "Coffee" }
+            CraftedResource::CookingFoil => { "Cooking foil" }
+            CraftedResource::CrushedHerb => { "Crushed herb" }
+            CraftedResource::EmptyFlask => { "Empty flask" }
+            CraftedResource::Gnocchi => { "Gnocchi" }
+            CraftedResource::GrilledSandwichAuroch => { "Grilled sandwich auroch" }
+            CraftedResource::GrilledSandwichBoar => { "Grilled sandwich boar" }
+            CraftedResource::GrilledSandwichMushroom => { "Grilled sandwich mushroom" }
+            CraftedResource::GrilledSandwichBear => { "Grilled sandwich bear" }
+            CraftedResource::GrilledSandwichElk => { "Grilled sandwich elk" }
+            CraftedResource::GrilledSandwichWolf => { "Grilled sandwich wolf" }
+            CraftedResource::GrilledSandwichSpider => { "Grilled sandwich spider" }
+            CraftedResource::GrilledSandwichBigCat => { "Grilled sandwich big cat" }
+            CraftedResource::IceCream => { "Ice cream" }
+            CraftedResource::KebabMushroom => { "Kebab mushroom" }
+            CraftedResource::KebabAuroch => { "Kebab auroch" }
+            CraftedResource::KebabBear => { "Kebab bear" }
+            CraftedResource::KebabBigCat => { "Kebab big cat" }
+            CraftedResource::KebabBoar => { "Kebab boar" }
+            CraftedResource::KebabElk => { "Kebab elk" }
+            CraftedResource::KebabSpider => { "Kebab spider" }
+            CraftedResource::KebabWolf => { "Kebab wolf" }
+            CraftedResource::LargeCookingPot => { "Large cooking pot" }
+            CraftedResource::MarsalaStew => { "Marsala stew" }
+            CraftedResource::MeatBurgundy => { "Meat burgundy" }
+            CraftedResource::MushroomStew => { "Mushroom stew" }
+            CraftedResource::Paella => { "Paella" }
+            CraftedResource::PasteurizedMilk => { "Pasteurized milk" }
+            CraftedResource::PestoGnocchi => { "Pesto gnocchi" }
+            CraftedResource::PulverizedPotato => { "Pulverized potato" }
+            CraftedResource::PotatoFlour => { "Potato flour" }
+            CraftedResource::PotRoast => { "Pot roast" }
+            CraftedResource::RedWine => { "Red wine" }
+            CraftedResource::RoastingStick => { "Roasting stick" }
+            CraftedResource::RoastedProduce => { "Roasted produce" }
+            CraftedResource::SumptuousPotPie => { "Sumptuous pot pie" }
+            CraftedResource::TrailMix => { "Trail mix" }
+            CraftedResource::Yeast => { "Yeast" }
+            CraftedResource::PowderedStone => { "Powdered stone" }
         }
     }
 }
@@ -816,20 +667,30 @@ impl GroupResource {
                     // Gnocchi,
                 ]
             }
+            GroupResource::NonBasicStone => {
+                vec![
+                    Granite,
+                    Limestone,
+                    Marble,
+                    Slate,
+                    Travertin,
+                ]
+            }
         }
     }
     pub fn get_name(&self) -> &'static str {
         match self {
-            GroupResource::AnimalMeat => { "Animal Meat" }
+            GroupResource::AnimalMeat => { "Animal meat" }
             GroupResource::Herb => { "Herb" }
             GroupResource::Mushroom => { "Mushroom" }
-            GroupResource::MeatOrMushroom => { "Meat Or Mushroom" }
-            GroupResource::NonBasicOre => { "Non Basic Ore" }
-            GroupResource::NonBasicWood => { "Non Basic Wood" }
+            GroupResource::MeatOrMushroom => { "Meat or mushroom" }
+            GroupResource::NonBasicOre => { "Non basic ore" }
+            GroupResource::NonBasicWood => { "Non basic wood" }
             GroupResource::Produce => { "Produce" }
             GroupResource::Seasoning => { "Seasoning" }
             GroupResource::Ore => { "Ore" }
-            GroupResource::WildRiceOrGnocchi => { "Wild Rice Or Gnocchi" }
+            GroupResource::WildRiceOrGnocchi => { "Wild rice or gnocchi" }
+            GroupResource::NonBasicStone => { "Non basic stone" }
         }
     }
 }
@@ -843,43 +704,48 @@ impl BaseResource {
             Blood => { "Blood" }
             Bone => { "Bone" }
             Carrot => { "Carrot" }
-            CocoaBean => { "Cocoa Bean" }
-            CoffeeBean => { "Coffee Bean" }
-            GroundBlackPepper => { "Ground Black Pepper" }
-            HotPepper => { "Hot Pepper" }
-            HungerShard => { "Hunger Shard" }
-            MeatAuroch => { "Meat Auroch" }
-            MeatBear => { "Meat Bear" }
-            MeatBigCat => { "Meat Big Cat" }
-            MeatBoar => { "Meat Boar" }
-            MeatElk => { "Meat Elk" }
-            MeatSpider => { "Meat Spider" }
-            MeatWolf => { "Meat Wolf" }
-            MildPepper => { "Mild Pepper" }
-            PineNuts => { "Pine Nuts" }
+            CocoaBean => { "Cocoa bean" }
+            CoffeeBean => { "Coffee bean" }
+            GroundBlackPepper => { "Ground black pepper" }
+            HotPepper => { "Hot pepper" }
+            HungerShard => { "Hunger shard" }
+            MeatAuroch => { "Meat auroch" }
+            MeatBear => { "Meat bear" }
+            MeatBigCat => { "Meat big cat" }
+            MeatBoar => { "Meat boar" }
+            MeatElk => { "Meat elk" }
+            MeatSpider => { "Meat spider" }
+            MeatWolf => { "Meat wolf" }
+            MildPepper => { "Mild pepper" }
+            PineNuts => { "Pine nuts" }
             Potato => { "Potato" }
-            RawMilk => { "Raw Milk" }
-            SugarCane => { "Sugar Cane" }
-            SeasoningSalt => { "Seasoning Salt" }
-            SweetPepper => { "Sweet Pepper" }
-            WaterFlask => { "Water Flask" }
-            WildRice => { "Wild Rice" }
+            RawMilk => { "Raw milk" }
+            SugarCane => { "Sugar cane" }
+            SeasoningSalt => { "Seasoning salt" }
+            SweetPepper => { "Sweet pepper" }
+            WaterFlask => { "Water flask" }
+            WildRice => { "Wild rice" }
             Onion => { "Onion" }
-            MushroomButton => {"Button Mushroom"}
-            MushroomChanterelle => {"Chanterelle Mushroom"}
-            Copper => { "Copper"}
-            Iron => {"Iron"}
-            Tin => {"Tin"}
-            Silver => {"Silver"}
-            Aurelium => {"Aurelium"}
-            Slag => {"Slag"}
-            Oak => {"Oak"}
-            Birch => {"Birch"}
-            Spruce => {"Spruce"}
-            Ash => {"Ash"}
-            Yew => {"Yew"}
-            Garlic => {"Garlic"}
-            Dust => {"Ethereal Dust"}
+            MushroomButton => { "Button mushroom" }
+            MushroomChanterelle => { "Chanterelle mushroom" }
+            Copper => { "Copper" }
+            Iron => { "Iron" }
+            Tin => { "Tin" }
+            Silver => { "Silver" }
+            Aurelium => { "Aurelium" }
+            Slag => { "Slag" }
+            Oak => { "Oak" }
+            Birch => { "Birch" }
+            Spruce => { "Spruce" }
+            Ash => { "Ash" }
+            Yew => { "Yew" }
+            Garlic => { "Garlic" }
+            Dust => { "Ethereal dust" }
+            Granite => { "Granite" }
+            Limestone => { "Limestone" }
+            Marble => { "Marble" }
+            Slate => { "Slate" }
+            Travertin => { "Travertin" }
         }
     }
 }

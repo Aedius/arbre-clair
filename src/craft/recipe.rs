@@ -2,7 +2,7 @@ use std::cmp::max;
 use std::collections::HashMap;
 use serde::{Serialize};
 
-use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item, RecipeSummary};
+use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item};
 use crate::craft::cooking::get_recipe as getCookingRecipe;
 use crate::craft::alchemy::get_recipe as getAlchemyRecipe;
 
@@ -86,12 +86,11 @@ pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
 
     for recipe in recipes {
         let out = recipe.output.0.clone();
-        if out.get_information().is_some() {
-            let info = out.get_information().unwrap();
-            if recipe_name == info.key {
-                current_recipe = Some(recipe.clone())
-            }
+        let info = out.get_information();
+        if recipe_name == info.key {
+            current_recipe = Some(recipe.clone())
         }
+
         recipe_map.insert(out, recipe.clone());
     }
 
