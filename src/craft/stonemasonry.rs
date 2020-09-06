@@ -8,8 +8,6 @@ use crate::craft::GroupResource::*;
 pub fn get_recipe() -> Vec<Recipe> {
     let mut ret = Vec::new();
 
-    let cut = "Cut";
-
     let stonemasonry_components = " Stonemasonry components";
 
     ret.push(Recipe {

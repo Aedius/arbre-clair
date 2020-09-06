@@ -1,9 +1,32 @@
-use crate::craft::{Item, Profession, Recipe};
+use crate::craft::{Item, Profession, Recipe, RecipeSummary};
 
 use crate::craft::BaseResource::*;
 use crate::craft::CraftedResource::*;
 use crate::craft::GroupResource::*;
 
+pub fn get_all_recipe() -> Vec<RecipeSummary>{
+
+    let mut ret = Vec::new();
+    let all_recipe = get_recipe();
+
+    for recipe in all_recipe{
+        let data=  recipe.crafted_data();
+
+        let summary = RecipeSummary{
+            key: data.key,
+            name: recipe.name,
+            profession: recipe.profession,
+            stat: data.description
+        };
+
+        ret.push(summary);
+
+    }
+
+    ret.sort_by(|a, b| a.name.cmp(&b.name));
+
+    ret
+}
 
 pub fn get_recipe() -> Vec<Recipe> {
     let mut ret = Vec::new();

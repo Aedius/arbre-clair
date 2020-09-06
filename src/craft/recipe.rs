@@ -5,7 +5,7 @@ use serde::{Serialize};
 use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item};
 use crate::craft::cooking::get_recipe as getCookingRecipe;
 use crate::craft::alchemy::get_recipe as getAlchemyRecipe;
-use crate::craft::Jewelry::get_recipe as getJewelCraftingRecipe;
+use crate::craft::jewelry::get_recipe as getJewelCraftingRecipe;
 
 
 #[derive(Debug)]
