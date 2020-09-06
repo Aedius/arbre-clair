@@ -56,7 +56,6 @@ class RecipeContainer extends HTMLElement {
          })
 
          if (_selected != ""){
-            console.log(_recipe)
 
              if (_recipe == ""){
                 _content = `
@@ -159,9 +158,6 @@ class Recipe extends HTMLElement {
 
         var lastNb =  parseInt(localStorage.getItem("recipeQuantity"));
 
-        console.log(lastNb);
-        console.log(Number.isInteger(lastNb));
-
         if(Number.isInteger(lastNb) && lastNb>1){
             this._nb=lastNb;
         }else{
@@ -176,12 +172,9 @@ class Recipe extends HTMLElement {
     }
 
     _quantity_change(e){
-        var nb = parseInt(e.target.value)
-        if( Number.isInteger(nb)){
-            localStorage.setItem('recipeQuantity', nb);
-            this._nb = nb;
-            this._refresh();
-        }
+        localStorage.setItem('recipeQuantity', e.detail);
+        this._nb =  e.detail;
+        this._refresh();
     }
 
     _refresh(){
@@ -238,6 +231,9 @@ class Recipe extends HTMLElement {
                         <p>
                         To get <span class="multiplier">${total}</span> x <span class="compo">${recipe.recipe.output[0]}</span>
                         </p>
+                        <p>
+                            ( already go )
+                        </p>
                     `
                 }).join('<br/>')
 
@@ -272,7 +268,6 @@ class Recipe extends HTMLElement {
                     height:100%;
                     float:left;
                 }
-
 
                 .ingredient{
                     color:rgba(241,81,85,1);
@@ -312,7 +307,6 @@ class Recipe extends HTMLElement {
                     font-weight:bold;
                 }
 
-
                 .legende{
                     margin-left:40px;
                     font-size:0.8em;
@@ -320,7 +314,8 @@ class Recipe extends HTMLElement {
             </style>
             <div class="recette_cuisine">
                 <div class="nom_recette">
-                    <h2><input class="recipe-quantity" name="quantity" value=${this._nb} size="2" type="number" min="1" max="999"/>
+                    <h2>
+                    <cac-quantity nb="${this._nb}" callback=${this._quantity_change}></cac-quantity>
                     ${this._data.summary.name}</h2>
                 <ul>
                     ${liBase}
@@ -333,7 +328,7 @@ class Recipe extends HTMLElement {
             </div>
           `
 
-        this.shadowRoot.querySelector(".recipe-quantity").addEventListener('change', this._quantity_change.bind(this));
+        this.shadowRoot.addEventListener('quantityChange', this._quantity_change.bind(this));
     }
 }
 customElements.define('cac-recipe', Recipe);
@@ -397,3 +392,59 @@ class Description extends HTMLElement {
 
 }
 customElements.define('cac-desc', Description);
+
+class InputQuantity extends HTMLElement {
+
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this._nb=0;
+    }
+
+
+    _quantity_change(e){
+        var nb = parseInt(e.target.value)
+
+        console.log(nb);
+        console.log(this._nb);
+
+        if( nb == this._nb){
+            return;
+        }
+
+        if( Number.isInteger(nb)){
+            this.dispatchEvent(
+                new CustomEvent("quantityChange", {
+                    bubbles: true,
+                    cancelable: false,
+                    detail: nb,
+                })
+            )
+        }
+    }
+
+
+    connectedCallback() {
+
+        console.log("render")
+
+        this._nb = parseInt(this.getAttribute('nb'));
+        var _callback = this.getAttribute('callback');
+
+        this.shadowRoot.innerHTML = `
+            <input value="${this._nb}" size="4" type="number" min="1" />
+        `;
+
+        this.shadowRoot.querySelector("input").addEventListener('change', this._quantity_change.bind(this));
+
+    }
+
+    disconnectedCallback(){
+        console.log("disconnected")
+
+        this.shadowRoot.querySelector("input").removeEventListener('change', this._quantity_change.bind(this));
+    }
+
+}
+
+customElements.define('cac-quantity', InputQuantity);
