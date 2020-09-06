@@ -9,14 +9,15 @@ use tiny_http::{Method, Request, Response, Server, StatusCode};
 
 mod craft;
 
+use crate::craft::Profession;
 use crate::craft::cooking::get_all_recipe as get_cooking_recipe;
+use crate::craft::jewelry::get_all_recipe as get_jewelry_recipe;
 use crate::craft::recipe::handle as handle_recipe;
 
-const FOLDER_PREFIX : &str = "static";
-
-pub const URL_TOOLS_COOKING: &str = "/api/recipe-list/cooking";
+const FOLDER_PREFIX: &str = "static";
 
 lazy_static! {
+    pub static ref URL_CRAFT_RE: Regex = Regex::new(r"/api/recipe-list/([^/]+)$").unwrap();
     pub static ref URL_CRAFT_RECIPE_RE: Regex = Regex::new(r"/api/recipe/detail/([^/]+)/([0-9]+)$").unwrap();
 }
 
@@ -38,8 +39,8 @@ fn main() {
                 ResourceKind::Static(path) => {
                     respond_file(path, request)
                 }
-                ResourceKind::Api( path) => {
-                   respond_api(path, request)
+                ResourceKind::Api(path) => {
+                    respond_api(path, request)
                 }
             };
         } else {
@@ -75,9 +76,21 @@ fn get_path(prefix: &str, path: String) -> ResourceKind {
 }
 
 fn respond_api(path: String, request: Request) {
-    if path == URL_TOOLS_COOKING {
+    if URL_CRAFT_RE.is_match(path.as_str()) {
+        let caps = URL_CRAFT_RE.captures(path.as_str()).unwrap();
+        let as_text = caps.get(1).map_or("", |m| m.as_str());
 
-        let recipes = get_cooking_recipe();
+        let mut recipes = vec![];
+
+        let cooking = Profession::Cooking;
+        if as_text == cooking.get_key() {
+            recipes = get_cooking_recipe();
+        }
+
+        let jewelry =  Profession::Jewelry;
+        if as_text == jewelry.get_key() {
+            recipes = get_jewelry_recipe();
+        }
 
         let response = tiny_http::Response::from_string(format!("{}", json!(recipes)));
         match request.respond(response) {
@@ -86,7 +99,7 @@ fn respond_api(path: String, request: Request) {
                 println!("{}", e)
             }
         }
-        return
+        return;
     }
 
     if URL_CRAFT_RECIPE_RE.is_match(path.as_str()) {
@@ -97,8 +110,7 @@ fn respond_api(path: String, request: Request) {
 
         let recipe = handle_recipe(as_text, as_int);
 
-
-       return match recipe {
+        return match recipe {
             None => {
                 return match request.respond(Response::new_empty(StatusCode(404))) {
                     Ok(_) => {}
@@ -106,20 +118,19 @@ fn respond_api(path: String, request: Request) {
                         println!("{}", e)
                     }
                 };
-            },
-           Some(recipe) => {
+            }
+            Some(recipe) => {
+                println!("{:?}", recipe);
 
-               println!("{:?}", recipe);
-
-               let response = tiny_http::Response::from_string(format!("{}", json!(recipe)));
-               match request.respond(response) {
-                   Ok(_) => {}
-                   Err(e) => {
-                       println!("{}", e)
-                   }
-               }
-           }
-        }
+                let response = tiny_http::Response::from_string(format!("{}", json!(recipe)));
+                match request.respond(response) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        println!("{}", e)
+                    }
+                }
+            }
+        };
 
     }
 
@@ -130,6 +141,7 @@ fn respond_api(path: String, request: Request) {
         }
     };
 }
+
 fn respond_file(path: String, request: Request) {
     let file = match File::open(&Path::new(path.as_str())) {
         Ok(file) => {

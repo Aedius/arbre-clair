@@ -3,15 +3,19 @@ class RecipeContainer extends HTMLElement {
     constructor() {
         super();
 
-        this._craft = [{
-                code : "cooking",
+        this._craft = [
+            {
+//                code : "Alchemy",
+//                name : "Alchemy",
+//            }, {
+                code : "Cooking",
                 name : "Cooking",
             }, {
-                code : 'foo',
-                name : "coming soon",
-            }, {
-                code : 'foo2',
-                name : "cooming soon",
+                code : 'Jewelry',
+                name : "Jewelry",
+//            }, {
+//                code : 'StoneMasonry',
+//                name : "Stone masonry",
             }
         ]
 

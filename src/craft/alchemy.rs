@@ -32,5 +32,16 @@ pub fn get_recipe() -> Vec<Recipe> {
         menu: component,
     });
 
+
+    ret.push(Recipe {
+        name: "Powdered stone",
+        input: vec![
+            (Item::Group(Stone), 2),
+        ],
+        output: (PowderedStone, 1),
+        profession: Profession::Alchemy,
+        menu: component,
+    });
+
     ret
 }

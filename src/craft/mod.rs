@@ -5,6 +5,8 @@ use crate::craft::BaseResource::*;
 
 pub mod alchemy;
 pub mod cooking;
+pub mod jewelry;
+pub mod stonemasonry;
 pub mod recipe;
 
 #[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
@@ -17,8 +19,10 @@ pub struct RecipeSummary {
 
 #[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub enum Profession {
-    Cooking,
     Alchemy,
+    Cooking,
+    Jewelry,
+    Stonemasonry,
 }
 
 #[derive(Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
@@ -100,6 +104,8 @@ pub enum BaseResource {
     Marble,
     Slate,
     Travertin,
+    RoughSoulgem,
+    CuttingGrit,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
@@ -115,6 +121,9 @@ pub enum GroupResource {
     Seasoning,
     Ore,
     WildRiceOrGnocchi,
+    Stone,
+    RoughGem,
+    BloodOrWater,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
@@ -173,6 +182,32 @@ pub enum CraftedResource {
     TrailMix,
     Yeast,
     PowderedStone,
+    DiamondCuttingBlade,
+    CutGemstoneBaguette,
+    CutGemstoneFocusing,
+    CutGemstoneMarquise,
+    CutGemstoneOval,
+    CutGemstoneRound,
+    CutGemstoneSquare,
+    CutGemstoneTriangle,
+    ChaosEmberCuttingBlade,
+    ExactingCutGemstoneBriolette,
+    ExactingCutGemstoneHeart,
+    ExactingCutGemstoneTrillion,
+    CutGem,
+    GrindingWheel,
+    GrindGemstone,
+    PolishingPaste,
+    PolishGemstone,
+    PolishSoulgem,
+    NecklaceBail,
+    NecklaceChain,
+    Necklace,
+    RingSetting,
+    RingBand,
+    Ring,
+    PolishedExactingGemstone,
+    PolishedGemstone,
 }
 
 pub struct CraftedData {
@@ -404,10 +439,10 @@ impl CraftedResource {
                 }
             }
             CraftedResource::KebabSpider => {
-                    CraftedData {
-                        description: "Plentiful Harvest Graves +1",
-                        key: "KebabSpider",
-                    }
+                CraftedData {
+                    description: "Plentiful Harvest Graves +1",
+                    key: "KebabSpider",
+                }
             }
             CraftedResource::KebabWolf => {
                 CraftedData {
@@ -517,6 +552,162 @@ impl CraftedResource {
                     key: "PowderedStone",
                 }
             }
+            CraftedResource::DiamondCuttingBlade => {
+                CraftedData {
+                    description: "",
+                    key: "DiamondCuttingBlade",
+                }
+            }
+            CraftedResource::CutGemstoneBaguette => {
+                CraftedData {
+                    description: "",
+                    key: "CutGemstoneBaguette",
+                }
+            }
+            CraftedResource::CutGemstoneFocusing => {
+                CraftedData {
+                    description: "",
+                    key: "CutGemstoneFocusing",
+                }
+            }
+            CraftedResource::CutGemstoneMarquise => {
+                CraftedData {
+                    description: "",
+                    key: "CutGemstoneMarquise",
+                }
+            }
+            CraftedResource::CutGemstoneOval => {
+                CraftedData {
+                    description: "",
+                    key: "CutGemstoneOval",
+                }
+            }
+            CraftedResource::CutGemstoneRound => {
+                CraftedData {
+                    description: "",
+                    key: "CutGemstoneRound",
+                }
+            }
+            CraftedResource::CutGemstoneSquare => {
+                CraftedData {
+                    description: "",
+                    key: "CutGemstoneSquare",
+                }
+            }
+            CraftedResource::CutGemstoneTriangle => {
+                CraftedData {
+                    description: "",
+                    key: "CutGemstoneTriangle",
+                }
+            }
+            CraftedResource::ChaosEmberCuttingBlade => {
+                CraftedData {
+                    description: "",
+                    key: "ChaosEmberCuttingBlade",
+                }
+            }
+            CraftedResource::ExactingCutGemstoneBriolette => {
+                CraftedData {
+                    description: "",
+                    key: "ExactingCutGemstoneBriolette",
+                }
+            }
+            CraftedResource::ExactingCutGemstoneHeart => {
+                CraftedData {
+                    description: "",
+                    key: "ExactingCutGemstoneHeart",
+                }
+            }
+            CraftedResource::ExactingCutGemstoneTrillion => {
+                CraftedData {
+                    description: "",
+                    key: "ExactingCutGemstoneTrillion",
+                }
+            }
+            CraftedResource::CutGem => {
+                CraftedData {
+                    description: "",
+                    key: "CutGem",
+                }
+            }
+            CraftedResource::GrindingWheel => {
+                CraftedData {
+                    description: "",
+                    key: "GrindingWheel",
+                }
+            }
+            CraftedResource::GrindGemstone => {
+                CraftedData {
+                    description: "",
+                    key: "GrindGemstone",
+                }
+            }
+            CraftedResource::PolishingPaste => {
+                CraftedData {
+                    description: "",
+                    key: "PolishingPaste",
+                }
+            }
+            CraftedResource::PolishGemstone => {
+                CraftedData {
+                    description: "",
+                    key: "PolishGemstone",
+                }
+            }
+            CraftedResource::PolishSoulgem => {
+                CraftedData {
+                    description: "",
+                    key: "PolishSoulgem",
+                }
+            }
+            CraftedResource::NecklaceBail => {
+                CraftedData {
+                    description: "",
+                    key: "NecklaceBail",
+                }
+            }
+            CraftedResource::NecklaceChain => {
+                CraftedData {
+                    description: "",
+                    key: "NecklaceChain",
+                }
+            }
+            CraftedResource::Necklace => {
+                CraftedData {
+                    description: "",
+                    key: "Necklace",
+                }
+            }
+            CraftedResource::RingSetting => {
+                CraftedData {
+                    description: "",
+                    key: "RingSetting",
+                }
+            }
+            CraftedResource::RingBand => {
+                CraftedData {
+                    description: "",
+                    key: "RingBand",
+                }
+            }
+            CraftedResource::Ring => {
+                CraftedData {
+                    description: "",
+                    key: "Ring",
+                }
+            }
+            CraftedResource::PolishedExactingGemstone => {
+                CraftedData {
+                    description: "",
+                    key: "PolishedExactingGemstone",
+                }
+            }
+            CraftedResource::PolishedGemstone => {
+                CraftedData {
+                    description: "",
+                    key: "PolishedGemstone",
+                }
+            }
         }
     }
 
@@ -576,6 +767,32 @@ impl CraftedResource {
             CraftedResource::TrailMix => { "Trail mix" }
             CraftedResource::Yeast => { "Yeast" }
             CraftedResource::PowderedStone => { "Powdered stone" }
+            CraftedResource::DiamondCuttingBlade => { "Diamond cutting blade" }
+            CraftedResource::CutGemstoneBaguette => { "Cut gemstone baguette" }
+            CraftedResource::CutGemstoneFocusing => { "Cut gemstone focusing" }
+            CraftedResource::CutGemstoneMarquise => { "Cut gemstone marquise" }
+            CraftedResource::CutGemstoneOval => { "Cut gemstone oval" }
+            CraftedResource::CutGemstoneRound => { "Cut gemstone round" }
+            CraftedResource::CutGemstoneSquare => { "Cut gemstone square" }
+            CraftedResource::CutGemstoneTriangle => { "Cut gemstone triangle" }
+            CraftedResource::ChaosEmberCuttingBlade => { "Chaos ember cutting blade" }
+            CraftedResource::ExactingCutGemstoneBriolette => { "Exacting cut gemstone briolette" }
+            CraftedResource::ExactingCutGemstoneHeart => { "Exacting cut gemstone heart" }
+            CraftedResource::ExactingCutGemstoneTrillion => { "Exacting cut gemstone trillion" }
+            CraftedResource::CutGem => { "Cut gem" }
+            CraftedResource::GrindingWheel => { "Grinding wheel" }
+            CraftedResource::GrindGemstone => { "Grind gemstone" }
+            CraftedResource::PolishingPaste => { "Polishing paste" }
+            CraftedResource::PolishGemstone => { "Polish gemstone" }
+            CraftedResource::PolishSoulgem => { "Polish soulgem" }
+            CraftedResource::NecklaceBail => { "Necklace bail" }
+            CraftedResource::NecklaceChain => { "Necklace chain" }
+            CraftedResource::Necklace => { "Necklace" }
+            CraftedResource::RingSetting => { "Ring setting" }
+            CraftedResource::RingBand => { "Ring band" }
+            CraftedResource::Ring => { "Ring" }
+            CraftedResource::PolishedExactingGemstone => { "Polished exacting gemstone" }
+            CraftedResource::PolishedGemstone => { "Polished gemstone" }
         }
     }
 }
@@ -676,6 +893,26 @@ impl GroupResource {
                     Travertin,
                 ]
             }
+            GroupResource::Stone => {
+                vec![
+                    Granite,
+                    Limestone,
+                    Marble,
+                    Slate,
+                    Travertin,
+                ]
+            }
+            GroupResource::RoughGem => {
+                vec![
+                    // TODO
+                ]
+            }
+            GroupResource::BloodOrWater => {
+                vec![
+                    BaseResource::WaterFlask,
+                    BaseResource::Blood
+                ]
+            }
         }
     }
     pub fn get_name(&self) -> &'static str {
@@ -691,6 +928,9 @@ impl GroupResource {
             GroupResource::Ore => { "Ore" }
             GroupResource::WildRiceOrGnocchi => { "Wild rice or gnocchi" }
             GroupResource::NonBasicStone => { "Non basic stone" }
+            GroupResource::Stone => { "Stone" }
+            GroupResource::RoughGem => { "Rough gem" }
+            GroupResource::BloodOrWater => { " Blood or Water" }
         }
     }
 }
@@ -746,6 +986,8 @@ impl BaseResource {
             Marble => { "Marble" }
             Slate => { "Slate" }
             Travertin => { "Travertin" }
+            RoughSoulgem => { "Rough soulgem" }
+            CuttingGrit => { "Cutting grit" }
         }
     }
 }
@@ -755,6 +997,17 @@ impl Profession {
         match self {
             Profession::Cooking => { "Cooking" }
             Profession::Alchemy => { "Alchemy" }
+            Profession::Jewelry => { "Jewelry" }
+            Profession::Stonemasonry => { "Stonemasonry" }
+        }
+    }
+
+    pub fn get_key(&self) -> &'static str {
+        match self {
+            Profession::Cooking => { "Cooking" }
+            Profession::Alchemy => { "Alchemy" }
+            Profession::Jewelry => { "Jewelry" }
+            Profession::Stonemasonry => { "StoneMasonry" }
         }
     }
 }
