@@ -22,53 +22,12 @@ class RecipeContainer extends HTMLElement {
         this._data=null
 
         this.attachShadow({ mode: 'open' });
-    }
 
-    connectedCallback() {
-        this._draw()
-        var those = this;
-        window.onhashchange = function() {
-            those._draw()
-        }
-    }
+        const li = this._craft.map( craft => {
+            return  `<li><cac-link href="/pages/metiers.html#${craft.code}" id="${craft.code}" data-hover="${craft.name}">${craft.name}</cac-link></li>`
+        })
 
-    _draw(){
-          var _hash = window.location.hash
-          var _selected = ""
-          var _recipe = ""
-          var _content= ""
-          if(_hash){
-                _hash = _hash.substring(1);
-                var data = _hash.split("/")
-                _selected=data[0];
-                if(data.length>1){
-                    _recipe=data[1];
-                }
-
-          }
-
-          const li = this._craft.map( craft => {
-             if ( craft.code == _selected){
-                 return `<li><cac-link href="/pages/metiers.html#${craft.code}" current="1" data-hover="${craft.name}">${craft.name}</cac-link></li>`
-             }else{
-                return  `<li><cac-link href="/pages/metiers.html#${craft.code}" data-hover="${craft.name}">${craft.name}</cac-link></li>`
-             }
-         })
-
-         if (_selected != ""){
-
-             if (_recipe == ""){
-                _content = `
-                    <cac-recipe-list kind="${_selected}"></cac-recipe-list>
-                `
-             }else{
-                _content= `
-                   <cac-recipe kind="${_recipe}"></cac-recipe>
-                `
-             }
-         }
-
-          this.shadowRoot.innerHTML = `
+        this.shadowRoot.innerHTML = `
             <style>
                 ul{
                     list-style-type: none;
@@ -84,9 +43,50 @@ class RecipeContainer extends HTMLElement {
                     ${li.join('')}
                 </ul>
             </nav>
-            ${_content}
-          `
-      }
+            <cac-recipe-list></cac-recipe-list>
+            <cac-recipe></cac-recipe>
+        `
+    }
+
+    connectedCallback() {
+        this._draw()
+        var those = this;
+        window.onhashchange = function() {
+            those._draw()
+        }
+    }
+
+    _draw(){
+        var _hash = window.location.hash
+        var _selected = ""
+        var _recipe = ""
+        var _content= ""
+        if(_hash){
+            _hash = _hash.substring(1);
+            var data = _hash.split("/")
+            _selected=data[0];
+            if(data.length>1){
+                _recipe=data[1];
+            }
+        }
+
+//         if (_selected != ""){
+//             if (_recipe == ""){
+//                _content = `
+//                    <cac-recipe-list kind="${_selected}"></cac-recipe-list>
+//                `
+//             }else{
+//                _content= `
+//                   <cac-recipe kind="${_recipe}"></cac-recipe>
+//                `
+//             }
+//         }
+
+         var linkList = this.shadowRoot.querySelectorAll("nav cac-link")
+         console.log(linkList);
+         var currentLink = this.shadowRoot.querySelector("#"+_selected)
+         console.log(currentLink);
+    }
 
 }
 customElements.define('cac-recipe-container', RecipeContainer);
