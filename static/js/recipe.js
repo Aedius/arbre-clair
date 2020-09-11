@@ -13,9 +13,9 @@ class RecipeContainer extends HTMLElement {
             }, {
                 code : 'Jewelry',
                 name : "Jewelry",
-//            }, {
-//                code : 'StoneMasonry',
-//                name : "Stone masonry",
+            }, {
+                code : 'StoneMasonry',
+                name : "Stone masonry",
             }
         ]
 

@@ -6,6 +6,7 @@ use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item};
 use crate::craft::cooking::get_recipe as getCookingRecipe;
 use crate::craft::alchemy::get_recipe as getAlchemyRecipe;
 use crate::craft::jewelry::get_recipe as getJewelCraftingRecipe;
+use crate::craft::stonemasonry::get_recipe as getStoneMasonry;
 
 
 #[derive(Debug)]
@@ -78,7 +79,8 @@ pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
     let cooking = getCookingRecipe();
     let jewel_crafting = getJewelCraftingRecipe();
     let alchemy = getAlchemyRecipe();
-    let recipes = [&cooking[..], &alchemy[..], &jewel_crafting[..]].concat();
+    let stoneMasonry = getStoneMasonry();
+    let recipes = [&cooking[..], &alchemy[..], &jewel_crafting[..], &stoneMasonry[..]].concat();
 
 
 

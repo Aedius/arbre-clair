@@ -12,6 +12,7 @@ mod craft;
 use crate::craft::Profession;
 use crate::craft::cooking::get_all_recipe as get_cooking_recipe;
 use crate::craft::jewelry::get_all_recipe as get_jewelry_recipe;
+use crate::craft::stonemasonry::get_all_recipe as get_stonemasonry_recipe;
 use crate::craft::recipe::handle as handle_recipe;
 
 const FOLDER_PREFIX: &str = "static";
@@ -90,6 +91,11 @@ fn respond_api(path: String, request: Request) {
         let jewelry =  Profession::Jewelry;
         if as_text == jewelry.get_key() {
             recipes = get_jewelry_recipe();
+        }
+
+        let stonemasonry =  Profession::Stonemasonry;
+        if as_text == stonemasonry.get_key() {
+            recipes = get_stonemasonry_recipe();
         }
 
         let response = tiny_http::Response::from_string(format!("{}", json!(recipes)));

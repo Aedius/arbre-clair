@@ -56,6 +56,7 @@ impl Hash for Recipe {
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
 pub enum BaseResource {
+    BackerGrasslandsParcel,
     Dust,
     Apple,
     Beeswax,
@@ -208,6 +209,21 @@ pub enum CraftedResource {
     Ring,
     PolishedExactingGemstone,
     PolishedGemstone,
+
+    BackerCapitalParcel,
+    BackerCalderaParcel,
+    BackerCityParcel,
+    BackerFiefParcel,
+    BackerEstateParcel,
+    BackerWoodlandHillsParcel,
+    BackerWoodlandGroveParcel,
+    BackerTownParcel,
+    BackerShireParcel,
+    BackerHamletParcel,
+    BackerHomesteadParcel,
+    BackerMountainCitadelParcel,
+    BackerVillageParcel,
+    BackerWoodlandCreekParcel,
 }
 
 pub struct CraftedData {
@@ -708,6 +724,90 @@ impl CraftedResource {
                     key: "PolishedGemstone",
                 }
             }
+            CraftedResource::BackerCapitalParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerCapitalParcel",
+                }
+            }
+            CraftedResource::BackerCalderaParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerCalderaParcel",
+                }
+            }
+            CraftedResource::BackerCityParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerCityParcel",
+                }
+            }
+            CraftedResource::BackerFiefParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerFiefParcel",
+                }
+            }
+            CraftedResource::BackerEstateParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerEstateParcel",
+                }
+            }
+            CraftedResource::BackerWoodlandHillsParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerWoodlandHillsParcel",
+                }
+            }
+            CraftedResource::BackerWoodlandGroveParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerWoodlandGroveParcel",
+                }
+            }
+            CraftedResource::BackerTownParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerTownParcel",
+                }
+            }
+            CraftedResource::BackerShireParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerShireParcel",
+                }
+            }
+            CraftedResource::BackerHamletParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerHamletParcel",
+                }
+            }
+            CraftedResource::BackerHomesteadParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerHomesteadParcel",
+                }
+            }
+            CraftedResource::BackerMountainCitadelParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerMountainCitadelParcel",
+                }
+            }
+            CraftedResource::BackerVillageParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerVillageParcel",
+                }
+            }
+            CraftedResource::BackerWoodlandCreekParcel => {
+                CraftedData {
+                    description: "",
+                    key: "BackerWoodlandCreekParcel",
+                }
+            }
         }
     }
 
@@ -793,6 +893,20 @@ impl CraftedResource {
             CraftedResource::Ring => { "Ring" }
             CraftedResource::PolishedExactingGemstone => { "Polished exacting gemstone" }
             CraftedResource::PolishedGemstone => { "Polished gemstone" }
+            CraftedResource::BackerCapitalParcel => { "Backer Capital Parcel" }
+            CraftedResource::BackerCalderaParcel => { "Backer Caldera Parcel" }
+            CraftedResource::BackerCityParcel => { "Backer City Parcel" }
+            CraftedResource::BackerFiefParcel => { "Backer Fief Parcel" }
+            CraftedResource::BackerEstateParcel => { "Backer Estat eParcel" }
+            CraftedResource::BackerWoodlandHillsParcel => { "Backer Woodland Hills Parcel" }
+            CraftedResource::BackerWoodlandGroveParcel => { "Backer Woodland Grove Parcel" }
+            CraftedResource::BackerTownParcel => { "Backer Town Parcel" }
+            CraftedResource::BackerShireParcel => { "Backer Shire Parcel" }
+            CraftedResource::BackerHamletParcel => { "Backer Hamlet Parcel" }
+            CraftedResource::BackerHomesteadParcel => { "Backer Homestead Parcel" }
+            CraftedResource::BackerMountainCitadelParcel => { "Backer Mountain Citadel Parcel" }
+            CraftedResource::BackerVillageParcel => { "Backer Village Parcel" }
+            CraftedResource::BackerWoodlandCreekParcel => { "Backer Woodland Creek Parcel" }
         }
     }
 }
@@ -988,6 +1102,7 @@ impl BaseResource {
             Travertin => { "Travertin" }
             RoughSoulgem => { "Rough soulgem" }
             CuttingGrit => { "Cutting grit" }
+            BackerGrasslandsParcel => { "Backer Grasslands Parcel" }
         }
     }
 }
