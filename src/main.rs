@@ -9,7 +9,7 @@ use tiny_http::{Method, Request, Response, Server, StatusCode};
 
 mod craft;
 
-use crate::craft::recipe::{handle_recipe, handle_craft};
+use crate::craft::recipe::{handle_recipe, handle_craft, CraftedQuantity};
 
 const FOLDER_PREFIX: &str = "static";
 
@@ -72,7 +72,7 @@ fn get_path(prefix: &str, path: String) -> ResourceKind {
     ResourceKind::Static(format!("{}{}", prefix, path))
 }
 
-fn respond_api(path: String, request: Request) {
+fn respond_api(path: String, mut request: Request) {
     if URL_CRAFT_RE.is_match(path.as_str()) {
         let caps = URL_CRAFT_RE.captures(path.as_str()).unwrap();
         let as_text = caps.get(1).map_or("", |m| m.as_str());
