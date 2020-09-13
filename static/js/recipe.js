@@ -5,9 +5,9 @@ class RecipeContainer extends HTMLElement {
 
         this._craft = [
             {
-//                code : "Alchemy",
-//                name : "Alchemy",
-//            }, {
+                code : "Alchemy",
+                name : "Alchemy",
+            }, {
                 code : "Cooking",
                 name : "Cooking",
             }, {

@@ -76,8 +76,16 @@ pub enum BaseResource {
     MeatElk,
     MeatSpider,
     MeatWolf,
+    HideAuroch,
+    HideBear,
+    HideBigCat,
+    HideBoar,
+    HideElk,
+    HideSpider,
+    HideWolf,
     MildPepper,
     PineNuts,
+    Grubs,
     Potato,
     RawMilk,
     SugarCane,
@@ -107,6 +115,15 @@ pub enum BaseResource {
     Travertin,
     RoughSoulgem,
     CuttingGrit,
+    ChaosEmber,
+    AppearenceCompendium,
+    Adhesive,
+    Halite,
+    Dolomite,
+    Sulphur,
+    Cinnabar,
+    Nitrate,
+    BloodWorm,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
@@ -125,6 +142,8 @@ pub enum GroupResource {
     Stone,
     RoughGem,
     BloodOrWater,
+    Minerals,
+    Hide,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
@@ -183,6 +202,7 @@ pub enum CraftedResource {
     TrailMix,
     Yeast,
     PowderedStone,
+    GroundMineral,
     DiamondCuttingBlade,
     CutGemstoneBaguette,
     CutGemstoneFocusing,
@@ -209,6 +229,33 @@ pub enum CraftedResource {
     Ring,
     PolishedExactingGemstone,
     PolishedGemstone,
+    PhilosopherSolution,
+    Ambrosia,
+    ArmorCoating,
+    PhilosopherStone,
+    PotionOfSapho,
+    PotionOfHarvestGemsAndMinerals,
+    PotionOfHarvestDigging,
+    PotionOfHarvestLogging,
+    PotionOfHarvestMining,
+    PotionOfHarvestSkinning,
+    PotionOfHarvestQuarrying,
+    NatureToxin,
+    PoisonToxin,
+    DiseaseToxin,
+    AdhesiveFixation,
+    TransmuteChaos,
+    GroundHalite,
+    GroundDolomite,
+    GroundSulphur,
+    GroundCinnabar,
+    GroundNitrate,
+    PowderedSlate,
+    PowderedMarble,
+    PowderedTravertine,
+    PowderedGranite,
+    PowderedLimestone,
+    PowderedAnimalBone,
 
     BackerCapitalParcel,
     BackerCalderaParcel,
@@ -808,6 +855,173 @@ impl CraftedResource {
                     key: "BackerWoodlandCreekParcel",
                 }
             }
+            CraftedResource::GroundMineral => {
+                CraftedData {
+                    description: "",
+                    key: "GroundMineral",
+                }
+            }
+            CraftedResource::PhilosopherSolution => {
+                CraftedData {
+                    description: "Dexterity, Intelligent, Spirit, Strength or Constitution solution",
+                    key: "PhilosopherSolution",
+                }
+            }
+            CraftedResource::Ambrosia => {
+                CraftedData {
+                    description: "",
+                    key: "Ambrosia",
+                }
+            }
+            CraftedResource::ArmorCoating => {
+                CraftedData {
+                    description: "",
+                    key: "ArmorCoating",
+                }
+            }
+            CraftedResource::PhilosopherStone => {
+                CraftedData {
+                    description: "",
+                    key: "PhilosopherStone",
+                }
+            }
+            CraftedResource::PotionOfSapho => {
+                CraftedData {
+                    description: "Increase all crafting experimentation caps by 4 for 5 min",
+                    key: "PotionOfSapho",
+                }
+            }
+            CraftedResource::PotionOfHarvestGemsAndMinerals => {
+                CraftedData {
+                    description: "",
+                    key: "PotionOfHarvestGemsAndMinerals",
+                }
+            }
+            CraftedResource::PotionOfHarvestDigging => {
+                CraftedData {
+                    description: "",
+                    key: "PotionOfHarvestDigging",
+                }
+            }
+            CraftedResource::PotionOfHarvestLogging => {
+                CraftedData {
+                    description: "",
+                    key: "PotionOfHarvestLogging",
+                }
+            }
+            CraftedResource::PotionOfHarvestMining => {
+                CraftedData {
+                    description: "",
+                    key: "PotionOfHarvestMining",
+                }
+            }
+            CraftedResource::PotionOfHarvestSkinning => {
+                CraftedData {
+                    description: "",
+                    key: "PotionOfHarvestSkinning",
+                }
+            }
+            CraftedResource::PotionOfHarvestQuarrying => {
+                CraftedData {
+                    description: "",
+                    key: "PotionOfHarvestQuarrying",
+                }
+            }
+            CraftedResource::NatureToxin => {
+                CraftedData {
+                    description: "",
+                    key: "NatureToxin",
+                }
+            }
+            CraftedResource::PoisonToxin => {
+                CraftedData {
+                    description: "",
+                    key: "PoisonToxin",
+                }
+            }
+            CraftedResource::DiseaseToxin => {
+                CraftedData {
+                    description: "",
+                    key: "DiseaseToxin",
+                }
+            }
+            CraftedResource::AdhesiveFixation => {
+                CraftedData {
+                    description: "",
+                    key: "AdhesiveFixation",
+                }
+            }
+            CraftedResource::TransmuteChaos => {
+                CraftedData {
+                    description: "",
+                    key: "TransmuteChaos",
+                }
+            }
+            CraftedResource::GroundHalite => {
+                CraftedData {
+                    description: "",
+                    key: "GroundHalite",
+                }
+            }
+            CraftedResource::GroundDolomite => {
+                CraftedData {
+                    description: "",
+                    key: "GroundDolomite",
+                }
+            }
+            CraftedResource::GroundSulphur => {
+                CraftedData {
+                    description: "",
+                    key: "GroundSulphur",
+                }
+            }
+            CraftedResource::GroundCinnabar => {
+                CraftedData {
+                    description: "",
+                    key: "GroundCinnabar",
+                }
+            }
+            CraftedResource::GroundNitrate => {
+                CraftedData {
+                    description: "",
+                    key: "GroundNitrate",
+                }
+            }
+            CraftedResource::PowderedSlate => {
+                CraftedData {
+                    description: "",
+                    key: "PowderedSlate",
+                }
+            }
+            CraftedResource::PowderedMarble => {
+                CraftedData {
+                    description: "",
+                    key: "PowderedMarble",
+                }
+            }
+            CraftedResource::PowderedTravertine => {
+                CraftedData {
+                    description: "",
+                    key: "PowderedTravertine",
+                }
+            }
+            CraftedResource::PowderedGranite => {
+                CraftedData {
+                    description: "",
+                    key: "PowderedGranite",
+                }
+            }
+            CraftedResource::PowderedLimestone => {
+                CraftedData {
+                    description: "",
+                    key: "PowderedLimestone",
+                }
+            }
+            CraftedResource::PowderedAnimalBone => {
+                CraftedData {
+                    description: "",
+                    key: "Powdered animal bone",
+                }}
         }
     }
 
@@ -907,6 +1121,34 @@ impl CraftedResource {
             CraftedResource::BackerMountainCitadelParcel => { "Backer Mountain Citadel Parcel" }
             CraftedResource::BackerVillageParcel => { "Backer Village Parcel" }
             CraftedResource::BackerWoodlandCreekParcel => { "Backer Woodland Creek Parcel" }
+            CraftedResource::GroundMineral => { "GroundMineral" }
+            CraftedResource::PhilosopherSolution => { "PhilosopherSolution" }
+            CraftedResource::Ambrosia => { "Ambrosia" }
+            CraftedResource::ArmorCoating => { "ArmorCoating" }
+            CraftedResource::PhilosopherStone => { "PhilosopherStone" }
+            CraftedResource::PotionOfSapho => { "PotionOfSapho" }
+            CraftedResource::PotionOfHarvestGemsAndMinerals => { "PotionOfHarvestGemsAndMinerals" }
+            CraftedResource::PotionOfHarvestDigging => { "PotionOfHarvestDigging" }
+            CraftedResource::PotionOfHarvestLogging => { "PotionOfHarvestLogging" }
+            CraftedResource::PotionOfHarvestMining => { "PotionOfHarvestMining" }
+            CraftedResource::PotionOfHarvestQuarrying => { "PotionOfHarvestQuarrying" }
+            CraftedResource::PotionOfHarvestSkinning => { "PotionOfHarvestSkinning" }
+            CraftedResource::NatureToxin => { "NatureToxin" }
+            CraftedResource::PoisonToxin => { "PoisonToxin" }
+            CraftedResource::DiseaseToxin => { "DiseaseToxin" }
+            CraftedResource::AdhesiveFixation => { "AdhesiveFixation" }
+            CraftedResource::TransmuteChaos => { "TransmuteChaos" }
+            CraftedResource::GroundHalite => { "GroundHalite" }
+            CraftedResource::GroundDolomite => { "GroundDolomite" }
+            CraftedResource::GroundSulphur => { "GroundSulphur" }
+            CraftedResource::GroundCinnabar => { "GroundCinnabar" }
+            CraftedResource::GroundNitrate => { "GroundNitrate" }
+            CraftedResource::PowderedSlate => { "PowderedSlate" }
+            CraftedResource::PowderedMarble => { "PowderedMarble" }
+            CraftedResource::PowderedTravertine => { "PowderedTravertine" }
+            CraftedResource::PowderedGranite => { "PowderedGranite" }
+            CraftedResource::PowderedLimestone => { "PowderedLimestone" }
+            CraftedResource::PowderedAnimalBone => {"PowderedAnimalBone"}
         }
     }
 }
@@ -1027,6 +1269,27 @@ impl GroupResource {
                     BaseResource::Blood
                 ]
             }
+            GroupResource::Minerals => {
+                vec![
+                    BaseResource::Halite,
+                    BaseResource::Dolomite,
+                    BaseResource::Sulphur,
+                    BaseResource::Cinnabar,
+                    BaseResource::Nitrate,
+                ]
+            }
+            GroupResource::Hide => {
+                vec![
+                    BaseResource::HideAuroch,
+                    BaseResource::HideBear,
+                    BaseResource::HideBigCat,
+                    BaseResource::HideBoar,
+                    BaseResource::HideElk,
+                    BaseResource::HideSpider,
+                    BaseResource::HideWolf,
+                ]
+
+            }
         }
     }
     pub fn get_name(&self) -> &'static str {
@@ -1044,7 +1307,9 @@ impl GroupResource {
             GroupResource::NonBasicStone => { "Non basic stone" }
             GroupResource::Stone => { "Stone" }
             GroupResource::RoughGem => { "Rough gem" }
-            GroupResource::BloodOrWater => { " Blood or Water" }
+            GroupResource::BloodOrWater => { "Blood or Water" }
+            GroupResource::Minerals => { "Minerals"}
+            GroupResource::Hide => { "Hide"}
         }
     }
 }
@@ -1103,6 +1368,23 @@ impl BaseResource {
             RoughSoulgem => { "Rough soulgem" }
             CuttingGrit => { "Cutting grit" }
             BackerGrasslandsParcel => { "Backer Grasslands Parcel" }
+            Grubs => { "Grubs"}
+            ChaosEmber => { "ChaosEmber"}
+            AppearenceCompendium => {"AppearenceCompendium"}
+            Adhesive => {"Adhesive"}
+            Halite => {"Halite"}
+            Dolomite => {"Dolomite"}
+            Sulphur => {"Sulphur"}
+            Cinnabar => {"Cinnabar"}
+            Nitrate => {"Nitrate"}
+            BloodWorm => {"BloodWorm"}
+            HideAuroch => {"HideAuroch"}
+            HideBear => {"HideBear"}
+            HideBigCat => {"HideBigCat"}
+            HideBoar => {"HideBoar"}
+            HideElk => {"HideElk"}
+            HideSpider => {"HideSpider"}
+            HideWolf => {"HideWolf"}
         }
     }
 }
@@ -1113,7 +1395,7 @@ impl Profession {
             Profession::Cooking => { "Cooking" }
             Profession::Alchemy => { "Alchemy" }
             Profession::Jewelry => { "Jewelry" }
-            Profession::Stonemasonry => { "Stonemasonry" }
+            Profession::Stonemasonry => { "Stone masonry" }
         }
     }
 
