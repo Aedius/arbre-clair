@@ -82,7 +82,7 @@ class Menu extends HTMLElement {
             if ( page.code == _selected){
                 return `<li><cac-link href="#" current="1" data-hover="${page.name}">${page.name}</cac-link></li>`
             }else{
-               return  `<li><cac-link href="${page.link}" data-hover="${page.name}">${page.name}</cac-link></li>`
+               return  `<li><cac-link href="${page.link}" current="0" data-hover="${page.name}">${page.name}</cac-link></li>`
             }
         })
 
@@ -176,7 +176,9 @@ class Content extends HTMLElement {
 customElements.define('cac-content', Content);
 
 class Link extends HTMLElement {
-
+    static get observedAttributes() {
+        return ['current'];
+    }
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -235,7 +237,9 @@ class Link extends HTMLElement {
                 <a href="" class="">
                     <slot></slot>
                 </a>
-                `
+                `;
+
+        this._node = this.shadowRoot.querySelector("a");
     }
 
       connectedCallback() {
@@ -243,12 +247,14 @@ class Link extends HTMLElement {
         var _href = this.getAttribute('href');
         var _class = this.getAttribute('current') == 1 ? "current" : "";
 
-        var node = this.shadowRoot.querySelector("a");
-
-        node.href=_href
-        node.className = _class
+        this._node.href=_href
+        this._node.className = _class
       }
+    attributeChangedCallback(name, oldValue, newValue) {
 
+        var _class = newValue == 1 ? "current" : "";
+        this._node.className = _class
+    }
 }
 customElements.define('cac-link', Link);
 
