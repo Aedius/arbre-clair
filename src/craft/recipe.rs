@@ -2,11 +2,12 @@ use std::cmp::max;
 use std::collections::HashMap;
 use serde::{Serialize};
 
-use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item};
+use crate::craft::{BaseResource, GroupResource, CraftedResource, Recipe, Item, RecipeSummary};
 use crate::craft::cooking::get_recipe as getCookingRecipe;
 use crate::craft::alchemy::get_recipe as getAlchemyRecipe;
 use crate::craft::jewelry::get_recipe as getJewelCraftingRecipe;
 use crate::craft::stonemasonry::get_recipe as getStoneMasonry;
+use crate::craft::Profession::{Cooking, Jewelry, Stonemasonry, Alchemy};
 
 
 #[derive(Debug)]
@@ -61,7 +62,30 @@ pub struct RecipeResponse {
     pub lvl: i32,
 }
 
-//let mut base_list:Vec<&'static str> = group.clone().get_base().into_iter().map(|x| x.get_name()).collect();
+
+pub fn recipe_to_recipe_summary(all_recipe :Vec<Recipe>) -> Vec<RecipeSummary>{
+
+    let mut ret = Vec::new();
+
+    for recipe in all_recipe{
+        let data=  recipe.crafted_data();
+
+        let summary = RecipeSummary{
+            key: data.key,
+            name: recipe.name,
+            profession: recipe.profession,
+            stat: data.description
+        };
+
+        ret.push(summary);
+
+    }
+
+    ret.sort_by(|a, b| a.name.cmp(&b.name));
+
+    ret
+}
+
 
 fn get_displayable_recipe(recipe: &Recipe) -> DisplayableRecipe{
     DisplayableRecipe{
@@ -73,14 +97,38 @@ fn get_displayable_recipe(recipe: &Recipe) -> DisplayableRecipe{
     }
 }
 
-pub fn handle(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
+pub fn handle_craft(craft_name : &str) -> Option<Vec<RecipeSummary>> {
+
+    let cooking = Alchemy;
+    if craft_name == cooking.get_key() {
+        return Some(recipe_to_recipe_summary(getAlchemyRecipe()));
+    }
+
+    let cooking = Cooking;
+    if craft_name == cooking.get_key() {
+        return Some(recipe_to_recipe_summary(getCookingRecipe()));
+    }
+
+    let jewelry =  Jewelry;
+    if craft_name == jewelry.get_key() {
+        return Some(recipe_to_recipe_summary(getJewelCraftingRecipe()))
+    }
+
+    let stonemasonry =  Stonemasonry;
+    if craft_name == stonemasonry.get_key() {
+        return Some(recipe_to_recipe_summary(getStoneMasonry()))
+    }
+    return None;
+}
+
+pub fn handle_recipe(recipe_name: &str, quantity: i32) -> Option<RecipeResponse> {
 
     //TODO add other recipe to the vec
     let cooking = getCookingRecipe();
     let jewel_crafting = getJewelCraftingRecipe();
     let alchemy = getAlchemyRecipe();
-    let stoneMasonry = getStoneMasonry();
-    let recipes = [&cooking[..], &alchemy[..], &jewel_crafting[..], &stoneMasonry[..]].concat();
+    let stone_masonry = getStoneMasonry();
+    let recipes = [&cooking[..], &alchemy[..], &jewel_crafting[..], &stone_masonry[..]].concat();
 
 
 

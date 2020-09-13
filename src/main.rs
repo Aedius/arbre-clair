@@ -9,11 +9,7 @@ use tiny_http::{Method, Request, Response, Server, StatusCode};
 
 mod craft;
 
-use crate::craft::Profession;
-use crate::craft::cooking::get_all_recipe as get_cooking_recipe;
-use crate::craft::jewelry::get_all_recipe as get_jewelry_recipe;
-use crate::craft::stonemasonry::get_all_recipe as get_stonemasonry_recipe;
-use crate::craft::recipe::handle as handle_recipe;
+use crate::craft::recipe::{handle_recipe, handle_craft};
 
 const FOLDER_PREFIX: &str = "static";
 
@@ -81,31 +77,28 @@ fn respond_api(path: String, request: Request) {
         let caps = URL_CRAFT_RE.captures(path.as_str()).unwrap();
         let as_text = caps.get(1).map_or("", |m| m.as_str());
 
-        let mut recipes = vec![];
 
-        let cooking = Profession::Cooking;
-        if as_text == cooking.get_key() {
-            recipes = get_cooking_recipe();
-        }
+        let recipes = handle_craft(as_text);
 
-        let jewelry =  Profession::Jewelry;
-        if as_text == jewelry.get_key() {
-            recipes = get_jewelry_recipe();
-        }
-
-        let stonemasonry =  Profession::Stonemasonry;
-        if as_text == stonemasonry.get_key() {
-            recipes = get_stonemasonry_recipe();
-        }
-
-        let response = tiny_http::Response::from_string(format!("{}", json!(recipes)));
-        match request.respond(response) {
-            Ok(_) => {}
-            Err(e) => {
-                println!("{}", e)
+        return match recipes {
+            None => {
+                return match request.respond(Response::new_empty(StatusCode(404))) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        println!("{}", e)
+                    }
+                };
             }
-        }
-        return;
+            Some(recipes) => {
+                let response = tiny_http::Response::from_string(format!("{}", json!(recipes)));
+                match request.respond(response) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        println!("{}", e)
+                    }
+                }
+            }
+        };
     }
 
     if URL_CRAFT_RECIPE_RE.is_match(path.as_str()) {
