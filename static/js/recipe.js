@@ -22,53 +22,12 @@ class RecipeContainer extends HTMLElement {
         this._data=null
 
         this.attachShadow({ mode: 'open' });
-    }
 
-    connectedCallback() {
-        this._draw()
-        var those = this;
-        window.onhashchange = function() {
-            those._draw()
-        }
-    }
+        const li = this._craft.map( craft => {
+            return  `<li><cac-link  current="0" href="/pages/metiers.html#${craft.code}" id="${craft.code}" data-hover="${craft.name}">${craft.name}</cac-link></li>`
+        })
 
-    _draw(){
-          var _hash = window.location.hash
-          var _selected = ""
-          var _recipe = ""
-          var _content= ""
-          if(_hash){
-                _hash = _hash.substring(1);
-                var data = _hash.split("/")
-                _selected=data[0];
-                if(data.length>1){
-                    _recipe=data[1];
-                }
-
-          }
-
-          const li = this._craft.map( craft => {
-             if ( craft.code == _selected){
-                 return `<li><cac-link href="/pages/metiers.html#${craft.code}" current="1" data-hover="${craft.name}">${craft.name}</cac-link></li>`
-             }else{
-                return  `<li><cac-link href="/pages/metiers.html#${craft.code}" data-hover="${craft.name}">${craft.name}</cac-link></li>`
-             }
-         })
-
-         if (_selected != ""){
-
-             if (_recipe == ""){
-                _content = `
-                    <cac-recipe-list kind="${_selected}"></cac-recipe-list>
-                `
-             }else{
-                _content= `
-                   <cac-recipe kind="${_recipe}"></cac-recipe>
-                `
-             }
-         }
-
-          this.shadowRoot.innerHTML = `
+        this.shadowRoot.innerHTML = `
             <style>
                 ul{
                     list-style-type: none;
@@ -84,53 +43,77 @@ class RecipeContainer extends HTMLElement {
                     ${li.join('')}
                 </ul>
             </nav>
-            ${_content}
-          `
-      }
+            <cac-recipe-list kind=""></cac-recipe-list>
+            <cac-recipe kind=""></cac-recipe>
+        `
+
+        this._recipe_list = this.shadowRoot.querySelector("cac-recipe-list")
+        this._recipe = this.shadowRoot.querySelector("cac-recipe")
+    }
+
+    connectedCallback() {
+        this._draw()
+        var those = this;
+        window.onhashchange = function() {
+            those._draw()
+        }
+
+    }
+
+    _draw(){
+        var _hash = window.location.hash
+        var _selected = ""
+        var _recipe = ""
+        var _content= ""
+        if(_hash){
+            _hash = _hash.substring(1);
+            var data = _hash.split("/")
+            _selected=data[0];
+            if(data.length>1){
+                _recipe=data[1];
+            }
+        }
+
+         var linkList = this.shadowRoot.querySelectorAll("nav cac-link");
+
+         for (let l of linkList){
+            l.setAttribute("current", 0);
+         }
+
+        if( _selected == ""){
+            this._recipe_list.setAttribute("kind", "")
+            this._recipe.setAttribute("kind", "")
+        }else{
+            if (_recipe == ""){
+                this._recipe_list.setAttribute("kind", _selected)
+                this._recipe.setAttribute("kind", "")
+            }else{
+                this._recipe_list.setAttribute("kind", "")
+                this._recipe.setAttribute("kind", _recipe)
+            }
+
+            var currentLink = this.shadowRoot.querySelector("#"+_selected)
+            currentLink.setAttribute("current", 1)
+        }
+
+
+    }
 
 }
 customElements.define('cac-recipe-container', RecipeContainer);
 
 class RecipeList extends HTMLElement {
 
+    static get observedAttributes() {
+        return ['kind'];
+    }
+
     constructor() {
         super();
-        this._data=null
 
         this.attachShadow({ mode: 'open' });
-    }
 
-    connectedCallback() {
-        this._kind = this.getAttribute('kind');
-
-        var those = this;
-
-        fetch('/api/recipe-list/' + this._kind).then(function (response) {
-            // The API call was successful!
-            return response.json();
-        }).then(function (data) {
-            // This is the JSON from our response
-            those._data = data
-            those._display()
-        }).catch(function (err) {
-            // There was an error
-            console.warn('Something went wrong.', err);
-        });
-
-        this._display()
-    }
-
-      _display(){
-
-          let li = ["loading"];
-          if (this._data != null) {
-               li = this._data.map( recipe => {
-                   return  `<li><cac-link href="/pages/metiers.html#${this._kind}/${recipe.key}" >${recipe.name} :</cac-link>
-                        ${recipe.stat}</li>`
-                }).join('')
-          }
-
-          this.shadowRoot.innerHTML = `
+        this.shadowRoot.innerHTML = `
             <style>
                 ul{
                     list-style-type: none;
@@ -138,12 +121,59 @@ class RecipeList extends HTMLElement {
             </style>
             <div>
                 <ul>
-                    ${li}
+                    Loading
                 </ul>
             </div>
-          `
+        `
 
-      }
+        this._ul = this.shadowRoot.querySelector("ul")
+    }
+
+
+    connectedCallback() {
+        let kind = this.getAttribute('kind');
+
+        if (kind == ""){
+            this.shadowRoot.innerHTML = "";
+        }else{
+            this._get_recipes(kind);
+        }
+
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+
+        if ( name == "kind" && newValue != "" ) {
+            this._get_recipes(newValue);
+        }
+    }
+
+    _get_recipes(kind){
+
+        var those = this;
+
+        fetch('/api/recipe-list/' + kind).then(function (response) {
+            // The API call was successful!
+            return response.json();
+        }).then(function (data) {
+            // This is the JSON from our response
+            those._display(data)
+        }).catch(function (err) {
+            // There was an error
+            console.warn('Something went wrong.', err);
+        });
+    }
+
+    _display(_data){
+
+        let li = _data.map( recipe => {
+           return  `<li><cac-link  current="0" href="/pages/metiers.html#${this._kind}/${recipe.key}" >${recipe.name} :</cac-link>
+                ${recipe.stat}</li>`
+        }).join('')
+
+        this._ul.innerHTML = li
+
+    }
 
 }
 customElements.define('cac-recipe-list', RecipeList);
@@ -178,6 +208,11 @@ class Recipe extends HTMLElement {
     }
 
     _refresh(){
+
+        if (this._kind == ""){
+            this.shadowRoot.innerHTML = "";
+            return;
+        }
 
         var those = this
 
