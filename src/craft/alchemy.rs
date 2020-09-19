@@ -1,4 +1,4 @@
-use crate::craft::{Item, Profession, Recipe};
+use crate::craft::{Item, Profession, Recipe, BaseResource};
 
 use crate::craft::BaseResource::*;
 use crate::craft::CraftedResource::*;
@@ -241,7 +241,7 @@ pub fn get_recipe() -> Vec<Recipe> {
         input: vec![
             (Item::Base(ChaosEmber), 1),
         ],
-        output: (TransmuteChaos, 1),
+        output: (Base(BaseResource::Dust), 75),
         profession: Profession::Alchemy,
         menu: transmutations,
     });

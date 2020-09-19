@@ -1,5 +1,6 @@
 use std::hash::{Hash, Hasher};
 use serde::{Deserialize, Serialize};
+use strum_macros::{Display};
 
 use crate::craft::BaseResource::*;
 
@@ -54,7 +55,7 @@ impl Hash for Recipe {
     }
 }
 
-#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize, Display)]
 pub enum BaseResource {
     BackerGrasslandsParcel,
     Dust,
@@ -126,7 +127,8 @@ pub enum BaseResource {
     BloodWorm,
 }
 
-#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
+
+#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize, Display)]
 pub enum GroupResource {
     AnimalMeat,
     Herb,
@@ -146,8 +148,9 @@ pub enum GroupResource {
     Hide,
 }
 
-#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
+#[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize, Display)]
 pub enum CraftedResource {
+    Base(BaseResource),
     AppleJuice,
     ArtisanCheese,
     BakedIceCream,
@@ -1020,8 +1023,14 @@ impl CraftedResource {
             CraftedResource::PowderedAnimalBone => {
                 CraftedData {
                     description: "",
-                    key: "Powdered animal bone",
+                    key: "PowderedAnimalBone",
                 }}
+            CraftedResource::Base(base) => {
+                CraftedData{
+                    description : "",
+                    key : base.to_s()
+                }
+            }
         }
     }
 
@@ -1149,6 +1158,7 @@ impl CraftedResource {
             CraftedResource::PowderedGranite => { "PowderedGranite" }
             CraftedResource::PowderedLimestone => { "PowderedLimestone" }
             CraftedResource::PowderedAnimalBone => {"PowderedAnimalBone"}
+            CraftedResource::Base(base) => {base.to_string()}
         }
     }
 }
