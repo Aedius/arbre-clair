@@ -133,9 +133,7 @@ class RecipeList extends HTMLElement {
     connectedCallback() {
         let kind = this.getAttribute('kind');
 
-        if (kind == ""){
-            this.shadowRoot.innerHTML = "";
-        }else{
+        if (kind != ""){
             this._get_recipes(kind);
         }
 
@@ -143,8 +141,14 @@ class RecipeList extends HTMLElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
 
-        if ( name == "kind" && newValue != "" ) {
-            this._get_recipes(newValue);
+        if ( name == "kind" ) {
+            if (newValue == "") {
+                this._ul.style.display = "none";
+            }else{
+                this._ul.style.display = "";
+                this._kind = newValue;
+                this._get_recipes(newValue);
+            }
         }
     }
 
@@ -210,8 +214,8 @@ class Recipe extends HTMLElement {
     _refresh(){
 
         if (this._kind == ""){
-            this.shadowRoot.innerHTML = "";
             return;
+        }else{
         }
 
         var those = this
@@ -461,7 +465,7 @@ class InputQuantity extends HTMLElement {
 
     connectedCallback() {
 
-        console.log("render")
+        console.log("render quantity")
 
         this._nb = parseInt(this.getAttribute('nb'));
         var _callback = this.getAttribute('callback');
