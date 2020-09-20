@@ -185,6 +185,10 @@ customElements.define('cac-recipe-list', RecipeList);
 
 class Recipe extends HTMLElement {
 
+    static get observedAttributes() {
+        return ['kind'];
+    }
+
     constructor() {
         super();
 
@@ -198,6 +202,95 @@ class Recipe extends HTMLElement {
             this._nb=1;
         }
         this.attachShadow({ mode: 'open' });
+
+        this.shadowRoot.innerHTML = `
+        <style>
+           ${Base}
+
+            h2{
+                margin-left:40px;
+                padding-bottom:10px;
+                text-transform: uppercase;
+                border-bottom:1mm ridge rgba(241,81,85,1);
+                border-radius:10px;
+            }
+
+            #recette_cuisine{
+                background-color:#fff;
+                width:100%;
+            }
+
+            .nom_recette{
+                width:35%;
+                height:100%;
+                float:left;
+            }
+
+            .ingredient{
+                color:rgba(241,81,85,1);
+                font-weight:bold;
+            }
+
+            .multiplier, .compo{
+                color:rgba(241,81,85,1);
+                font-weight:bold;
+            }
+
+            #step{
+                background-color:#fff;
+                color:#000;
+                padding:20px;
+                width:50%;
+                border-left:2mm ridge rgba(241,81,85,1);
+                border-right:2mm ridge rgba(241,81,85,1);
+                border-radius:20px;
+                margin-left:40%;
+            }
+
+            .step{
+                width:80%;
+                line-height:0.6em;
+                border-bottom:1px solid #000;
+                padding-bottom:10px;
+                margin-left:10%;
+                margin-right:10%;
+            }
+
+            .step:last-child{
+                border-bottom:none;
+            }
+
+            .sous-titre{
+                font-weight:bold;
+            }
+
+            .legende{
+                margin-left:40px;
+                font-size:0.8em;
+            }
+        </style>
+        <div id="container">
+            <div class="recette_cuisine">
+                <div class="nom_recette">
+                    <h2>
+                    <cac-quantity nb="${this._nb}" callback=${this._quantity_change}></cac-quantity>
+                    <span>recipe name</span></h2>
+                <ul id="input">
+
+                </ul>
+                <p class="legende">*Passer sur les ingrédients pour connaitre la composition.</p>
+            </div>
+            <div id="step">
+            </div>
+        </div>
+      `
+
+        this.shadowRoot.addEventListener('quantityChange', this._quantity_change.bind(this));
+
+        this._recipe_name = this.shadowRoot.querySelector(".recette_cuisine h2 span")
+        this._input = this.shadowRoot.querySelector("#input")
+        this._steps = this.shadowRoot.querySelector("#step")
+        this._container = this.shadowRoot.querySelector("#container")
     }
 
     connectedCallback() {
@@ -205,6 +298,19 @@ class Recipe extends HTMLElement {
         this._refresh();
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+
+        if ( name == "kind" ) {
+            if (newValue == "") {
+                this._container.style.display = "none";
+            }else{
+                this._container.style.display = "";
+                this._kind =newValue;
+
+                this._refresh();
+            }
+        }
+    }
     _quantity_change(e){
         localStorage.setItem('recipeQuantity', e.detail);
         this._nb =  e.detail;
@@ -285,89 +391,10 @@ class Recipe extends HTMLElement {
                 `
             }).join('')
 
-            this.shadowRoot.innerHTML = `
-            <style>
-               ${Base}
+        this._recipe_name.innerHTML = this._data.summary.name
+        this._input.innerHTML = liBase + liGroup
+        this._steps.innerHTML = step
 
-                h2{
-                    margin-left:40px;
-                    padding-bottom:10px;
-                    text-transform: uppercase;
-                    border-bottom:1mm ridge rgba(241,81,85,1);
-                    border-radius:10px;
-                }
-
-                #recette_cuisine{
-                    background-color:#fff;
-                    width:100%;
-                }
-
-                .nom_recette{
-                    width:35%;
-                    height:100%;
-                    float:left;
-                }
-
-                .ingredient{
-                    color:rgba(241,81,85,1);
-                    font-weight:bold;
-                }
-
-                .multiplier, .compo{
-                    color:rgba(241,81,85,1);
-                    font-weight:bold;
-                }
-
-                #step{
-                    background-color:#fff;
-                    color:#000;
-                    padding:20px;
-                    width:50%;
-                    border-left:2mm ridge rgba(241,81,85,1);
-                    border-right:2mm ridge rgba(241,81,85,1);
-                    border-radius:20px;
-                    margin-left:40%;
-                }
-
-                .step{
-                    width:80%;
-                    line-height:0.6em;
-                    border-bottom:1px solid #000;
-                    padding-bottom:10px;
-                    margin-left:10%;
-                    margin-right:10%;
-                }
-
-                .step:last-child{
-                    border-bottom:none;
-                }
-
-                .sous-titre{
-                    font-weight:bold;
-                }
-
-                .legende{
-                    margin-left:40px;
-                    font-size:0.8em;
-                }
-            </style>
-            <div class="recette_cuisine">
-                <div class="nom_recette">
-                    <h2>
-                    <cac-quantity nb="${this._nb}" callback=${this._quantity_change}></cac-quantity>
-                    ${this._data.summary.name}</h2>
-                <ul>
-                    ${liBase}
-                    ${liGroup}
-                </ul>
-                <p class="legende">*Passer sur les ingrédients pour connaitre la composition.</p>
-            </div>
-            <div id="step">
-                ${step}
-            </div>
-          `
-
-        this.shadowRoot.addEventListener('quantityChange', this._quantity_change.bind(this));
     }
 }
 customElements.define('cac-recipe', Recipe);
