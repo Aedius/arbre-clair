@@ -221,6 +221,8 @@ pub fn handle_recipe(recipe_name: &str, quantity: i32, got : Vec<CraftedQuantity
             })
         }
 
+        list.sort_by(|a, b| a.recipe.name.cmp(&b.recipe.name));
+
         recipe_response.recipe.push(RecipGroupResponse{
             recipe_list: list,
             level: lvl
