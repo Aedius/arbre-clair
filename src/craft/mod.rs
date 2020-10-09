@@ -144,6 +144,8 @@ pub enum GroupResource {
     BloodOrWater,
     Minerals,
     Hide,
+    NonBasicStoneOrWood,
+    HarvestingTools,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, Serialize, Deserialize)]
@@ -271,6 +273,26 @@ pub enum CraftedResource {
     BackerMountainCitadelParcel,
     BackerVillageParcel,
     BackerWoodlandCreekParcel,
+    ArchitecturalArches,
+    Bricks,
+    Frame,
+    Nails,
+    WallInsulation,
+    ArchitecturalWall,
+    FoundationSegment,
+    Gravel,
+    RoofSegment,
+    WoodShingles,
+    Mulch,
+    WoodenWallSection,
+    StoneWallSection,
+    WoodStakes,
+    OreConcentrate,
+    Soil,
+    FloorTiles,
+    QualityAssurance,
+    StationRunemaking,
+    StallRune,
 }
 
 pub struct CraftedData {
@@ -1021,7 +1043,128 @@ impl CraftedResource {
                 CraftedData {
                     description: "",
                     key: "Powdered animal bone",
-                }}
+                }
+            }
+            CraftedResource::ArchitecturalArches => {
+                CraftedData {
+                    description: "",
+                    key: "ArchitecturalArches",
+                }
+            }
+            CraftedResource::Bricks => {
+                CraftedData {
+                    description: "",
+                    key: "Bricks",
+                }
+            }
+            CraftedResource::Frame => {
+                CraftedData {
+                    description: "",
+                    key: "Frame",
+                }
+            }
+            CraftedResource::Nails => {
+                CraftedData {
+                    description: "",
+                    key: "Nails",
+                }
+            }
+            CraftedResource::WallInsulation => {
+                CraftedData {
+                    description: "",
+                    key: "WallInsulation",
+                }
+            }
+            CraftedResource::ArchitecturalWall => {
+                CraftedData {
+                    description: "",
+                    key: "ArchitecturalWall",
+                }
+            }
+            CraftedResource::FoundationSegment => {
+                CraftedData {
+                    description: "",
+                    key: "FoundationSegment",
+                }
+            }
+            CraftedResource::Gravel => {
+                CraftedData {
+                    description: "",
+                    key: "Gravel",
+                }
+            }
+            CraftedResource::RoofSegment => {
+                CraftedData {
+                    description: "",
+                    key: "RoofSegment",
+                }
+            }
+            CraftedResource::WoodShingles => {
+                CraftedData {
+                    description: "",
+                    key: "WoodShingles",
+                }
+            }
+            CraftedResource::Mulch => {
+                CraftedData {
+                    description: "",
+                    key: "Mulch",
+                }
+            }
+            CraftedResource::WoodenWallSection => {
+                CraftedData {
+                    description: "",
+                    key: "WoodenWallSection",
+                }
+            }
+            CraftedResource::StoneWallSection => {
+                CraftedData {
+                    description: "",
+                    key: "StoneWallSection",
+                }
+            }
+            CraftedResource::WoodStakes => {
+                CraftedData {
+                    description: "",
+                    key: "WoodStakes",
+                }
+            }
+            CraftedResource::OreConcentrate => {
+                CraftedData {
+                    description: "",
+                    key: "OreConcentrate",
+                }
+            }
+            CraftedResource::Soil => {
+                CraftedData {
+                    description: "",
+                    key: "Soil",
+                }
+            }
+            CraftedResource::FloorTiles => {
+                CraftedData {
+                    description: "",
+                    key: "FloorTiles",
+                }
+            }
+            CraftedResource::QualityAssurance => {
+                CraftedData {
+                    description: "",
+                    key: "QualityAssurance",
+                }
+            }
+            CraftedResource::StationRunemaking => {
+                CraftedData {
+                    description: "",
+                    key: "StationRunemaking",
+                }
+            }
+            CraftedResource::StallRune => {
+                CraftedData {
+                    description: "",
+                    key: "StallRune",
+                }
+            }
         }
     }
 
@@ -1148,7 +1291,27 @@ impl CraftedResource {
             CraftedResource::PowderedTravertine => { "PowderedTravertine" }
             CraftedResource::PowderedGranite => { "PowderedGranite" }
             CraftedResource::PowderedLimestone => { "PowderedLimestone" }
-            CraftedResource::PowderedAnimalBone => {"PowderedAnimalBone"}
+            CraftedResource::PowderedAnimalBone => { "PowderedAnimalBone" }
+            CraftedResource::ArchitecturalArches => { "ArchitecturalArches" }
+            CraftedResource::Bricks => { "Bricks" }
+            CraftedResource::Frame => { "Frame" }
+            CraftedResource::Nails => { "Nails" }
+            CraftedResource::WallInsulation => { "WallInsulation" }
+            CraftedResource::ArchitecturalWall => { "ArchitecturalWall" }
+            CraftedResource::FoundationSegment => { "FoundationSegment" }
+            CraftedResource::Gravel => { "Gravel" }
+            CraftedResource::RoofSegment => { "RoofSegment" }
+            CraftedResource::WoodShingles => { "WoodShingles" }
+            CraftedResource::Mulch => { "Mulch" }
+            CraftedResource::WoodenWallSection => { "WoodenWallSection" }
+            CraftedResource::StoneWallSection => { "StoneWallSection" }
+            CraftedResource::WoodStakes => { "WoodStakes" }
+            CraftedResource::OreConcentrate => { "OreConcentrate" }
+            CraftedResource::Soil => { "Soil" }
+            CraftedResource::FloorTiles => { "FloorTiles" }
+            CraftedResource::QualityAssurance => { "QualityAssurance" }
+            CraftedResource::StationRunemaking => { "StationRunemaking" }
+            CraftedResource::StallRune => { "StallRune" }
         }
     }
 }
@@ -1288,7 +1451,12 @@ impl GroupResource {
                     BaseResource::HideSpider,
                     BaseResource::HideWolf,
                 ]
-
+            }
+            GroupResource::NonBasicStoneOrWood => {
+                vec![]
+            }
+            GroupResource::HarvestingTools => {
+                vec![]
             }
         }
     }
@@ -1308,8 +1476,10 @@ impl GroupResource {
             GroupResource::Stone => { "Stone" }
             GroupResource::RoughGem => { "Rough gem" }
             GroupResource::BloodOrWater => { "Blood or Water" }
-            GroupResource::Minerals => { "Minerals"}
-            GroupResource::Hide => { "Hide"}
+            GroupResource::Minerals => { "Minerals" }
+            GroupResource::Hide => { "Hide" }
+            GroupResource::NonBasicStoneOrWood => { "NonBasicStoneOrWood" }
+            GroupResource::HarvestingTools => { "HarvestingTools" }
         }
     }
 }
@@ -1368,23 +1538,23 @@ impl BaseResource {
             RoughSoulgem => { "Rough soulgem" }
             CuttingGrit => { "Cutting grit" }
             BackerGrasslandsParcel => { "Backer Grasslands Parcel" }
-            Grubs => { "Grubs"}
-            ChaosEmber => { "ChaosEmber"}
-            AppearenceCompendium => {"AppearenceCompendium"}
-            Adhesive => {"Adhesive"}
-            Halite => {"Halite"}
-            Dolomite => {"Dolomite"}
-            Sulphur => {"Sulphur"}
-            Cinnabar => {"Cinnabar"}
-            Nitrate => {"Nitrate"}
-            BloodWorm => {"BloodWorm"}
-            HideAuroch => {"HideAuroch"}
-            HideBear => {"HideBear"}
-            HideBigCat => {"HideBigCat"}
-            HideBoar => {"HideBoar"}
-            HideElk => {"HideElk"}
-            HideSpider => {"HideSpider"}
-            HideWolf => {"HideWolf"}
+            Grubs => { "Grubs" }
+            ChaosEmber => { "ChaosEmber" }
+            AppearenceCompendium => { "AppearenceCompendium" }
+            Adhesive => { "Adhesive" }
+            Halite => { "Halite" }
+            Dolomite => { "Dolomite" }
+            Sulphur => { "Sulphur" }
+            Cinnabar => { "Cinnabar" }
+            Nitrate => { "Nitrate" }
+            BloodWorm => { "BloodWorm" }
+            HideAuroch => { "HideAuroch" }
+            HideBear => { "HideBear" }
+            HideBigCat => { "HideBigCat" }
+            HideBoar => { "HideBoar" }
+            HideElk => { "HideElk" }
+            HideSpider => { "HideSpider" }
+            HideWolf => { "HideWolf" }
         }
     }
 }
