@@ -25,6 +25,12 @@ class TalentContainer extends HTMLElement {
                     cursor: pointer;
                     //background-color:green;
                 }
+                #reset{
+                    background-color:red;
+                    float: right;
+                    padding: 5px;
+                }
+
                 #st {
                     position: absolute;
                     top: 42%;
@@ -300,9 +306,11 @@ class TalentContainer extends HTMLElement {
                 }
             </style
             <div>
+                <div id="reset">reset</div>
                 <p>
                     <span id="nb">0</span> / 15
                 </p>
+                <br/>
                 <div id="parent">
                     <img src="/img/talent/base.png" />
                     <div class="button" id="st"></div>
@@ -595,6 +603,173 @@ class TalentContainer extends HTMLElement {
                     if (this._talent.length != 1){
                         return
                     }
+                    break;
+                case 'a1':
+                    if (this._talent.indexOf("b1") != -1){
+                        return
+                    }
+                    if( this._talent.indexOf("b2") != -1 && this._talent.indexOf("a2") == -1){
+                        return
+                    }
+                    break;
+                case 'a2':
+                    if (this._talent.indexOf("b3") != -1){
+                        return
+                    }
+                    if( this._talent.indexOf("b2") != -1 && this._talent.indexOf("a1") == -1){
+                        return
+                    }
+                    break;
+                case 'b1':
+                    if (this._talent.indexOf("d1") != -1){
+                        return
+                    }
+                    if( this._talent.indexOf("c1") != -1 && this._talent.indexOf("b2") == -1){
+                        return
+                    }
+                    break;
+                case 'b2':
+                    if (this._talent.indexOf("c2") != -1){
+                        return
+                    }
+                    if( this._talent.indexOf("c1") != -1 && this._talent.indexOf("b1") == -1){
+                        return
+                    }
+                    if( this._talent.indexOf("c3") != -1 && this._talent.indexOf("b3") == -1){
+                        return
+                    }
+                    break;
+                case 'b3':
+                    if (this._talent.indexOf("d3") != -1){
+                        return
+                    }
+                    if( this._talent.indexOf("c3") != -1 && this._talent.indexOf("b2") == -1){
+                        return
+                    }
+                    break;
+                case 'c1':
+                    if (this._talent.indexOf("e1") != -1  &&  this._talent.indexOf("d1") == -1){
+                        return
+                    }
+                    if( this._talent.indexOf("d2") != -1 && this._talent.indexOf("c2") == -1 && this._talent.indexOf("c3") == -1){
+                        return
+                    }
+                    break;
+                case 'c2':
+                    if (this._talent.indexOf("d2") != -1 && this._talent.indexOf("c1") == -1 && this._talent.indexOf("c3") == -1){
+                        return
+                    }
+                    break;
+                case 'c3':
+                    if (this._talent.indexOf("e3") != -1 &&  this._talent.indexOf("d3") == -1){
+                        return
+                    }
+                    if (this._talent.indexOf("d2") != -1 && this._talent.indexOf("c1") == -1 && this._talent.indexOf("c2") == -1){
+                        return
+                    }
+                    break;
+                case 'd1':
+                    if (this._talent.indexOf("e1") != -1 && this._talent.indexOf("c1") == -1){
+                        return
+                    }
+                    break;
+                case 'd2':
+                    if (this._talent.indexOf("e2") != -1){
+                        return
+                    }
+                    break;
+                case 'd3':
+                    if (this._talent.indexOf("e3") != -1 && this._talent.indexOf("c3") == -1){
+                        return
+                    }
+                    break;
+                case 'e1':
+                    if (this._talent.indexOf("f1") != -1){
+                        return
+                    }
+                    if (this._talent.indexOf("md") != -1 && this._talent.indexOf("e2") == -1 && this._talent.indexOf("e3") == -1 ){
+                        return
+                    }
+                    break;
+                case 'e2':
+                    if (this._talent.indexOf("md") != -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1){
+                        return
+                    }
+                    break;
+                case 'e3':
+                    if (this._talent.indexOf("f2") != -1){
+                        return
+                    }
+                    if (this._talent.indexOf("md") != -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1){
+                        return
+                    }
+                    break;
+                case 'md':
+                    if (this._talent.indexOf("g1") != -1 || this._talent.indexOf("g2") != -1 || this._talent.indexOf("g3") != -1){
+                        return
+                    }
+                    break;
+                case 'g1':
+                    if (this._talent.indexOf("h1") != -1 || this._talent.indexOf("h2") != -1){
+                        return
+                    }
+                    break;
+                case 'g2':
+                    if (this._talent.indexOf("h3") != -1 || this._talent.indexOf("h4") != -1){
+                        return
+                    }
+                    break;
+                case 'g3':
+                    if (this._talent.indexOf("h5") != -1 || this._talent.indexOf("h6") != -1){
+                        return
+                    }
+                    break;
+                case 'h1':
+                    if (this._talent.indexOf("i1") != -1 && this._talent.indexOf("h2") == -1){
+                        return
+                    }
+                    break;
+                case 'h2':
+                    if (this._talent.indexOf("i1") != -1 && this._talent.indexOf("h1") == -1){
+                        return
+                    }
+                    break;
+                case 'h3':
+                    if (this._talent.indexOf("i2") != -1 && this._talent.indexOf("h4") == -1){
+                        return
+                    }
+                    break;
+                case 'h4':
+                    if (this._talent.indexOf("i2") != -1 && this._talent.indexOf("h5") == -1){
+                        return
+                    }
+                    break;
+                case 'h5':
+                    if (this._talent.indexOf("i3") != -1 && this._talent.indexOf("h6") == -1){
+                        return
+                    }
+                    break;
+                case 'h6':
+                    if (this._talent.indexOf("i3") != -1 && this._talent.indexOf("h5") == -1){
+                        return
+                    }
+                    break;
+                case 'i1':
+                    if (this._talent.indexOf("j1") != -1 || this._talent.indexOf("j2") != -1 || this._talent.indexOf("j3") != -1 ){
+                        return
+                    }
+                    break;
+                case 'i2':
+                    if (this._talent.indexOf("j4") != -1 || this._talent.indexOf("j5") != -1 || this._talent.indexOf("j6") != -1 ){
+                        return
+                    }
+                    break;
+                case 'i3':
+                    if (this._talent.indexOf("j7") != -1 || this._talent.indexOf("j8") != -1 || this._talent.indexOf("j9") != -1 ){
+                        return
+                    }
+                    break;
+
             }
 
             this._talent.splice(i, 1)
