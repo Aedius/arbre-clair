@@ -20,6 +20,10 @@ class Menu extends HTMLElement {
                 code : "metier",
                 name : "Métiers",
                 link : "/pages/metiers.html",
+            }, {
+                code : "result",
+                name : "Résultats",
+                link : "/pages/resultats.html",
             }
         ]
 
