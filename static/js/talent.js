@@ -4,7 +4,7 @@ class TalentContainer extends HTMLElement {
         this.attachShadow({ mode: 'open' });
 
         this._point=13;
-        this._talent=["a1", "b1", "d1"];
+        this._talent=[];
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -23,6 +23,21 @@ class TalentContainer extends HTMLElement {
                 .button{
                     z-index: 100;
                     cursor: pointer;
+                    //background-color:green;
+                }
+                #st {
+                    position: absolute;
+                    top: 42%;
+                    left: 1%;
+                    width: 6%;
+                    height: 15%;
+                }
+                #md {
+                    position: absolute;
+                    top: 42%;
+                    left: 60%;
+                    width: 6%;
+                    height: 15%;
                 }
                 #a1 {
                     position: absolute;
@@ -285,8 +300,13 @@ class TalentContainer extends HTMLElement {
                 }
             </style
             <div>
+                <p>
+                    <span id="nb">0</span> / 15
+                </p>
                 <div id="parent">
                     <img src="/img/talent/base.png" />
+                    <div class="button" id="st"></div>
+                    <div class="button" id="md"></div>
                     <div class="button" id="a1"></div>
                     <div class="button" id="a2"></div>
                     <div class="button" id="b1"></div>
@@ -332,6 +352,7 @@ class TalentContainer extends HTMLElement {
         `
 
         this._other = this.shadowRoot.querySelector("#other");
+        this._nb = this.shadowRoot.querySelector("#nb");
 
         var buttonList = this.shadowRoot.querySelectorAll(".button")
         for (var i = 0; i < buttonList.length; i++) {
@@ -346,21 +367,250 @@ class TalentContainer extends HTMLElement {
 
     _click(event){
         const id = event.target.id
+        const i = this._talent.indexOf(id)
 
-        console.log(id)
+        if (i == -1){
 
-        this._talent.push(id)
+            if (this._talent.length >=15) {
+                return;
+            }
+
+            switch (id) {
+                case 'a1':
+                case 'a2':
+                    if (this._talent.indexOf("st") == -1){
+                        return
+                    }
+                    break;
+                case 'b1':
+                    if (this._talent.indexOf("a1") == -1){
+                        return
+                    }
+                    break;
+                case 'b2':
+                    if (this._talent.indexOf("a1") == -1 && this._talent.indexOf("a2") == -1){
+                        return
+                    }
+                    break;
+                case 'b3':
+                    if (this._talent.indexOf("a2") == -1){
+                        return
+                    }
+                    break;
+                case 'c1':
+                    if (this._talent.indexOf("b1") == -1 && this._talent.indexOf("b2") == -1 && this._talent.indexOf("c2") == -1){
+                        return
+                    }
+                    break;
+                case 'c2':
+                    if (this._talent.indexOf("b2") == -1){
+                        return
+                    }
+                    break;
+                case 'c3':
+                    if (this._talent.indexOf("b2") == -1 && this._talent.indexOf("b3") == -1 && this._talent.indexOf("c2") == -1){
+                        return
+                    }
+                    break;
+                case 'd1':
+                    if (this._talent.indexOf("b1") == -1){
+                        return
+                    }
+                    break;
+                case 'd2':
+                    if (this._talent.indexOf("c1") == -1 && this._talent.indexOf("c2") == -1 && this._talent.indexOf("c3") == -1){
+                        return
+                    }
+                    break;
+                case 'd3':
+                    if (this._talent.indexOf("b3") == -1){
+                        return
+                    }
+                    break;
+                case 'e1':
+                    if (this._talent.indexOf("c1") == -1 && this._talent.indexOf("d1") == -1){
+                        return
+                    }
+                    break;
+                case 'e2':
+                    if (this._talent.indexOf("d2") == -1){
+                        return
+                    }
+                    break;
+                case 'e3':
+                    if (this._talent.indexOf("c3") == -1 && this._talent.indexOf("d3") == -1){
+                        return
+                    }
+                    break;
+                case 'f1':
+                    if (this._talent.indexOf("e1") == -1){
+                        return
+                    }
+                    break;
+                case 'f2':
+                    if (this._talent.indexOf("e3") == -1){
+                        return
+                    }
+                    break;
+                case 'md':
+                    if (this._talent.indexOf("f1") == -1 && this._talent.indexOf("f2") == -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1 && this._talent.indexOf("e3") == -1 ){
+                        return
+                    }
+                    break;
+                case 'g1':
+                    if (this._talent.indexOf("g2") != -1 || this._talent.indexOf("g3") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("md") == -1){
+                        return
+                    }
+                    break;
+                case 'g2':
+                    if (this._talent.indexOf("g1") != -1 || this._talent.indexOf("g3") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("md") == -1){
+                        return
+                    }
+                    break;
+                case 'g3':
+                    if (this._talent.indexOf("g1") != -1 || this._talent.indexOf("g2") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("md") == -1){
+                        return
+                    }
+                    break;
+                case 'h1':
+                case 'h2':
+                    if (this._talent.indexOf("g1") == -1){
+                        return
+                    }
+                    break;
+                case 'h3':
+                case 'h4':
+                    if (this._talent.indexOf("g2") == -1){
+                        return
+                    }
+                    break;
+                case 'h5':
+                case 'h6':
+                    if (this._talent.indexOf("g3") == -1){
+                        return
+                    }
+                    break;
+                case 'i1':
+                    if (this._talent.indexOf("h1") == -1 && this._talent.indexOf("h2") == -1){
+                        return
+                    }
+                    break;
+                case 'i2':
+                    if (this._talent.indexOf("h3") == -1 && this._talent.indexOf("h4") == -1){
+                        return
+                    }
+                    break;
+                case 'i3':
+                    if (this._talent.indexOf("h5") == -1 && this._talent.indexOf("h6") == -1){
+                        return
+                    }
+                    break;
+                case 'j1':
+                    if (this._talent.indexOf("j2") != -1 || this._talent.indexOf("j3") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i1") == -1){
+                        return
+                    }
+                    break;
+                case 'j2':
+                    if (this._talent.indexOf("j1") != -1 || this._talent.indexOf("j3") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i1") == -1){
+                        return
+                    }
+                    break;
+                case 'j3':
+                    if (this._talent.indexOf("j1") != -1 || this._talent.indexOf("j2") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i1") == -1){
+                        return
+                    }
+                    break;
+                case 'j4':
+                    if (this._talent.indexOf("j5") != -1 || this._talent.indexOf("j6") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i2") == -1){
+                        return
+                    }
+                    break;
+                case 'j5':
+                    if (this._talent.indexOf("j4") != -1 || this._talent.indexOf("j6") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i2") == -1){
+                        return
+                    }
+                    break;
+                case 'j6':
+                    if (this._talent.indexOf("j4") != -1 || this._talent.indexOf("j5") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i2") == -1){
+                        return
+                    }
+                    break;
+                case 'j7':
+                    if (this._talent.indexOf("j8") != -1 || this._talent.indexOf("j9") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i3") == -1){
+                        return
+                    }
+                    break;
+                case 'j8':
+                    if (this._talent.indexOf("j7") != -1 || this._talent.indexOf("j9") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i3") == -1){
+                        return
+                    }
+                    break;
+                case 'j9':
+                    if (this._talent.indexOf("j7") != -1 || this._talent.indexOf("j8") != -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("i3") == -1){
+                        return
+                    }
+                    break;
+            }
+
+            this._talent.push(id)
+        }else{
+            switch (id) {
+                case 'st':
+                    if (this._talent.length != 1){
+                        return
+                    }
+            }
+
+            this._talent.splice(i, 1)
+        }
+
         this._display()
     }
 
     _display(){
 
-        console.log(this._talent)
         const imgList = this._talent.map( code => {
             return `<img class="top" src="/img/talent/${code}.png" />`
         })
 
         this._other.innerHTML = imgList.join('');
+        this._nb.innerHTML = imgList.length;
 
     }
 
