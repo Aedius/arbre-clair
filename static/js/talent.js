@@ -367,9 +367,15 @@ class TalentContainer extends HTMLElement {
             buttonList[i].addEventListener('click', this._click.bind(this));
         }
 
+        this.shadowRoot.querySelector("#reset").addEventListener('click', this._reset.bind(this));
     }
 
     connectedCallback() {
+        this._display();
+    }
+
+    _reset(){
+        this._talent = [];
         this._display();
     }
 
