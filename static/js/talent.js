@@ -1,10 +1,38 @@
 class TalentContainer extends HTMLElement {
     constructor() {
         super();
+
+        this._version="1.0";
+
         this.attachShadow({ mode: 'open' });
 
-        this._point=13;
+        var _hash = window.location.hash
+
         this._talent=[];
+        this._class="";
+
+        if(_hash){
+            _hash = _hash.substring(1);
+            var data = _hash.split("_")
+            if( data.length==3 && data[0]==this._version ){
+                this._class=data[1];
+                this._talent=data[2].split("-")
+            }
+        }
+
+        var isAssassin = this._class=="assassin" ? "selected=1" : "";
+        var isCleric = this._class=="cleric" ? "selected=1" : "";
+        var isChampion = this._class=="champion" ? "selected=1" : "";
+        var isConfessor = this._class=="confessor" ? "selected=1" : "";
+        var isDuelist = this._class=="duelist" ? "selected=1" : "";
+        var isDruid = this._class=="druid" ? "selected=1" : "";
+        var isFrostweaver = this._class=="frostweaver" ? "selected=1" : "";
+        var isKnight = this._class=="knight" ? "selected=1" : "";
+        var isMyrmidon = this._class=="myrmidon" ? "selected=1" : "";
+        var isRanger = this._class=="ranger" ? "selected=1" : "";
+        var isTemplar = this._class=="templar" ? "selected=1" : "";
+
+         window.location.hash = "toto"
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -308,6 +336,20 @@ class TalentContainer extends HTMLElement {
             <div>
                 <div id="reset">reset</div>
                 <p>
+                    Class : <select id="class-name">
+                        <option value="">-</option>
+                        <option value="assassin" ${isAssassin}>Assassin</option>
+                        <option value="cleric" ${isCleric}>Cleric</option>
+                        <option value="champion" ${isChampion}>Champion</option>
+                        <option value="confessor" ${isConfessor}>Confessor</option>
+                        <option value="duelist" ${isDuelist}>Duelist</option>
+                        <option value="druid" ${isDruid}>Druid</option>
+                        <option value="frostweaver" ${isFrostweaver}>Frostweaver</option>
+                        <option value="knight" ${isKnight}>Knight</option>
+                        <option value="myrmidon" ${isMyrmidon}>Myrmidon</option>
+                        <option value="ranger" ${isRanger}>Ranger</option>
+                        <option value="" ${isTemplar}>Templar</option>
+                    </select>
                     <span id="nb">0</span> / 15
                 </p>
                 <br/>
@@ -368,6 +410,7 @@ class TalentContainer extends HTMLElement {
         }
 
         this.shadowRoot.querySelector("#reset").addEventListener('click', this._reset.bind(this));
+        this.shadowRoot.querySelector("#class-name").addEventListener('change', this._class_change.bind(this));
     }
 
     connectedCallback() {
@@ -376,6 +419,11 @@ class TalentContainer extends HTMLElement {
 
     _reset(){
         this._talent = [];
+        this._display();
+    }
+
+    _class_change(event){
+        this._class = event.target.value;
         this._display();
     }
 
@@ -790,8 +838,15 @@ class TalentContainer extends HTMLElement {
             return `<img class="top" src="/img/talent/${code}.png" />`
         })
 
-        this._other.innerHTML = imgList.join('');
+        var classImg = ""
+        if (this._class != ""){
+            classImg = `<img  class="top" src="/img/talent/${this._class}.png" />`
+        }
+
+        this._other.innerHTML = imgList.join('') + classImg;
         this._nb.innerHTML = imgList.length;
+
+        window.location.hash = this._version +"_"+ this._class +"_"+ this._talent.join("-")
 
     }
 
