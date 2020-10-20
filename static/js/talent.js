@@ -20,27 +20,36 @@ class TalentContainer extends HTMLElement {
             }
         }
 
-        var isAssassin = this._class=="assassin" ? "selected=1" : "";
-        var isCleric = this._class=="cleric" ? "selected=1" : "";
-        var isChampion = this._class=="champion" ? "selected=1" : "";
-        var isConfessor = this._class=="confessor" ? "selected=1" : "";
-        var isDuelist = this._class=="duelist" ? "selected=1" : "";
-        var isDruid = this._class=="druid" ? "selected=1" : "";
-        var isFrostweaver = this._class=="frostweaver" ? "selected=1" : "";
-        var isKnight = this._class=="knight" ? "selected=1" : "";
-        var isMyrmidon = this._class=="myrmidon" ? "selected=1" : "";
-        var isRanger = this._class=="ranger" ? "selected=1" : "";
-        var isTemplar = this._class=="templar" ? "selected=1" : "";
+        var isAssassin = this._class=="assassin"? "selected" : "";
+        var isCleric = this._class=="cleric" ? "selected" : "";
+        var isChampion = this._class=="champion" ? "selected" : "";
+        var isConfessor = this._class=="confessor" ? "selected" : "";
+        var isDuelist = this._class=="duelist" ? "selected" : "";
+        var isDruid = this._class=="druid" ? "selected" : "";
+        var isFrostweaver = this._class=="frostweaver" ? "selected" : "";
+        var isKnight = this._class=="knight" ? "selected" : "";
+        var isMyrmidon = this._class=="myrmidon" ? "selected" : "";
+        var isRanger = this._class=="ranger" ? "selected" : "";
+        var isTemplar = this._class=="templar" ? "selected" : "";
 
-         window.location.hash = "toto"
+        window.location.hash = "toto"
 
         this.shadowRoot.innerHTML = `
             <style>
                 #parent{
-                    position:relative
+                    position:relative;
+                    margin-top:1%;
                 }
                 img{
                     width:100%
+                }
+                .classicone{
+                    width: 8%;
+                    cursor: pointer;
+                }
+                .classicone.selected{
+                    background-color:orange;
+
                 }
                 .top {
                     position: absolute;
@@ -54,9 +63,30 @@ class TalentContainer extends HTMLElement {
                     //background-color:green;
                 }
                 #reset{
+                    bottom : 0;
+                    left: 0;
+                    position: absolute;
                     background-color:red;
-                    float: right;
                     padding: 5px;
+                    font-size:3em;
+                    z-index: 100;
+                }
+                #nb-container{
+                    bottom : 10%;
+                    left: 0;
+                    font-size:3em;
+                    padding : 10px;
+                    position: absolute;
+                }
+                #class-list{
+                    text-align: center;
+                }
+                .name{
+                    font-size: 4em;
+                    padding:10px;
+                    top : 0;
+                    left: 0;
+                    position: absolute;
                 }
 
                 #st {
@@ -334,26 +364,22 @@ class TalentContainer extends HTMLElement {
                 }
             </style
             <div>
-                <div id="reset">reset</div>
-                <p>
-                    Class : <select id="class-name">
-                        <option value="">-</option>
-                        <option value="assassin" ${isAssassin}>Assassin</option>
-                        <option value="cleric" ${isCleric}>Cleric</option>
-                        <option value="champion" ${isChampion}>Champion</option>
-                        <option value="confessor" ${isConfessor}>Confessor</option>
-                        <option value="duelist" ${isDuelist}>Duelist</option>
-                        <option value="druid" ${isDruid}>Druid</option>
-                        <option value="frostweaver" ${isFrostweaver}>Frostweaver</option>
-                        <option value="knight" ${isKnight}>Knight</option>
-                        <option value="myrmidon" ${isMyrmidon}>Myrmidon</option>
-                        <option value="ranger" ${isRanger}>Ranger</option>
-                        <option value="templar" ${isTemplar}>Templar</option>
-                    </select>
-                    <span id="nb">0</span> / 15
-                </p>
-                <br/>
+                <div id="class-list">
+                    <img class="classicone ${isAssassin}" tag="assassin" src="/img/talent/assassin/icone.png"/>
+                    <img class="classicone ${isCleric}" tag="cleric" src="/img/talent/cleric/icone.png"/>
+                    <img class="classicone ${isChampion}" tag="champion" src="/img/talent/champion/icone.png"/>
+                    <img class="classicone ${isConfessor}" tag="confessor" src="/img/talent/confessor/icone.png"/>
+                    <img class="classicone ${isDuelist}" tag="duelist" src="/img/talent/duelist/icone.png"/>
+                    <img class="classicone ${isDruid}" tag="druid" src="/img/talent/druid/icone.png"/>
+                    <img class="classicone ${isFrostweaver}" tag="frostweaver" src="/img/talent/frostweaver/icone.png"/>
+                    <img class="classicone ${isKnight}" tag="knight" src="/img/talent/knight/icone.png"/>
+                    <img class="classicone ${isMyrmidon}" tag="myrmidon" src="/img/talent/myrmidon/icone.png"/>
+                    <img class="classicone ${isRanger}" tag="ranger" src="/img/talent/ranger/icone.png"/>
+                    <img class="classicone ${isTemplar}" tag="templar" src="/img/talent/templar/icone.png"/>
+                </div>
                 <div id="parent">
+                    <div id="reset">reset</div>
+                    <div id="nb-container"><span id="nb">0</span> / 15</div>
                     <img src="/img/talent/base.png" />
                     <div class="button" id="st"></div>
                     <div class="button" id="md"></div>
@@ -410,7 +436,13 @@ class TalentContainer extends HTMLElement {
         }
 
         this.shadowRoot.querySelector("#reset").addEventListener('click', this._reset.bind(this));
-        this.shadowRoot.querySelector("#class-name").addEventListener('change', this._class_change.bind(this));
+
+        var iconeList =  this.shadowRoot.querySelectorAll(".classicone")
+
+        for (var i = 0; i < iconeList.length; i++) {
+            iconeList[i].addEventListener('click', this._class_change.bind(this));
+        }
+
     }
 
     connectedCallback() {
@@ -423,7 +455,21 @@ class TalentContainer extends HTMLElement {
     }
 
     _class_change(event){
-        this._class = event.target.value;
+
+        var newClass = event.target.getAttribute("tag")
+        this._class = newClass;
+
+        var iconeList =  this.shadowRoot.querySelectorAll(".classicone")
+
+        for (var i = 0; i < iconeList.length; i++) {
+            if (iconeList[i].getAttribute("tag") == newClass){
+                iconeList[i].classList.add("selected")
+            }else{
+                iconeList[i].classList.remove("selected")
+            }
+        }
+
+
         this._display();
     }
 
@@ -835,12 +881,17 @@ class TalentContainer extends HTMLElement {
     _display(){
 
         const imgList = this._talent.map( code => {
+            if (code == "") {
+                return;
+            }
             return `<img class="top" src="/img/talent/${code}.png" />`
         })
 
         var classImg = ""
         if (this._class != ""){
-            classImg = `<img  class="top" src="/img/talent/${this._class}.png" />`
+            const name = this._class.charAt(0).toUpperCase() + this._class.slice(1);
+            classImg = `<img  class="top" src="/img/talent/${this._class}/talent.png" />
+                <div class="name">${name}</div>`
         }
 
         this._other.innerHTML = imgList.join('') + classImg;
