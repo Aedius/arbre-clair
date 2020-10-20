@@ -348,7 +348,7 @@ class TalentContainer extends HTMLElement {
                         <option value="knight" ${isKnight}>Knight</option>
                         <option value="myrmidon" ${isMyrmidon}>Myrmidon</option>
                         <option value="ranger" ${isRanger}>Ranger</option>
-                        <option value="" ${isTemplar}>Templar</option>
+                        <option value="templar" ${isTemplar}>Templar</option>
                     </select>
                     <span id="nb">0</span> / 15
                 </p>
