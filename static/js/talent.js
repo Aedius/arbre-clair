@@ -63,27 +63,27 @@ class TalentContainer extends HTMLElement {
                     //background-color:green;
                 }
                 #reset{
-                    bottom : 0;
-                    left: 0;
+                    bottom : 1%;
+                    left: 1%;
                     position: absolute;
                     background-color:red;
-                    padding: 5px;
-                    font-size:3em;
+                    padding: 1%;
+                    font-size: 2vw;
                     z-index: 100;
                 }
                 #nb-container{
                     bottom : 10%;
                     left: 0;
-                    font-size:3em;
-                    padding : 10px;
+                    font-size:2vw;
+                    padding : 1%;
                     position: absolute;
                 }
                 #class-list{
                     text-align: center;
                 }
                 .name{
-                    font-size: 4em;
-                    padding:10px;
+                    font-size: 2vw;
+                    padding:1%;
                     top : 0;
                     left: 0;
                     position: absolute;
