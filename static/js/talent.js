@@ -511,7 +511,7 @@ class TalentContainer extends HTMLElement {
                     }
                     break;
                 case 'c2':
-                    if (this._talent.indexOf("b2") == -1){
+                    if (this._talent.indexOf("b2") == -1 && this._talent.indexOf("c1") == -1 && this._talent.indexOf("c3") == -1 ){
                         return
                     }
                     break;
@@ -757,6 +757,12 @@ class TalentContainer extends HTMLElement {
                     break;
                 case 'c2':
                     if (this._talent.indexOf("d2") != -1 && this._talent.indexOf("c1") == -1 && this._talent.indexOf("c3") == -1){
+                        return
+                    }
+                    if (this._talent.indexOf("c1") != -1 && this._talent.indexOf("b1") == -1 && this._talent.indexOf("b2") == -1 ){
+                        return
+                    }
+                    if (this._talent.indexOf("c3") != -1 && this._talent.indexOf("b2") == -1 && this._talent.indexOf("b3") == -1 ){
                         return
                     }
                     break;
