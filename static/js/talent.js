@@ -2,7 +2,7 @@ class TalentContainer extends HTMLElement {
     constructor() {
         super();
 
-        this._version="1.0";
+        this._version="1.1";
 
         this.attachShadow({ mode: 'open' });
 
@@ -14,6 +14,13 @@ class TalentContainer extends HTMLElement {
         if(_hash){
             _hash = _hash.substring(1);
             var data = _hash.split("_")
+
+            if (data[0] == "1.0"){
+                data[0] = "1.1"
+                data[2] = data[2].replace('st', 'a0')
+                data[2] = data[2].replace('md', 'g0')
+            }
+
             if( data.length==3 && data[0]==this._version ){
                 this._class=data[1];
                 this._talent=data[2].split("-")
@@ -40,7 +47,7 @@ class TalentContainer extends HTMLElement {
                     position:relative;
                     margin-top:1%;
                 }
-                img{
+                #parent img{
                     width:100%
                 }
                 .classicone{
@@ -86,7 +93,7 @@ class TalentContainer extends HTMLElement {
                     left: 0;
                     position: absolute;
                 }
-                .desc{
+                #parent .desc{
                     position: absolute;
                     top:0;
                     height:100%;
@@ -94,24 +101,24 @@ class TalentContainer extends HTMLElement {
                     z-index: 2;
                     display: none;
                 }
-                #desc-left{
+                #parent #desc-left{
                     left:0
                 }
-                #desc-right{
+                #parent #desc-right{
                     right:0
                 }
-                .desc.dis{
+                #parent .desc.dis{
                     display: block;
                 }
 
-                #st {
+                #a0 {
                     position: absolute;
                     top: 42%;
                     left: 1%;
                     width: 6%;
                     height: 15%;
                 }
-                #md {
+                #g0 {
                     position: absolute;
                     top: 42%;
                     left: 60%;
@@ -395,8 +402,8 @@ class TalentContainer extends HTMLElement {
                 <div id="parent">
                     <div id="nb-container"><span id="nb">0</span> / 15</div>
                     <img src="/img/talent/base.png" />
-                    <div class="button" id="st"></div>
-                    <div class="button" id="md"></div>
+                    <div class="button" id="a0"></div>
+                    <div class="button" id="g0"></div>
                     <div class="button" id="a1"></div>
                     <div class="button" id="a2"></div>
                     <div class="button" id="b1"></div>
@@ -443,12 +450,15 @@ class TalentContainer extends HTMLElement {
                 </div>
                 <div id="reset">reset</div>
             <div>
+            <div id="recap">
+            </div>
         `
 
         this._other = this.shadowRoot.querySelector("#other");
         this._nb = this.shadowRoot.querySelector("#nb");
         this._desc_left = this.shadowRoot.querySelector("#desc-left");
         this._desc_right = this.shadowRoot.querySelector("#desc-right");
+        this._recap = this.shadowRoot.querySelector("#recap");
 
         var buttonList = this.shadowRoot.querySelectorAll(".button")
         for (var i = 0; i < buttonList.length; i++) {
@@ -503,7 +513,11 @@ class TalentContainer extends HTMLElement {
 
         const id = event.target.id
 
-        if ( id == "st" || id <= "f2"){
+        if( id == "c2"){
+            return
+        }
+
+        if ( id == "a0" || id <= "f2"){
             this._desc_right.src = `/img/talent/${this._class}/desc/${id}.png`
             this._desc_right.classList.add("dis")
         }else{
@@ -513,6 +527,8 @@ class TalentContainer extends HTMLElement {
 
     }
     _mouse_leave(event){
+        this._desc_right.src = ""
+        this._desc_left.src = ""
         this._desc_right.classList.remove("dis")
         this._desc_left.classList.remove("dis")
     }
@@ -530,7 +546,7 @@ class TalentContainer extends HTMLElement {
             switch (id) {
                 case 'a1':
                 case 'a2':
-                    if (this._talent.indexOf("st") == -1){
+                    if (this._talent.indexOf("a0") == -1){
                         return
                     }
                     break;
@@ -604,7 +620,7 @@ class TalentContainer extends HTMLElement {
                         return
                     }
                     break;
-                case 'md':
+                case 'g0':
                     if (this._talent.indexOf("f1") == -1 && this._talent.indexOf("f2") == -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1 && this._talent.indexOf("e3") == -1 ){
                         return
                     }
@@ -613,7 +629,7 @@ class TalentContainer extends HTMLElement {
                     if (this._talent.indexOf("g2") != -1 || this._talent.indexOf("g3") != -1 ){
                         return
                     }
-                    if (this._talent.indexOf("md") == -1){
+                    if (this._talent.indexOf("g0") == -1){
                         return
                     }
                     break;
@@ -621,7 +637,7 @@ class TalentContainer extends HTMLElement {
                     if (this._talent.indexOf("g1") != -1 || this._talent.indexOf("g3") != -1 ){
                         return
                     }
-                    if (this._talent.indexOf("md") == -1){
+                    if (this._talent.indexOf("g0") == -1){
                         return
                     }
                     break;
@@ -629,7 +645,7 @@ class TalentContainer extends HTMLElement {
                     if (this._talent.indexOf("g1") != -1 || this._talent.indexOf("g2") != -1 ){
                         return
                     }
-                    if (this._talent.indexOf("md") == -1){
+                    if (this._talent.indexOf("g0") == -1){
                         return
                     }
                     break;
@@ -743,7 +759,7 @@ class TalentContainer extends HTMLElement {
             this._talent.push(id)
         }else{
             switch (id) {
-                case 'st':
+                case 'a0':
                     if (this._talent.length != 1){
                         return
                     }
@@ -837,12 +853,12 @@ class TalentContainer extends HTMLElement {
                     if (this._talent.indexOf("f1") != -1){
                         return
                     }
-                    if (this._talent.indexOf("md") != -1 && this._talent.indexOf("e2") == -1 && this._talent.indexOf("e3") == -1 ){
+                    if (this._talent.indexOf("g0") != -1 && this._talent.indexOf("e2") == -1 && this._talent.indexOf("e3") == -1 ){
                         return
                     }
                     break;
                 case 'e2':
-                    if (this._talent.indexOf("md") != -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1){
+                    if (this._talent.indexOf("g0") != -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1){
                         return
                     }
                     break;
@@ -850,11 +866,11 @@ class TalentContainer extends HTMLElement {
                     if (this._talent.indexOf("f2") != -1){
                         return
                     }
-                    if (this._talent.indexOf("md") != -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1){
+                    if (this._talent.indexOf("g0") != -1 && this._talent.indexOf("e1") == -1 && this._talent.indexOf("e2") == -1){
                         return
                     }
                     break;
-                case 'md':
+                case 'g0':
                     if (this._talent.indexOf("g1") != -1 || this._talent.indexOf("g2") != -1 || this._talent.indexOf("g3") != -1){
                         return
                     }
@@ -947,7 +963,19 @@ class TalentContainer extends HTMLElement {
         this._other.innerHTML = imgList.join('') + classImg;
         this._nb.innerHTML = imgList.length;
 
+        this._talent.sort()
+
+        const recapList = this._talent.map( code => {
+            if (code == "") {
+                return;
+            }
+            return `<img src="/img/talent/${this._class}/desc/${code}.png" />`
+        })
+
+        this._recap.innerHTML= recapList.join('')
+
         window.location.hash = this._version +"_"+ this._class +"_"+ this._talent.join("-")
+        
 
     }
 
