@@ -63,16 +63,14 @@ class TalentContainer extends HTMLElement {
                     //background-color:green;
                 }
                 #reset{
-                    bottom : 1%;
-                    left: 1%;
-                    position: absolute;
                     background-color:red;
                     padding: 1%;
                     font-size: 2vw;
                     z-index: 100;
+                    width: 10%
                 }
                 #nb-container{
-                    bottom : 10%;
+                    bottom : 0;
                     left: 0;
                     font-size:2vw;
                     padding : 1%;
@@ -87,6 +85,23 @@ class TalentContainer extends HTMLElement {
                     top : 0;
                     left: 0;
                     position: absolute;
+                }
+                .desc{
+                    position: absolute;
+                    top:0;
+                    height:100%;
+                    width:33%;
+                    z-index: 2;
+                    display: none;
+                }
+                #desc-left{
+                    left:0
+                }
+                #desc-right{
+                    right:0
+                }
+                .desc.dis{
+                    display: block;
                 }
 
                 #st {
@@ -378,7 +393,6 @@ class TalentContainer extends HTMLElement {
                     <img class="classicone ${isTemplar}" tag="templar" src="/img/talent/templar/icone.png"/>
                 </div>
                 <div id="parent">
-                    <div id="reset">reset</div>
                     <div id="nb-container"><span id="nb">0</span> / 15</div>
                     <img src="/img/talent/base.png" />
                     <div class="button" id="st"></div>
@@ -423,16 +437,24 @@ class TalentContainer extends HTMLElement {
 
                     <div id="other">
                     </div>
+                    <img id="desc-left" class="desc" />
+                    <img id="desc-right"  class="desc" />
+                    </div>
                 </div>
+                <div id="reset">reset</div>
             <div>
         `
 
         this._other = this.shadowRoot.querySelector("#other");
         this._nb = this.shadowRoot.querySelector("#nb");
+        this._desc_left = this.shadowRoot.querySelector("#desc-left");
+        this._desc_right = this.shadowRoot.querySelector("#desc-right");
 
         var buttonList = this.shadowRoot.querySelectorAll(".button")
         for (var i = 0; i < buttonList.length; i++) {
             buttonList[i].addEventListener('click', this._click.bind(this));
+            buttonList[i].addEventListener('mouseenter', this._mouse_enter.bind(this));
+            buttonList[i].addEventListener('mouseleave', this._mouse_leave.bind(this));
         }
 
         this.shadowRoot.querySelector("#reset").addEventListener('click', this._reset.bind(this));
@@ -471,6 +493,28 @@ class TalentContainer extends HTMLElement {
 
 
         this._display();
+    }
+
+    _mouse_enter(event){
+
+        if( this._class == ""){
+            return
+        }
+
+        const id = event.target.id
+
+        if ( id == "st" || id <= "f2"){
+            this._desc_right.src = `/img/talent/${this._class}/desc/${id}.png`
+            this._desc_right.classList.add("dis")
+        }else{
+            this._desc_left.src = `/img/talent/${this._class}/desc/${id}.png`
+            this._desc_left.classList.add("dis")
+        }
+
+    }
+    _mouse_leave(event){
+        this._desc_right.classList.remove("dis")
+        this._desc_left.classList.remove("dis")
     }
 
     _click(event){
