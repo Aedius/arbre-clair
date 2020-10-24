@@ -90,7 +90,7 @@ class TalentContainer extends HTMLElement {
                     position: absolute;
                     top:0;
                     height:100%;
-                    width:33%;
+                    width:35%;
                     z-index: 2;
                     display: none;
                 }
