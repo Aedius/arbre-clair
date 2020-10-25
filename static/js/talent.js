@@ -23,13 +23,13 @@ class TalentContainer extends HTMLElement {
 
             if( data.length==3 && data[0]==this._version ){
                 this._class=data[1];
-                this._talent=data[2].split("-")
+                this._talent=data[2].split("-").filter(word => word.length == 2);
             }
         }
 
         var isAssassin = this._class=="assassin"? "selected" : "";
-        var isCleric = this._class=="cleric" ? "selected" : "";
         var isChampion = this._class=="champion" ? "selected" : "";
+        var isCleric = this._class=="cleric" ? "selected" : "";
         var isConfessor = this._class=="confessor" ? "selected" : "";
         var isDuelist = this._class=="duelist" ? "selected" : "";
         var isDruid = this._class=="druid" ? "selected" : "";
@@ -388,8 +388,8 @@ class TalentContainer extends HTMLElement {
             <div>
                 <div id="class-list">
                     <img class="classicone ${isAssassin}" tag="assassin" src="/img/talent/assassin/icone.png"/>
-                    <img class="classicone ${isCleric}" tag="cleric" src="/img/talent/cleric/icone.png"/>
                     <img class="classicone ${isChampion}" tag="champion" src="/img/talent/champion/icone.png"/>
+                    <img class="classicone ${isCleric}" tag="cleric" src="/img/talent/cleric/icone.png"/>
                     <img class="classicone ${isConfessor}" tag="confessor" src="/img/talent/confessor/icone.png"/>
                     <img class="classicone ${isDuelist}" tag="duelist" src="/img/talent/duelist/icone.png"/>
                     <img class="classicone ${isDruid}" tag="druid" src="/img/talent/druid/icone.png"/>
