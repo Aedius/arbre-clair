@@ -947,9 +947,6 @@ class TalentContainer extends HTMLElement {
     _display(){
 
         const imgList = this._talent.map( code => {
-            if (code == "") {
-                return;
-            }
             return `<img class="top" src="/img/talent/${code}.png" />`
         })
 
@@ -966,7 +963,7 @@ class TalentContainer extends HTMLElement {
         this._talent.sort()
 
         const recapList = this._talent.map( code => {
-            if (code == "") {
+            if (code == "c2") {
                 return;
             }
             return `<img src="/img/talent/${this._class}/desc/${code}.png" />`
