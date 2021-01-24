@@ -22,7 +22,7 @@ lazy_static! {
 }
 
 
-const NB_THREAD: usize = 2;
+const NB_THREAD: usize = 1;
 
 fn main() {
     let server = Server::http("0.0.0.0:8081").unwrap();
